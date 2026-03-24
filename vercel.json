@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/p/:username", "destination": "/api/index?username=:username" },
+    { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/index", "schedule": "0 9 * * 1" }
+  ]
+}
