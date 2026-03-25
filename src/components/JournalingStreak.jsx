@@ -40,9 +40,9 @@ export const JournalingStreak = ({ trades }) => {
 
   return (
     <div style={{
-      display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
+      display: "flex", alignItems: "center", gap: 10, padding: "12px 16px",
       background: C.bgCard, border: `1px solid ${streak >= 7 ? color + "30" : C.border}`,
-      borderRadius: 12, flexWrap: "wrap", gap: 10,
+      borderRadius: 12, flexWrap: "wrap",
       transition: "border-color 0.3s",
     }}>
       {/* Streak count */}

@@ -1,4 +1,4 @@
-import { C, F } from "./lib/design";
+import { C } from "./design";
 /** @returns {string} */
 export const uid = () => Math.random().toString(36).slice(2, 9);
 

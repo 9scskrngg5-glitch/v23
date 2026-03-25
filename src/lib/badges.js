@@ -1,4 +1,4 @@
-import { C, F } from "./lib/design";
+import { C, F } from "./design";
 /**
  * Système de badges/achievements
  */

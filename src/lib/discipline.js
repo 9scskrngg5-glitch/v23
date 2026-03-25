@@ -1,4 +1,4 @@
-import { C, F } from "./lib/design";
+import { C, F } from "./design";
 /**
  * Calcule un score de discipline de 0 à 100
  * basé sur le respect des règles de trading
