@@ -537,7 +537,7 @@ async function handlePublicAPI(req, res) {
 // ── Main router ───────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   // FIXED: Restrict CORS to your own domain instead of wildcard *
-  const allowedOrigin = process.env.APP_URL || "*";
+  const allowedOrigin = process.env.APP_URL || "";
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, stripe-signature, x-cron-secret, x-api-key");

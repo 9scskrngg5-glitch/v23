@@ -166,6 +166,67 @@ export const monteCarlo = (trades, sims = 400, len = 100, start = 1000) => {
 };
 
 /**
+ * Compute stats grouped by setup — expectancy, winrate, PnL per setup
+ * @param {import('../types').Trade[]} trades
+ * @returns {Array<{setup:string,total:number,wins:number,winRate:string,totalPnL:string,avgWin:string,avgLoss:string,expectancy:string}>}
+ */
+export const computeSetupStats = (trades) => {
+  const closed = trades.filter(t => t.result !== "" && t.setup && t.setup.trim());
+  const map = {};
+  closed.forEach(t => {
+    const s = t.setup.trim();
+    if (!map[s]) map[s] = [];
+    map[s].push(t);
+  });
+  return Object.entries(map)
+    .map(([setup, ts]) => {
+      const wins = ts.filter(t => Number(t.result) > 0);
+      const losses = ts.filter(t => Number(t.result) < 0);
+      const totalPnL = ts.reduce((a, t) => a + Number(t.result), 0);
+      const totalWin = wins.reduce((a, t) => a + Number(t.result), 0);
+      const totalLoss = Math.abs(losses.reduce((a, t) => a + Number(t.result), 0));
+      const avgWin = wins.length ? totalWin / wins.length : 0;
+      const avgLoss = losses.length ? totalLoss / losses.length : 0;
+      const wr = wins.length / ts.length;
+      const expectancy = wr * avgWin - (1 - wr) * avgLoss;
+      return {
+        setup, total: ts.length,
+        wins: wins.length,
+        winRate: (wr * 100).toFixed(1),
+        totalPnL: totalPnL.toFixed(2),
+        avgWin: avgWin.toFixed(2),
+        avgLoss: avgLoss.toFixed(2),
+        expectancy: expectancy.toFixed(2),
+      };
+    })
+    .filter(s => s.total >= 2)
+    .sort((a, b) => Number(b.expectancy) - Number(a.expectancy));
+};
+
+/**
+ * Compute discipline score per trade for correlation chart
+ * @param {import('../types').Trade[]} trades
+ * @returns {Array<{index:number,discipline:number,result:number,pair:string}>}
+ */
+export const computeDisciplineCorrelation = (trades) => {
+  const closed = trades.filter(t => t.result !== "");
+  return closed.map((t, i) => {
+    let score = 100;
+    if (!t.sl || t.sl === "" || t.sl === 0) score -= 25;
+    if (t.rr && Number(t.rr) < 1) score -= 20;
+    if ((t.emotion || "").toLowerCase().includes("revenge")) score -= 30;
+    if (t.confidence && Number(t.confidence) < 4) score -= 15;
+    if (!t.setup || t.setup.trim() === "") score -= 10;
+    return {
+      index: i + 1,
+      discipline: Math.max(0, score),
+      result: Number(t.result),
+      pair: t.pair || "—",
+    };
+  });
+};
+
+/**
  * Format a timestamp to French locale string
  * @param {number} ts
  * @returns {string}

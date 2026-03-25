@@ -10,10 +10,21 @@ export const TradeRow = ({ trade, onClick, onDelete }) => {
       background: C.bgCard, border: `1px solid ${C.border}`,
       borderRadius: 11, padding: "13px 16px",
       display: "flex", alignItems: "center", gap: 14,
-      cursor: "pointer", transition: "all 0.12s",
+      cursor: "pointer",
+      transition: "border-color 0.15s, background 0.15s, transform 0.1s, box-shadow 0.15s",
     }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderHov; e.currentTarget.style.background = C.bgInner; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = C.borderHov;
+        e.currentTarget.style.background = C.bgInner;
+        e.currentTarget.style.transform = "translateY(-1px)";
+        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.25)";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = C.border;
+        e.currentTarget.style.background = C.bgCard;
+        e.currentTarget.style.transform = "none";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     >
       {/* Status dot */}
       <div style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: !hasPnL ? C.textDim : win ? C.green : C.red }} />

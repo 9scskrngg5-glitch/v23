@@ -1,19 +1,29 @@
+const sanitizeField = (val) => {
+  if (typeof val !== "string") return val;
+  return val.replace(/^[=+\-@|]/, "").trim();
+};
+
+const safeNum = (val) => {
+  const n = parseFloat(val);
+  return Number.isFinite(n) ? n : "";
+};
+
 export const exportTradesToCSV = (trades) => {
   const headers = ["Date", "Paire", "Session", "Entrée", "SL", "TP", "Résultat ($)", "RR", "Émotion", "Setup", "Confiance", "Flags"];
 
   const rows = trades.map(t => [
     new Date(t.createdAt ?? 0).toLocaleDateString("fr-FR"),
-    t.pair || "",
-    t.session || "",
-    t.entry || "",
-    t.sl || "",
-    t.tp || "",
-    t.result !== "" ? Number(t.result).toFixed(2) : "",
-    t.rr || "",
-    t.emotion || "",
-    t.setup || "",
-    t.confidence || "",
-    (t.flags || []).join("; "),
+    sanitizeField(t.pair || ""),
+    sanitizeField(t.session || ""),
+    safeNum(t.entry),
+    safeNum(t.sl),
+    safeNum(t.tp),
+    t.result !== "" ? safeNum(t.result) : "",
+    safeNum(t.rr),
+    sanitizeField(t.emotion || ""),
+    sanitizeField(t.setup || ""),
+    safeNum(t.confidence),
+    sanitizeField((t.flags || []).join("; ")),
   ]);
 
   const csv = [headers, ...rows]

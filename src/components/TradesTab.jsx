@@ -8,13 +8,14 @@ import { TradeRow } from "./TradeRow";
 const modalOverlay = {
   position: "fixed",
   inset: 0,
-  background: "rgba(0,0,0,0.6)",
+  background: "rgba(0,0,0,0.65)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   padding: 16,
   zIndex: 50,
-  backdropFilter: "blur(4px)",
+  backdropFilter: "blur(6px)",
+  animation: "fadeIn 0.15s ease forwards",
 };
 
 /**
@@ -219,10 +220,11 @@ export const TradesTab = ({ trades, pairs, onAdd, onSave, onDelete, emptyForm })
             style={{
               width: "min(740px, 95vw)",
               background: C.bgCard,
-              border: "1px solid #181b2e",
+              border: `1px solid ${C.border}`,
               borderRadius: 18,
               padding: 22,
-              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.6)",
+              animation: "scaleIn 0.18s ease forwards",
             }}
             onClick={(e) => e.stopPropagation()}
           >

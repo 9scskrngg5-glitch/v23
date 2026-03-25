@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { supabase, isSupabaseConfigured } from "../lib/supabase";
-import { C, F, inp } from "../lib/design";
+import { useState, useEffect, useRef } from "react";
+import { supabase } from "../lib/supabase";
 
-// ── SVG Icons ──────────────────────────────────────────────────────────────
+const G = {
+  bg: "#051F20", card: "#0B2B26", inner: "#163832",
+  border: "#235347", borderHov: "#2e6b5e",
+  text: "#DAF1DE", mid: "#8EB69B", dim: "#4a7a68", ghost: "#235347",
+  green: "#8EB69B", greenDim: "rgba(142,182,155,0.12)", greenBord: "rgba(142,182,155,0.25)",
+  red: "#f04770",
+};
+
 const GoogleIcon = () => (
-  <svg width="17" height="17" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+  <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{flexShrink:0}}>
     <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.09 17.64 11.78 17.64 9.2z" fill="#4285F4"/>
     <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
     <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
@@ -12,277 +18,317 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const AppleIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 814 1000" fill="currentColor" style={{ flexShrink: 0 }}>
-    <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105.4-57.8-155.5-127.4C46 442.8 33.8 324.6 33.8 297.5c0-155.6 100.7-237.9 199.1-237.9 52.3 0 95.9 34.4 127.8 34.4 30.5 0 78.4-36.6 139.1-36.6 22.3 0 108.2 1.9 163.6 77.3zm-84.7-122.6c23.4-27.7 40.2-66.2 40.2-104.7 0-5.1-.4-10.3-1.3-14.5-38.3 1.5-83.4 25.5-110.4 57.2-21.1 23.9-41.2 62.4-41.2 101.5 0 5.7.9 11.4 1.3 13.3 2.5.4 6.5.6 10.5.6 34.1 0 76.8-22.9 100.9-53.4z"/>
-  </svg>
-);
+// Animated canvas — floating particles + grid
+const AnimatedBg = () => {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let raf;
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    resize();
+    window.addEventListener("resize", resize);
 
-const Divider = ({ label }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "20px 0" }}>
-    <div style={{ flex: 1, height: 1, background: C.border }} />
-    <span style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em" }}>{label}</span>
-    <div style={{ flex: 1, height: 1, background: C.border }} />
+    // Particles
+    const pts = Array.from({length: 55}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.8 + 0.4,
+      alpha: Math.random() * 0.5 + 0.1,
+    }));
+
+    // Equity path progress
+    let progress = 0;
+    const eqPoints = [
+      [0.08, 0.72], [0.18, 0.65], [0.28, 0.58], [0.35, 0.62],
+      [0.44, 0.48], [0.52, 0.42], [0.60, 0.35], [0.68, 0.28],
+      [0.76, 0.22], [0.85, 0.18], [0.92, 0.12],
+    ];
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const W = canvas.width, H = canvas.height;
+
+      // Grid
+      ctx.strokeStyle = "rgba(35,83,71,0.3)";
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+      // Particles + connections
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(142,182,155,${p.alpha})`;
+        ctx.fill();
+      });
+      // Connections
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(142,182,155,${0.08 * (1 - d/100)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Animated equity curve
+      progress = Math.min(progress + 0.004, 1);
+      const totalPts = eqPoints.length;
+      const drawn = progress * (totalPts - 1);
+      const fullIdx = Math.floor(drawn);
+
+      if (fullIdx > 0) {
+        // Gradient fill
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, "rgba(142,182,155,0.18)");
+        grad.addColorStop(1, "rgba(142,182,155,0)");
+        ctx.beginPath();
+        ctx.moveTo(eqPoints[0][0]*W, eqPoints[0][1]*H);
+        for (let i = 1; i <= fullIdx; i++) {
+          ctx.lineTo(eqPoints[i][0]*W, eqPoints[i][1]*H);
+        }
+        if (fullIdx < totalPts - 1) {
+          const frac = drawn - fullIdx;
+          const nx = (eqPoints[fullIdx][0] + (eqPoints[fullIdx+1][0]-eqPoints[fullIdx][0])*frac)*W;
+          const ny = (eqPoints[fullIdx][1] + (eqPoints[fullIdx+1][1]-eqPoints[fullIdx][1])*frac)*H;
+          ctx.lineTo(nx, ny);
+          ctx.lineTo(nx, H*0.95);
+        } else {
+          ctx.lineTo(eqPoints[fullIdx][0]*W, H*0.95);
+        }
+        ctx.lineTo(eqPoints[0][0]*W, H*0.95);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(eqPoints[0][0]*W, eqPoints[0][1]*H);
+        for (let i = 1; i <= fullIdx; i++) ctx.lineTo(eqPoints[i][0]*W, eqPoints[i][1]*H);
+        if (fullIdx < totalPts - 1) {
+          const frac = drawn - fullIdx;
+          const nx = (eqPoints[fullIdx][0] + (eqPoints[fullIdx+1][0]-eqPoints[fullIdx][0])*frac)*W;
+          const ny = (eqPoints[fullIdx][1] + (eqPoints[fullIdx+1][1]-eqPoints[fullIdx][1])*frac)*H;
+          ctx.lineTo(nx, ny);
+          // Animated dot
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(nx, ny, 4, 0, Math.PI*2);
+          ctx.fillStyle = "#DAF1DE";
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(nx, ny, 8, 0, Math.PI*2);
+          ctx.fillStyle = "rgba(142,182,155,0.25)";
+          ctx.fill();
+        } else {
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "#8EB69B";
+        ctx.lineWidth = 2;
+        ctx.lineJoin = "round";
+        ctx.stroke();
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, []);
+  return <canvas ref={canvasRef} style={{position:"absolute",inset:0,width:"100%",height:"100%"}}/>;
+};
+
+// Floating stat card
+const StatFloat = ({ label, value, color = "#8EB69B", delay = "0s", top, left, right, bottom }) => (
+  <div style={{
+    position: "absolute", top, left, right, bottom,
+    background: "rgba(11,43,38,0.85)", backdropFilter: "blur(12px)",
+    border: "1px solid rgba(142,182,155,0.2)", borderRadius: 12,
+    padding: "10px 14px", animation: `floatY 4s ease-in-out infinite`,
+    animationDelay: delay, zIndex: 2,
+  }}>
+    <div style={{fontSize:8, color: G.dim, fontFamily:"'DM Mono',monospace", letterSpacing:"0.14em", textTransform:"uppercase", marginBottom:2}}>{label}</div>
+    <div style={{fontSize:16, fontWeight:800, fontFamily:"'Syne',sans-serif", color, letterSpacing:"-0.02em"}}>{value}</div>
   </div>
 );
 
-// ── OAuth Button ───────────────────────────────────────────────────────────
-const OAuthBtn = ({ icon, label, onClick, loading }) => (
-  <button onClick={onClick} disabled={loading} style={{
-    width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-    padding: "12px 16px", borderRadius: 10, border: `1px solid ${C.border}`,
-    background: C.bgInner, color: C.text, cursor: loading ? "not-allowed" : "pointer",
-    fontSize: 13, fontFamily: F.sans, fontWeight: 500, transition: "all 0.15s",
-    opacity: loading ? 0.5 : 1,
-  }}
-    onMouseEnter={e => { if (!loading) { e.currentTarget.style.borderColor = C.borderHov; e.currentTarget.style.background = C.bgCard; } }}
-    onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgInner; }}
-  >
-    {icon}
-    <span>{label}</span>
-  </button>
-);
-
-// ── Main Component ─────────────────────────────────────────────────────────
-export const AuthScreen = ({ onSignIn, onSignUp, onSignInWithGoogle, onSignInWithApple }) => {
-  const [mode, setMode] = useState("login"); // login | signup | forgot
+export const AuthScreen = ({ onSignIn, onSignUp, onSignInWithGoogle }) => {
+  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPwd, setShowPwd] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState(null); // "google" | "apple" | null
+  const [oauthLoading, setOauthLoading] = useState(false);
 
   const reset = () => { setError(""); setSuccess(""); };
 
   const handleSubmit = async () => {
     reset();
     if (!email.trim()) { setError("Email requis."); return; }
-    if (mode !== "forgot" && password.length < 6) { setError("Mot de passe minimum 6 caractères."); return; }
+    if (mode !== "forgot" && password.length < 6) { setError("Minimum 6 caractères."); return; }
     setLoading(true);
-
     if (mode === "forgot") {
       if (!supabase) { setError("Backend non configuré"); setLoading(false); return; }
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-      if (error) setError(error.message);
-      else setSuccess("Email de réinitialisation envoyé ! Vérifie ta boîte.");
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
+      if (error) setError(error.message); else setSuccess("Email envoyé !");
     } else if (mode === "login") {
       const { error } = await onSignIn(email.trim(), password, rememberMe);
       if (error) setError(error);
     } else {
       const { error } = await onSignUp(email.trim(), password);
-      if (error) setError(error);
-      else setSuccess("Compte créé ! Tu peux te connecter directement.");
+      if (error) setError(error); else setSuccess("Compte créé ! Vérifie ton email.");
     }
     setLoading(false);
   };
 
-  const handleOAuth = async (provider) => {
-    reset();
-    setOauthLoading(provider);
-    const fn = provider === "google" ? onSignInWithGoogle : onSignInWithApple;
-    const { error } = await fn();
-    if (error) { setError(error); setOauthLoading(null); }
-    // On success, Supabase redirects — no need to clear loading
-  };
-
-  const TITLES = {
-    login: "Connexion",
-    signup: "Créer un compte",
-    forgot: "Mot de passe oublié",
-  };
-  const SUBTITLES = {
-    login: "Content de te revoir.",
-    signup: "Commence à trader mieux.",
-    forgot: "On t'envoie un lien de réinitialisation.",
-  };
+  const inp = { background: G.inner, border: `1px solid ${G.border}`, color: G.text, padding: "11px 14px", borderRadius: 9, width: "100%", fontSize: 13, fontFamily: "'DM Mono',monospace", outline: "none", transition: "all 0.15s" };
 
   return (
-    <div style={{ background: C.bg, minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+    <div style={{background: G.bg, minHeight:"100dvh", display:"flex", alignItems:"stretch", fontFamily:"'DM Sans',sans-serif"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
-        * { box-sizing: border-box; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-        .auth-fade { animation: fadeIn 0.2s ease; }
+        *,*::before,*::after{box-sizing:border-box}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+        @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes pulseRing{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2);opacity:0}}
+        .af{animation:fadeIn 0.3s ease forwards}
+        input:focus{border-color:#8EB69B !important;box-shadow:0 0 0 3px rgba(142,182,155,0.12) !important}
+        @media(max-width:768px){.al{display:none!important}.ar{width:100%!important}}
       `}</style>
 
-      <div style={{ width: "min(420px, 100%)" }} className="auth-fade">
+      {/* LEFT — animated illustration */}
+      <div className="al" style={{width:"50%",position:"relative",overflow:"hidden",background:"#061e1f"}}>
+        <AnimatedBg />
 
-        {/* Brand */}
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 12, background: C.greenDim, border: `1px solid ${C.greenBord}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: 16, color: C.green, fontFamily: F.mono, fontWeight: 700, letterSpacing: "0.1em" }}>TJ</div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: C.text, margin: "0 0 6px", letterSpacing: "-0.02em" }}>
-            {TITLES[mode]}
-          </h1>
-          <p style={{ fontSize: 13, color: C.textDim, fontFamily: F.mono, margin: 0 }}>
-            {SUBTITLES[mode]}
-          </p>
+        {/* Overlay gradient */}
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 50%, rgba(142,182,155,0.04) 0%, transparent 70%)",zIndex:1}}/>
+
+        {/* Logo */}
+        <div style={{position:"absolute",top:28,left:32,zIndex:3,display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:30,height:30,borderRadius:8,background:"rgba(142,182,155,0.12)",border:"1px solid rgba(142,182,155,0.25)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <span style={{fontSize:11,color:"#8EB69B",fontFamily:"'DM Mono',monospace",fontWeight:700}}>LP</span>
+          </div>
+          <span style={{fontSize:12,color:"#DAF1DE",fontFamily:"'DM Mono',monospace",letterSpacing:"0.14em"}}>LOG-PIP</span>
         </div>
 
-        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 18, padding: 28, boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }}>
+        {/* Floating stat cards */}
+        <StatFloat label="Win Rate" value="68.4%" top="22%" left="8%" delay="0s" />
+        <StatFloat label="PnL Total" value="+$2,840" color="#DAF1DE" top="22%" right="8%" delay="1.2s" />
+        <StatFloat label="Expectancy" value="+$47.2" top="62%" left="12%" delay="0.6s" />
+        <StatFloat label="Drawdown" value="-$340" color="#f04770" top="62%" right="10%" delay="1.8s" />
 
-          {/* OAuth buttons - only on login/signup */}
-          {mode !== "forgot" && (
-            <>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <OAuthBtn
-                  icon={<GoogleIcon />}
-                  label="Continuer avec Google"
-                  onClick={() => handleOAuth("google")}
-                  loading={oauthLoading === "google"}
-                />
-                <OAuthBtn
-                  icon={<AppleIcon />}
-                  label="Continuer avec Apple"
-                  onClick={() => handleOAuth("apple")}
-                  loading={oauthLoading === "apple"}
-                />
-              </div>
-              <Divider label="ou avec un email" />
-            </>
-          )}
+        {/* Center text */}
+        <div style={{position:"absolute",bottom:48,left:0,right:0,zIndex:3,textAlign:"center",padding:"0 40px"}}>
+          <h2 style={{fontSize:22,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#DAF1DE",margin:"0 0 10px",letterSpacing:"-0.02em"}}>Ton edge. Visible.</h2>
+          <p style={{fontSize:12,color:"#4a7a68",fontFamily:"'DM Mono',monospace",lineHeight:1.7,margin:0}}>Journal de trading avec AI coaching,<br/>stats avancées et discipline tracker.</p>
+        </div>
+      </div>
 
-          {/* Email / Password form */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            <div>
-              <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase" }}>Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="ton@email.com"
-                autoComplete="email"
-                style={inp()}
-                onFocus={e => e.target.style.borderColor = C.green}
-                onBlur={e => e.target.style.borderColor = C.border}
-                onKeyDown={e => e.key === "Enter" && handleSubmit()}
-              />
-            </div>
+      {/* RIGHT — form */}
+      <div className="ar af" style={{width:"50%",display:"flex",alignItems:"center",justifyContent:"center",padding:"40px 24px",background:G.bg}}>
+        <div style={{width:"min(380px,100%)"}}>
 
+          {/* Title */}
+          <div style={{marginBottom:28}}>
+            <h1 style={{fontSize:26,fontWeight:800,fontFamily:"'Syne',sans-serif",color:G.text,margin:"0 0 6px",letterSpacing:"-0.02em"}}>
+              {mode === "login" ? "Bon retour." : mode === "signup" ? "Commence ici." : "Mot de passe oublié"}
+            </h1>
+            <p style={{fontSize:12,color:G.dim,fontFamily:"'DM Mono',monospace",margin:0}}>
+              {mode === "login" ? "Content de te revoir sur Log-pip." : mode === "signup" ? "Analyse ton trading. Améliore ta discipline." : "On t'envoie un lien de réinitialisation."}
+            </p>
+          </div>
+
+          {/* Card */}
+          <div style={{background:G.card,border:`1px solid ${G.border}`,borderRadius:18,padding:26}}>
+
+            {/* Google */}
             {mode !== "forgot" && (
-              <div>
-                <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase" }}>Mot de passe</label>
-                <div style={{ position: "relative" }}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    autoComplete={mode === "login" ? "current-password" : "new-password"}
-                    style={{ ...inp(), paddingRight: 44 }}
-                    onFocus={e => e.target.style.borderColor = C.green}
-                    onBlur={e => e.target.style.borderColor = C.border}
-                    onKeyDown={e => e.key === "Enter" && handleSubmit()}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(s => !s)}
-                    style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 13, padding: 2 }}
-                    title={showPassword ? "Masquer" : "Afficher"}
-                  >
-                    {showPassword ? "○" : "●"}
-                  </button>
+              <>
+                <button onClick={async()=>{reset();setOauthLoading(true);const{error}=await onSignInWithGoogle();if(error){setError(error);setOauthLoading(false);}}}
+                  disabled={oauthLoading}
+                  style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:10,padding:"11px 16px",borderRadius:10,border:`1px solid ${G.border}`,background:G.inner,color:G.text,cursor:oauthLoading?"not-allowed":"pointer",fontSize:13,fontFamily:"'DM Sans',sans-serif",fontWeight:500,transition:"all 0.15s",opacity:oauthLoading?0.5:1}}
+                  onMouseEnter={e=>{if(!oauthLoading){e.currentTarget.style.borderColor=G.borderHov;e.currentTarget.style.background=G.bg;}}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor=G.border;e.currentTarget.style.background=G.inner;}}>
+                  <GoogleIcon/><span>Continuer avec Google</span>
+                </button>
+                <div style={{display:"flex",alignItems:"center",gap:12,margin:"18px 0"}}>
+                  <div style={{flex:1,height:1,background:G.border}}/>
+                  <span style={{fontSize:10,color:G.dim,fontFamily:"'DM Mono',monospace",letterSpacing:"0.1em"}}>ou avec un email</span>
+                  <div style={{flex:1,height:1,background:G.border}}/>
                 </div>
+              </>
+            )}
+
+            {/* Fields */}
+            <div style={{display:"flex",flexDirection:"column",gap:13}}>
+              <div>
+                <label style={{fontSize:9,color:G.dim,display:"block",marginBottom:5,fontFamily:"'DM Mono',monospace",letterSpacing:"0.14em",textTransform:"uppercase"}}>Email</label>
+                <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="ton@email.com" autoComplete="email" style={inp} onKeyDown={e=>e.key==="Enter"&&handleSubmit()}/>
+              </div>
+              {mode !== "forgot" && (
+                <div>
+                  <label style={{fontSize:9,color:G.dim,display:"block",marginBottom:5,fontFamily:"'DM Mono',monospace",letterSpacing:"0.14em",textTransform:"uppercase"}}>Mot de passe</label>
+                  <div style={{position:"relative"}}>
+                    <input type={showPwd?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode==="login"?"current-password":"new-password"} style={{...inp,paddingRight:44}} onKeyDown={e=>e.key==="Enter"&&handleSubmit()}/>
+                    <button type="button" onClick={()=>setShowPwd(s=>!s)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:G.dim,cursor:"pointer",fontSize:13,padding:2}}>{showPwd?"○":"●"}</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Remember + forgot */}
+            {mode === "login" && (
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:12}}>
+                <label style={{display:"flex",alignItems:"center",gap:7,cursor:"pointer"}}>
+                  <div onClick={()=>setRememberMe(r=>!r)} style={{width:16,height:16,borderRadius:4,border:`1.5px solid ${rememberMe?G.green:G.border}`,background:rememberMe?G.greenDim:"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all 0.15s"}}>
+                    {rememberMe&&<span style={{fontSize:9,color:G.green}}>✓</span>}
+                  </div>
+                  <span style={{fontSize:11,color:G.dim,fontFamily:"'DM Mono',monospace"}}>Se souvenir</span>
+                </label>
+                <button onClick={()=>{setMode("forgot");reset();}} style={{background:"none",border:"none",color:G.dim,cursor:"pointer",fontSize:11,fontFamily:"'DM Mono',monospace",padding:0,transition:"color 0.15s"}}
+                  onMouseEnter={e=>e.currentTarget.style.color=G.mid} onMouseLeave={e=>e.currentTarget.style.color=G.dim}>
+                  Oublié ?
+                </button>
               </div>
             )}
-          </div>
 
-          {/* Remember me + forgot password */}
-          {mode === "login" && (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
-              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                <div
-                  onClick={() => setRememberMe(r => !r)}
-                  style={{
-                    width: 18, height: 18, borderRadius: 5, border: `1.5px solid ${rememberMe ? C.green : C.border}`,
-                    background: rememberMe ? C.greenDim : "transparent",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    cursor: "pointer", transition: "all 0.15s", flexShrink: 0,
-                  }}
-                >
-                  {rememberMe && <span style={{ fontSize: 11, color: C.green, lineHeight: 1 }}>✓</span>}
-                </div>
-                <span style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono, userSelect: "none" }}>Se souvenir de moi</span>
-              </label>
-              <button
-                onClick={() => { setMode("forgot"); reset(); }}
-                style={{ background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 12, fontFamily: F.mono, padding: 0 }}
-              >
-                Mot de passe oublié ?
-              </button>
-            </div>
-          )}
+            {error&&<div style={{marginTop:13,background:"rgba(240,71,112,0.08)",border:"1px solid rgba(240,71,112,0.22)",padding:"9px 13px",borderRadius:8,color:G.red,fontSize:12,fontFamily:"'DM Mono',monospace"}}>{error}</div>}
+            {success&&<div style={{marginTop:13,background:G.greenDim,border:`1px solid ${G.greenBord}`,padding:"9px 13px",borderRadius:8,color:G.green,fontSize:12,fontFamily:"'DM Mono',monospace"}}>{success}</div>}
 
-          {/* Feedback messages */}
-          {error && (
-            <div style={{ marginTop: 14, background: C.redDim, border: `1px solid ${C.redBord}`, padding: "10px 14px", borderRadius: 9, color: C.red, fontSize: 12, fontFamily: F.mono, lineHeight: 1.5 }}>
-              {error}
-            </div>
-          )}
-          {success && (
-            <div style={{ marginTop: 14, background: C.greenDim, border: `1px solid ${C.greenBord}`, padding: "10px 14px", borderRadius: 9, color: C.green, fontSize: 12, fontFamily: F.mono, lineHeight: 1.5 }}>
-              {success}
-            </div>
-          )}
-
-          {/* Submit button */}
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            style={{
-              marginTop: 18, width: "100%", padding: "13px",
-              borderRadius: 10, border: "none",
-              background: loading ? C.bgInner : C.green,
-              color: loading ? C.textDim : "#000",
-              cursor: loading ? "not-allowed" : "pointer",
-              fontSize: 12, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.1em",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={e => { if (!loading) e.currentTarget.style.opacity = "0.88"; }}
-            onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-          >
-            {loading ? "..." : mode === "login" ? "SE CONNECTER" : mode === "signup" ? "CRÉER LE COMPTE" : "ENVOYER LE LIEN"}
-          </button>
-
-          {/* Back from forgot */}
-          {mode === "forgot" && (
-            <button
-              onClick={() => { setMode("login"); reset(); }}
-              style={{ marginTop: 12, width: "100%", padding: "10px", borderRadius: 9, border: `1px solid ${C.border}`, background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 12, fontFamily: F.mono }}
-            >
-              ← RETOUR
+            {/* Submit */}
+            <button onClick={handleSubmit} disabled={loading} style={{marginTop:17,width:"100%",padding:"12px",borderRadius:10,border:"none",background:loading?G.inner:G.green,color:loading?G.dim:"#051F20",cursor:loading?"not-allowed":"pointer",fontSize:12,fontWeight:700,fontFamily:"'DM Mono',monospace",letterSpacing:"0.1em",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}
+              onMouseEnter={e=>{if(!loading){e.currentTarget.style.opacity="0.85";e.currentTarget.style.transform="translateY(-1px)";}}}
+              onMouseLeave={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.transform="none";}}>
+              {loading&&<div style={{width:12,height:12,border:"2px solid rgba(5,31,32,0.2)",borderTop:"2px solid #051F20",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+              {loading?"...":`${mode==="login"?"SE CONNECTER":mode==="signup"?"CRÉER LE COMPTE":"ENVOYER LE LIEN"} →`}
             </button>
-          )}
-        </div>
 
-        {/* Switch mode */}
-        {mode !== "forgot" && (
-          <div style={{ marginTop: 20, textAlign: "center", fontSize: 13, color: C.textDim, fontFamily: F.mono }}>
-            {mode === "login" ? (
-              <>
-                Pas encore de compte ?{" "}
-                <button onClick={() => { setMode("signup"); reset(); }} style={{ background: "none", border: "none", color: C.green, cursor: "pointer", fontSize: 13, fontFamily: F.mono, textDecoration: "underline", padding: 0 }}>
-                  Créer un compte
-                </button>
-              </>
-            ) : (
-              <>
-                Déjà un compte ?{" "}
-                <button onClick={() => { setMode("login"); reset(); }} style={{ background: "none", border: "none", color: C.green, cursor: "pointer", fontSize: 13, fontFamily: F.mono, textDecoration: "underline", padding: 0 }}>
-                  Se connecter
-                </button>
-              </>
-            )}
+            {mode==="forgot"&&<button onClick={()=>{setMode("login");reset();}} style={{marginTop:10,width:"100%",padding:"9px",borderRadius:9,border:`1px solid ${G.border}`,background:"transparent",color:G.dim,cursor:"pointer",fontSize:11,fontFamily:"'DM Mono',monospace"}}>← RETOUR</button>}
           </div>
-        )}
 
-        {/* Legal */}
-        <div style={{ marginTop: 20, textAlign: "center", fontSize: 10, color: C.textGhost, fontFamily: F.mono, lineHeight: 1.6 }}>
-          En continuant, tu acceptes nos conditions d'utilisation.
+          {/* Switch */}
+          {mode!=="forgot"&&(
+            <div style={{marginTop:18,textAlign:"center",fontSize:12,color:G.dim,fontFamily:"'DM Mono',monospace"}}>
+              {mode==="login"?<>Pas de compte ?{" "}<button onClick={()=>{setMode("signup");reset();}} style={{background:"none",border:"none",color:G.green,cursor:"pointer",fontSize:12,fontFamily:"'DM Mono',monospace",textDecoration:"underline",padding:0}}>Créer un compte</button></>:<>Déjà un compte ?{" "}<button onClick={()=>{setMode("login");reset();}} style={{background:"none",border:"none",color:G.green,cursor:"pointer",fontSize:12,fontFamily:"'DM Mono',monospace",textDecoration:"underline",padding:0}}>Se connecter</button></>}
+            </div>
+          )}
+          <div style={{marginTop:18,textAlign:"center",fontSize:10,color:G.ghost,fontFamily:"'DM Mono',monospace"}}>En continuant, tu acceptes nos conditions d'utilisation.</div>
         </div>
       </div>
     </div>

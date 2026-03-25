@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { supabase } from "../lib/supabase";
+import { authFetch } from "../lib/auth";
 
 const mono = "'DM Mono', monospace";
 
@@ -38,17 +38,14 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
   const transcribe = async (blob) => {
     setTranscribing(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
       const formData = new FormData();
       formData.append("audio", blob, "audio.webm");
-
-      const res = await fetch("/api/voice-note", {
+      const res = await authFetch("/api/voice-note", {
         method: "POST",
-        headers: { "Authorization": `Bearer ${session.access_token}` },
         body: formData,
       });
 
-      const data = await res.json();
+      const data = res;
       if (data.error) { setError(data.error); return; }
 
       const newNote = note ? `${note} ${data.text}` : data.text;

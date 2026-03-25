@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
+import { CooldownModal, useCooldown } from "./components/CooldownModal";
 import { useTrades } from "./hooks/useTrades";
 import { useTasks } from "./hooks/useTasks";
 import { useAuth } from "./hooks/useAuth";
@@ -128,6 +129,7 @@ export default function App() {
   };
 
   const handleAddTrade = async (form) => {
+    if (cooldownActive) { setShowCooldown(true); return { error: null }; }
     if (trades.length >= PLANS[plan].maxTrades) { setShowUpgrade(true); return { error: null }; }
     return addTrade({ ...form, accountId: activeAccount.id });
   };
@@ -135,6 +137,13 @@ export default function App() {
   const accountTrades = orderedTrades.filter(t => !t.accountId || t.accountId === activeAccount.id);
   const isPro = plan === "pro";
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
+  const { active: cooldownActive, until: cooldownUntil, clear: clearCooldown } = useCooldown(orderedTrades);
+  const [showCooldown, setShowCooldown] = useState(false);
+
+  // Show cooldown modal when triggered
+  useEffect(() => {
+    if (cooldownActive) setShowCooldown(true);
+  }, [cooldownActive]);
 
   const profileMatch = window.location.pathname.match(/^\/p\/([\w-]+)$/);
   if (profileMatch) return <PublicProfile username={profileMatch[1]} />;
@@ -149,20 +158,52 @@ export default function App() {
     <div key={themeVersion} style={{ background: C.bg, minHeight: "100dvh", color: C.text, fontFamily: F.sans, display: "flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
-        * { box-sizing: border-box; } input, textarea, select { outline: none; }
+        *, *::before, *::after { box-sizing: border-box; }
+        input, textarea, select { outline: none; }
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
-        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 4px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-        .fade-in { animation: fadeIn 0.22s ease forwards; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-        .pulse { animation: pulse 1.6s ease infinite; }
+        ::-webkit-scrollbar-thumb:hover { background: ${C.borderHov}; }
         button { font-family: inherit; }
+
+        @keyframes fadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @keyframes fadeUp  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pulse   { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+        @keyframes spin    { to { transform: rotate(360deg); } }
+
+        .fade-in  { animation: fadeIn  0.2s ease forwards; }
+        .fade-up  { animation: fadeUp  0.25s ease forwards; }
+        .slide-in { animation: slideIn 0.2s ease forwards; }
+        .scale-in { animation: scaleIn 0.18s ease forwards; }
+        .pulse    { animation: pulse  1.6s ease infinite; }
+
+        .tab-content { animation: fadeIn 0.18s ease forwards; }
+
+        /* Smooth interactive transitions */
+        button, a, input, textarea, select { transition: border-color 0.15s, background 0.15s, color 0.15s, opacity 0.15s, box-shadow 0.15s; }
+
+        /* Input focus glow */
+        input:focus, textarea:focus, select:focus {
+          border-color: ${C.green} !important;
+          box-shadow: 0 0 0 3px ${C.greenDim};
+        }
+
+        /* Better modal backdrop */
+        .modal-backdrop {
+          animation: fadeIn 0.15s ease forwards;
+        }
+        .modal-content {
+          animation: scaleIn 0.18s ease forwards;
+        }
       `}</style>
 
       {showOnboarding && <InteractiveOnboarding onDone={() => { localStorage.setItem("tj_onboarding_done", "1"); setShowOnboarding(false); }} />}
       {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} reason={`Limite de ${PLANS.free.maxTrades} trades atteinte`} />}
       {showKeyHelp && <KeyboardHelp onClose={() => setShowKeyHelp(false)} />}
+      {showCooldown && cooldownActive && <CooldownModal until={cooldownUntil} onClose={() => { setShowCooldown(false); }} />}
       <QuickTrade onAdd={handleAddTrade} pairs={pairs} />
       {showSplit && <SplitScreen onClose={() => setShowSplit(false)} />}
       {showFocus && <FocusMode trades={orderedTrades} stats={stats} onExit={() => setShowFocus(false)} />}
@@ -228,6 +269,7 @@ export default function App() {
 
         {/* Content */}
         <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "16px 16px 40px" : "20px 28px 48px" }}>
+          <div key={tab} className="tab-content">
           {tab === "dashboard" && <Dashboard stats={stats} equity={equity} regime={regime} mc={mc} orderedTrades={accountTrades} isPro={isPro} onUpgrade={() => setShowUpgrade(true)} />}
           {tab === "trades" && <TradesTab trades={[...accountTrades].reverse()} pairs={pairs} onAdd={handleAddTrade} onSave={saveTrade} onDelete={deleteTrade} emptyForm={EMPTY_FORM} isPro={isPro} />}
           {tab === "stats" && <StatsTab trades={accountTrades} plan={plan} onUpgrade={() => setShowUpgrade(true)} />}
@@ -240,6 +282,7 @@ export default function App() {
           {tab === "patterns" && <PatternAnalysis isPro={isPro} onUpgrade={() => setShowUpgrade(true)} />}
           {tab === "community" && <TradingGroups userId={user.id} trades={accountTrades} stats={stats} equity={equity} />}
           {tab === "settings" && <SettingsTab trades={trades} tasks={tasks} onImport={handleImport} onReset={async () => { await importTrades({ trades: [], tasks: [] }); await replaceTasks([]); }} isPro={isPro} onUpgrade={() => setShowUpgrade(true)} onManagePlan={redirectToPortal} />}
+          </div>
         </div>
       </div>
     </div>
@@ -248,11 +291,14 @@ export default function App() {
 
 const Loader = () => (
   <div style={{ background: C.bg, minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-    <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&display=swap');`}</style>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-      <div style={{ width: 32, height: 32, border: "2px solid #141828", borderTop: "2px solid #00e5a0", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      <div style={{ fontSize: 11, color: "#1e2438", fontFamily: "'DM Mono', monospace", letterSpacing: "0.12em" }}>CHARGEMENT...</div>
+    <style>{`
+      @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&display=swap');
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes fadeLoader { from { opacity: 0; } to { opacity: 1; } }
+    `}</style>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, animation: "fadeLoader 0.3s ease forwards" }}>
+      <div style={{ width: 36, height: 36, border: "2px solid #1c2040", borderTop: "2px solid #22d49f", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+      <div style={{ fontSize: 10, color: "#2a3058", fontFamily: "'DM Mono', monospace", letterSpacing: "0.18em" }}>CHARGEMENT</div>
     </div>
   </div>
 );

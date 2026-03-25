@@ -20,8 +20,12 @@ export const APIKeyManager = ({ isPro, onUpgrade }) => {
   const generateKey = () => {
     if (!isPro) { onUpgrade(); return; }
     if (!newKeyName.trim()) return;
-    const key = `tjk_${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`;
-    const newKey = { id: Date.now(), name: newKeyName, key, createdAt: new Date().toISOString(), active: true };
+    const bytes = crypto.getRandomValues(new Uint8Array(24));
+    const rand = Array.from(bytes).map(b => b.toString(16).padStart(2, "0")).join("");
+    const key = `tjk_${rand}`;
+    const idBytes = crypto.getRandomValues(new Uint8Array(8));
+    const id = Array.from(idBytes).map(b => b.toString(16).padStart(2, "0")).join("");
+    const newKey = { id, name: newKeyName, key, createdAt: new Date().toISOString(), active: true };
     const next = [...keys, newKey];
     setKeys(next);
     localStorage.setItem("tj_api_keys", JSON.stringify(next));

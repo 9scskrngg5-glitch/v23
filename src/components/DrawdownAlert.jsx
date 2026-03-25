@@ -1,56 +1,66 @@
 import { useMemo } from "react";
+import { C, F } from "../lib/design";
 
-/**
- * Shows an alert if daily drawdown exceeds the limit
- */
 export const DrawdownAlert = ({ trades, limitPct = 3, accountSize = 10000 }) => {
-  const todayPnL = useMemo(() => {
+  const { todayPnL, consecLosses } = useMemo(() => {
     const today = new Date();
-    const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
-    return trades
-      .filter(t => {
-        if (t.result === "") return false;
-        const d = new Date(t.createdAt ?? 0);
-        const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-        return ds === todayStr;
-      })
-      .reduce((acc, t) => acc + Number(t.result), 0);
+    const todayStr = today.toDateString();
+    const todayTrades = trades.filter(t => {
+      if (t.result === "") return false;
+      return new Date(t.createdAt ?? 0).toDateString() === todayStr;
+    });
+    const pnl = todayTrades.reduce((acc, t) => acc + Number(t.result), 0);
+
+    // Count consecutive losses from latest
+    const closed = trades.filter(t => t.result !== "").slice(-10);
+    let consec = 0;
+    for (let i = closed.length - 1; i >= 0; i--) {
+      if (Number(closed[i].result) < 0) consec++;
+      else break;
+    }
+    return { todayPnL: pnl, consecLosses: consec };
   }, [trades]);
 
   const limitAmount = (accountSize * limitPct) / 100;
   const exceeded = todayPnL < -limitAmount;
   const warning = todayPnL < -(limitAmount * 0.7) && !exceeded;
+  const tilt = consecLosses >= 3;
 
-  if (todayPnL >= 0 || (!exceeded && !warning)) return null;
+  if (todayPnL >= 0 && !tilt) return null;
+  if (todayPnL < 0 && !exceeded && !warning && !tilt) return null;
+
+  const level = exceeded ? "danger" : tilt ? "tilt" : "warning";
+  const bg = level === "danger" ? C.redDim : level === "tilt" ? "rgba(139,108,255,0.08)" : "rgba(245,166,35,0.07)";
+  const borderColor = level === "danger" ? C.redBord : level === "tilt" ? "rgba(139,108,255,0.25)" : "rgba(245,166,35,0.25)";
+  const textColor = level === "danger" ? C.red : level === "tilt" ? C.purple : C.orange;
+
+  const title = level === "danger"
+    ? "LIMITE DE DRAWDOWN ATTEINTE"
+    : level === "tilt"
+    ? `TILT PROBABLE — ${consecLosses} PERTES D\'AFFILÉE`
+    : "ATTENTION — DRAWDOWN ÉLEVÉ";
+
+  const msg = level === "danger"
+    ? "Arrête de trader pour aujourd\'hui. Protège ton capital."
+    : level === "tilt"
+    ? "Prends une pause avant le prochain trade. Les revenge trades détruisent les comptes."
+    : `PnL aujourd\'hui : ${todayPnL.toFixed(2)}$ — Limite à ${(-limitAmount).toFixed(0)}$.`;
 
   return (
     <div style={{
-      background: exceeded ? "rgba(255,77,109,0.08)" : "rgba(245,166,35,0.07)",
-      border: `1px solid ${exceeded ? "rgba(255,77,109,0.25)" : "rgba(245,166,35,0.25)"}`,
+      background: bg, border: `1px solid ${borderColor}`,
       borderRadius: 12, padding: "14px 18px", marginBottom: 16,
-      display: "flex", alignItems: "center", justifyContent: "space-between",
-      gap: 12,
+      display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+      animation: "fadeIn 0.2s ease forwards",
     }}>
       <div>
-        <div style={{
-          fontSize: 11, fontWeight: 700, fontFamily: "'DM Mono', monospace",
-          letterSpacing: "0.08em",
-          color: exceeded ? "#ff4d6d" : "#f5a623",
-          marginBottom: 4,
-        }}>
-          {exceeded ? "LIMITE DE DRAWDOWN ATTEINTE" : "ATTENTION — DRAWDOWN ÉLEVÉ"}
+        <div style={{ fontSize: 11, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.08em", color: textColor, marginBottom: 4 }}>
+          {title}
         </div>
-        <div style={{ fontSize: 12, color: "#4a5070", fontFamily: "'DM Mono', monospace" }}>
-          PnL aujourd'hui : <span style={{ color: "#ff4d6d", fontWeight: 700 }}>{todayPnL.toFixed(2)}$</span>
-          {exceeded && " — Arrête de trader pour aujourd'hui."}
-          {warning && ` — Limite à ${(-limitAmount).toFixed(0)}$.`}
-        </div>
+        <div style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono, lineHeight: 1.5 }}>{msg}</div>
       </div>
-      <div style={{
-        fontSize: 22, fontWeight: 800, fontFamily: "'DM Mono', monospace",
-        color: exceeded ? "#ff4d6d" : "#f5a623", whiteSpace: "nowrap",
-      }}>
-        {((todayPnL / accountSize) * 100).toFixed(1)}%
+      <div style={{ fontSize: 20, fontWeight: 800, fontFamily: F.mono, color: textColor, whiteSpace: "nowrap" }}>
+        {level === "tilt" ? `${consecLosses}×` : `${((todayPnL / accountSize) * 100).toFixed(1)}%`}
       </div>
     </div>
   );

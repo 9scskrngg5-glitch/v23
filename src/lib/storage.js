@@ -17,7 +17,10 @@ const getUser = async () => {
 export const uploadScreenshot = async (tradeId, file) => {
   const user = await getUser();
   if (!user) return null;
-  const path = `${user.id}/${tradeId}.${file.name.split(".").pop()}`;
+  const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
+  const ext = file.name.split(".").pop().toLowerCase();
+  if (!ALLOWED_EXTENSIONS.includes(ext)) return null;
+  const path = `${user.id}/${tradeId}.${ext}`;
   const { error } = await supabase.storage.from("screenshots").upload(path, file, { upsert: true });
   if (error) return null;
   const { data } = supabase.storage.from("screenshots").getPublicUrl(path);

@@ -10,7 +10,7 @@ export const PublicProfile = ({ username }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`/api/public-profile?username=${username}`)
+    fetch(`/api/public-profile?username=${encodeURIComponent(username)}`)
       .then(r => r.json())
       .then(d => { if (d.error) setError(d.error); else setData(d); })
       .catch(e => setError(e.message))
