@@ -1,5 +1,5 @@
-import {
 import { C, F } from "../lib/design";
+import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   CartesianGrid, ResponsiveContainer, Cell, ReferenceLine,
 } from "recharts";
