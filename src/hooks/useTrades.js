@@ -6,60 +6,47 @@ import { uid } from "../lib/trading";
 const EMPTY_FORM = {
   pair: "BTC/USD",
   session: "New York",
-  entry: "",
-  sl: "",
-  tp: "",
-  result: "",
-  rr: "",
-  emotion: "",
-  setup: "",
-  confidence: "",
+  entry: "", sl: "", tp: "", result: "", rr: "",
+  emotion: "", setup: "", confidence: "",
 };
 
-/**
- * Central hook — owns all trade state and exposes clean actions
- */
 export const useTrades = (user) => {
   const [trades, setTrades] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Hydrate from storage — re-runs when user changes (login/logout)
+  // Reload when user changes — pass user directly to avoid internal getUser() call
   useEffect(() => {
-    // Reset when user changes
     setLoaded(false);
     setTrades([]);
-
     (async () => {
-      const stored = await storageGet(STORAGE_KEYS.trades);
-      const now = Date.now();
-      const normalized = Array.isArray(stored)
-        ? stored.map((tr, idx) => ({
-            ...tr,
-            createdAt:
-              typeof tr?.createdAt === "number" ? tr.createdAt : now - idx * 1000,
-          }))
-        : [];
-      setTrades(normalized);
-      setLoaded(true);
+      try {
+        const stored = await storageGet(STORAGE_KEYS.trades, user ?? null);
+        const now = Date.now();
+        const normalized = Array.isArray(stored)
+          ? stored.map((tr, idx) => ({
+              ...tr,
+              createdAt: typeof tr?.createdAt === "number" ? tr.createdAt : now - idx * 1000,
+            }))
+          : [];
+        setTrades(normalized);
+      } catch {
+        setTrades([]);
+      } finally {
+        setLoaded(true);
+      }
     })();
-  }, [user?.id]); // Re-run when user ID changes
+  }, [user?.id]);
 
   const persist = async (next) => {
     setTrades(next);
-    await storageSet(STORAGE_KEYS.trades, next);
+    await storageSet(STORAGE_KEYS.trades, next, user ?? null);
   };
 
-  // Sorted ascending (for stats/equity)
   const orderedTrades = useMemo(
     () => [...trades].sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0)),
     [trades]
   );
-
-  const orderedTradesDesc = useMemo(
-    () => [...orderedTrades].reverse(),
-    [orderedTrades]
-  );
-
+  const orderedTradesDesc = useMemo(() => [...orderedTrades].reverse(), [orderedTrades]);
   const equity = useMemo(() => buildEquity(orderedTrades), [orderedTrades]);
   const stats = useMemo(() => computeStats(orderedTrades), [orderedTrades]);
   const regime = useMemo(() => detectRegime(orderedTrades), [orderedTrades]);
@@ -69,11 +56,6 @@ export const useTrades = (user) => {
     [orderedTrades]
   );
 
-  /**
-   * Add a new trade from form values
-   * @param {typeof EMPTY_FORM} form
-   * @returns {{ error: string|null }}
-   */
   const addTrade = async (form) => {
     const entry = Number(form.entry);
     const sl = Number(form.sl);

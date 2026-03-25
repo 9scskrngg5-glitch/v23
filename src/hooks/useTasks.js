@@ -2,25 +2,25 @@ import { useState, useEffect } from "react";
 import { storageGet, storageSet, STORAGE_KEYS } from "../lib/storage";
 import { uid } from "../lib/trading";
 
-/**
- * Hook managing task state and persistence
- */
 export const useTasks = (user) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const stored = await storageGet(STORAGE_KEYS.tasks);
-      setTasks(Array.isArray(stored) ? stored : []);
+      try {
+        const stored = await storageGet(STORAGE_KEYS.tasks, user ?? null);
+        setTasks(Array.isArray(stored) ? stored : []);
+      } catch {
+        setTasks([]);
+      }
     })();
-  }, [user?.id]); // Re-run when user changes
+  }, [user?.id]);
 
   const persist = async (next) => {
     setTasks(next);
-    await storageSet(STORAGE_KEYS.tasks, next);
+    await storageSet(STORAGE_KEYS.tasks, next, user ?? null);
   };
 
-  /** @param {string} text */
   const addTask = async (text) => {
     if (!text.trim()) return;
     await persist([...tasks, { id: uid(), text, done: false }]);

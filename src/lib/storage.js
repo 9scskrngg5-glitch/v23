@@ -8,14 +8,8 @@ export const STORAGE_KEYS = {
 const lsGet = (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
 const lsSet = (key, val) => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} };
 
-const getUser = async () => {
-  const { data } = await supabase.auth.getUser();
-  return data?.user ?? null;
-};
-
 // Upload screenshot to Supabase Storage
-export const uploadScreenshot = async (tradeId, file) => {
-  const user = await getUser();
+export const uploadScreenshot = async (tradeId, file, user) => {
   if (!user) return null;
   const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
   const ext = file.name.split(".").pop().toLowerCase();
@@ -27,69 +21,74 @@ export const uploadScreenshot = async (tradeId, file) => {
   return data.publicUrl;
 };
 
-export const deleteScreenshot = async (tradeId) => {
-  const user = await getUser();
+export const deleteScreenshot = async (tradeId, user) => {
   if (!user) return;
-  // Try common extensions
   for (const ext of ["jpg", "jpeg", "png", "webp", "gif"]) {
     await supabase.storage.from("screenshots").remove([`${user.id}/${tradeId}.${ext}`]);
   }
 };
 
-export const storageGet = async (key) => {
-  const user = await getUser();
+// user is passed directly — no internal getUser() call that could hang
+export const storageGet = async (key, user) => {
   if (!user) return lsGet(key);
 
   const table = key === STORAGE_KEYS.trades ? "trades" : "tasks";
-  const { data, error } = await supabase
-    .from(table).select("*").eq("user_id", user.id)
-    .order("created_at", { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from(table).select("*").eq("user_id", user.id)
+      .order("created_at", { ascending: true });
 
-  if (error) return lsGet(key);
+    if (error) return lsGet(key);
 
-  if (table === "trades") {
-    return data.map((row) => ({
-      id: row.id, createdAt: new Date(row.created_at).getTime(),
-      pair: row.pair, session: row.session, entry: row.entry,
-      sl: row.sl, tp: row.tp, result: row.result ?? "",
-      rr: row.rr, emotion: row.emotion ?? "", setup: row.setup ?? "",
-      confidence: row.confidence ?? "", flags: row.flags ?? [],
-      screenshotUrl: row.screenshot_url ?? null,
-    }));
-  } else {
-    return data.map((row) => ({
-      id: row.id, createdAt: new Date(row.created_at).getTime(),
-      text: row.text, done: row.done,
-    }));
+    if (table === "trades") {
+      return data.map((row) => ({
+        id: row.id, createdAt: new Date(row.created_at).getTime(),
+        pair: row.pair, session: row.session, entry: row.entry,
+        sl: row.sl, tp: row.tp, result: row.result ?? "",
+        rr: row.rr, emotion: row.emotion ?? "", setup: row.setup ?? "",
+        confidence: row.confidence ?? "", flags: row.flags ?? [],
+        screenshotUrl: row.screenshot_url ?? null,
+      }));
+    } else {
+      return data.map((row) => ({
+        id: row.id, createdAt: new Date(row.created_at).getTime(),
+        text: row.text, done: row.done,
+      }));
+    }
+  } catch {
+    return lsGet(key);
   }
 };
 
-export const storageSet = async (key, val) => {
-  const user = await getUser();
+export const storageSet = async (key, val, user) => {
   if (!user) { lsSet(key, val); return; }
   const table = key === STORAGE_KEYS.trades ? "trades" : "tasks";
-  await supabase.from(table).delete().eq("user_id", user.id);
-  if (!Array.isArray(val) || val.length === 0) return;
+  try {
+    await supabase.from(table).delete().eq("user_id", user.id);
+    if (!Array.isArray(val) || val.length === 0) return;
 
-  if (table === "trades") {
-    const rows = val.map((t) => ({
-      id: t.id, user_id: user.id,
-      created_at: new Date(t.createdAt).toISOString(),
-      pair: t.pair, session: t.session, entry: t.entry,
-      sl: t.sl, tp: t.tp,
-      result: t.result === "" ? null : t.result,
-      rr: t.rr, emotion: t.emotion || null, setup: t.setup || null,
-      confidence: t.confidence === "" ? null : t.confidence,
-      flags: t.flags ?? [],
-      screenshot_url: t.screenshotUrl ?? null,
-    }));
-    await supabase.from(table).upsert(rows);
-  } else {
-    const rows = val.map((t) => ({
-      id: t.id, user_id: user.id,
-      created_at: new Date(t.createdAt ?? Date.now()).toISOString(),
-      text: t.text, done: t.done,
-    }));
-    await supabase.from(table).upsert(rows);
+    if (table === "trades") {
+      const rows = val.map((t) => ({
+        id: t.id, user_id: user.id,
+        created_at: new Date(t.createdAt).toISOString(),
+        pair: t.pair, session: t.session, entry: t.entry,
+        sl: t.sl, tp: t.tp,
+        result: t.result === "" ? null : t.result,
+        rr: t.rr, emotion: t.emotion || null, setup: t.setup || null,
+        confidence: t.confidence === "" ? null : t.confidence,
+        flags: t.flags ?? [],
+        screenshot_url: t.screenshotUrl ?? null,
+      }));
+      await supabase.from(table).upsert(rows);
+    } else {
+      const rows = val.map((t) => ({
+        id: t.id, user_id: user.id,
+        created_at: new Date(t.createdAt ?? Date.now()).toISOString(),
+        text: t.text, done: t.done,
+      }));
+      await supabase.from(table).upsert(rows);
+    }
+  } catch {
+    lsSet(key, val);
   }
 };
