@@ -18,7 +18,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// Animated canvas — floating particles + grid
+// Deep futuristic pixel animation — rising pixel dust + light beam
 const AnimatedBg = () => {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -26,128 +26,127 @@ const AnimatedBg = () => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let raf;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
-    resize();
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; init(); };
     window.addEventListener("resize", resize);
 
-    // Particles
-    const pts = Array.from({length: 55}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 1.8 + 0.4,
-      alpha: Math.random() * 0.5 + 0.1,
-    }));
+    let pixels = [], beamX = 0, beamT = 0;
 
-    // Equity path progress
-    let progress = 0;
-    const eqPoints = [
-      [0.08, 0.72], [0.18, 0.65], [0.28, 0.58], [0.35, 0.62],
-      [0.44, 0.48], [0.52, 0.42], [0.60, 0.35], [0.68, 0.28],
-      [0.76, 0.22], [0.85, 0.18], [0.92, 0.12],
-    ];
+    const init = () => {
+      const W = canvas.width, H = canvas.height;
+      beamX = W * 0.5;
+      // Pixel dust particles — start at bottom, rise slowly
+      pixels = Array.from({ length: 180 }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,           // start scattered
+        baseY: Math.random() * H,
+        vy: -(Math.random() * 0.4 + 0.1), // rise speed
+        vx: (Math.random() - 0.5) * 0.15,
+        size: Math.random() < 0.7 ? 1 : Math.random() < 0.9 ? 2 : 3, // mostly 1px, some 2-3px
+        alpha: Math.random() * 0.7 + 0.1,
+        maxAlpha: Math.random() * 0.8 + 0.15,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: Math.random() * 0.04 + 0.01,
+        distBeam: Math.random() * W,    // distance from beam center
+      }));
+    };
+
+    resize();
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
 
-      // Grid
-      ctx.strokeStyle = "rgba(35,83,71,0.3)";
+      beamT += 0.008;
+      // Beam slowly drifts left-right
+      beamX = W * (0.35 + 0.15 * Math.sin(beamT * 0.7));
+
+      // ── Light beam (top-down cone) ──
+      const beamGrad = ctx.createRadialGradient(beamX, -H * 0.1, 0, beamX, H * 0.6, W * 0.55);
+      beamGrad.addColorStop(0, "rgba(218,241,222,0.07)");
+      beamGrad.addColorStop(0.3, "rgba(142,182,155,0.04)");
+      beamGrad.addColorStop(1, "rgba(5,31,32,0)");
+      ctx.fillStyle = beamGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Tight inner beam
+      const innerGrad = ctx.createLinearGradient(beamX - 30, 0, beamX + 30, 0);
+      innerGrad.addColorStop(0, "rgba(218,241,222,0)");
+      innerGrad.addColorStop(0.5, "rgba(218,241,222,0.06)");
+      innerGrad.addColorStop(1, "rgba(218,241,222,0)");
+      ctx.fillStyle = innerGrad;
+      ctx.beginPath();
+      ctx.moveTo(beamX - 8, 0);
+      ctx.lineTo(beamX + 8, 0);
+      ctx.lineTo(beamX + 120, H);
+      ctx.lineTo(beamX - 120, H);
+      ctx.closePath();
+      ctx.fill();
+
+      // ── Grid (very subtle) ──
+      ctx.strokeStyle = "rgba(35,83,71,0.18)";
       ctx.lineWidth = 0.5;
-      for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-      for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+      for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
-      // Particles + connections
-      pts.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(142,182,155,${p.alpha})`;
-        ctx.fill();
+      // ── Pixel dust ──
+      pixels.forEach(p => {
+        // Rise
+        p.y += p.vy;
+        p.x += p.vx;
+        // Reset when out of top
+        if (p.y < -10) {
+          p.y = H + 5;
+          p.x = Math.random() * W;
+        }
+        if (p.x < -5 || p.x > W + 5) p.vx *= -1;
+
+        // Twinkle
+        p.twinkle += p.twinkleSpeed;
+        const twinkleFactor = 0.5 + 0.5 * Math.sin(p.twinkle);
+
+        // Brightness boost near beam
+        const distToBeam = Math.abs(p.x - beamX);
+        const beamBoost = Math.max(0, 1 - distToBeam / 160) * 0.6;
+        const finalAlpha = Math.min(1, p.alpha * twinkleFactor + beamBoost * 0.4);
+
+        // Color: closer to beam = brighter/whiter
+        const t = Math.max(0, 1 - distToBeam / 200);
+        const r = Math.round(142 + (218 - 142) * t);
+        const g = Math.round(182 + (241 - 182) * t);
+        const b = Math.round(155 + (222 - 155) * t);
+
+        ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha})`;
+
+        if (p.size === 1) {
+          ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
+        } else if (p.size === 2) {
+          ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);
+          // subtle cross for larger pixels
+          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha * 0.4})`;
+          ctx.fillRect(Math.round(p.x) - 1, Math.round(p.y), 4, 1);
+          ctx.fillRect(Math.round(p.x), Math.round(p.y) - 1, 1, 4);
+        } else {
+          ctx.fillRect(Math.round(p.x), Math.round(p.y), 3, 3);
+          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha * 0.3})`;
+          ctx.fillRect(Math.round(p.x) - 1, Math.round(p.y) + 1, 5, 1);
+          ctx.fillRect(Math.round(p.x) + 1, Math.round(p.y) - 1, 1, 5);
+        }
       });
-      // Connections
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
-          const d = Math.sqrt(dx*dx + dy*dy);
-          if (d < 100) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(142,182,155,${0.08 * (1 - d/100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
 
-      // Animated equity curve
-      progress = Math.min(progress + 0.004, 1);
-      const totalPts = eqPoints.length;
-      const drawn = progress * (totalPts - 1);
-      const fullIdx = Math.floor(drawn);
-
-      if (fullIdx > 0) {
-        // Gradient fill
-        const grad = ctx.createLinearGradient(0, 0, 0, H);
-        grad.addColorStop(0, "rgba(142,182,155,0.18)");
-        grad.addColorStop(1, "rgba(142,182,155,0)");
-        ctx.beginPath();
-        ctx.moveTo(eqPoints[0][0]*W, eqPoints[0][1]*H);
-        for (let i = 1; i <= fullIdx; i++) {
-          ctx.lineTo(eqPoints[i][0]*W, eqPoints[i][1]*H);
-        }
-        if (fullIdx < totalPts - 1) {
-          const frac = drawn - fullIdx;
-          const nx = (eqPoints[fullIdx][0] + (eqPoints[fullIdx+1][0]-eqPoints[fullIdx][0])*frac)*W;
-          const ny = (eqPoints[fullIdx][1] + (eqPoints[fullIdx+1][1]-eqPoints[fullIdx][1])*frac)*H;
-          ctx.lineTo(nx, ny);
-          ctx.lineTo(nx, H*0.95);
-        } else {
-          ctx.lineTo(eqPoints[fullIdx][0]*W, H*0.95);
-        }
-        ctx.lineTo(eqPoints[0][0]*W, H*0.95);
-        ctx.closePath();
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Line
-        ctx.beginPath();
-        ctx.moveTo(eqPoints[0][0]*W, eqPoints[0][1]*H);
-        for (let i = 1; i <= fullIdx; i++) ctx.lineTo(eqPoints[i][0]*W, eqPoints[i][1]*H);
-        if (fullIdx < totalPts - 1) {
-          const frac = drawn - fullIdx;
-          const nx = (eqPoints[fullIdx][0] + (eqPoints[fullIdx+1][0]-eqPoints[fullIdx][0])*frac)*W;
-          const ny = (eqPoints[fullIdx][1] + (eqPoints[fullIdx+1][1]-eqPoints[fullIdx][1])*frac)*H;
-          ctx.lineTo(nx, ny);
-          // Animated dot
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(nx, ny, 4, 0, Math.PI*2);
-          ctx.fillStyle = "#DAF1DE";
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(nx, ny, 8, 0, Math.PI*2);
-          ctx.fillStyle = "rgba(142,182,155,0.25)";
-          ctx.fill();
-        } else {
-          ctx.stroke();
-        }
-        ctx.strokeStyle = "#8EB69B";
-        ctx.lineWidth = 2;
-        ctx.lineJoin = "round";
-        ctx.stroke();
-      }
+      // ── Bottom fog ──
+      const fogGrad = ctx.createLinearGradient(0, H * 0.75, 0, H);
+      fogGrad.addColorStop(0, "rgba(5,31,32,0)");
+      fogGrad.addColorStop(1, "rgba(5,31,32,0.6)");
+      ctx.fillStyle = fogGrad;
+      ctx.fillRect(0, H * 0.75, W, H * 0.25);
 
       raf = requestAnimationFrame(draw);
     };
+
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={canvasRef} style={{position:"absolute",inset:0,width:"100%",height:"100%"}}/>;
+  return <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />;
 };
 
 // Floating stat card
@@ -228,15 +227,56 @@ export const AuthScreen = ({ onSignIn, onSignUp, onSignInWithGoogle }) => {
         </div>
 
         {/* Floating stat cards */}
-        <StatFloat label="Win Rate" value="68.4%" top="22%" left="8%" delay="0s" />
-        <StatFloat label="PnL Total" value="+$2,840" color="#DAF1DE" top="22%" right="8%" delay="1.2s" />
-        <StatFloat label="Expectancy" value="+$47.2" top="62%" left="12%" delay="0.6s" />
-        <StatFloat label="Drawdown" value="-$340" color="#f04770" top="62%" right="10%" delay="1.8s" />
+        <StatFloat label="Win Rate" value="68.4%" top="18%" left="8%" delay="0s" />
+        <StatFloat label="PnL Total" value="+$2,840" color="#DAF1DE" top="18%" right="8%" delay="1.2s" />
+        <StatFloat label="Expectancy" value="+$47.2" top="42%" left="12%" delay="0.6s" />
+        <StatFloat label="Drawdown" value="-$340" color="#f04770" top="42%" right="10%" delay="1.8s" />
 
-        {/* Center text */}
-        <div style={{position:"absolute",bottom:48,left:0,right:0,zIndex:3,textAlign:"center",padding:"0 40px"}}>
-          <h2 style={{fontSize:22,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#DAF1DE",margin:"0 0 10px",letterSpacing:"-0.02em"}}>Ton edge. Visible.</h2>
-          <p style={{fontSize:12,color:"#4a7a68",fontFamily:"'DM Mono',monospace",lineHeight:1.7,margin:0}}>Journal de trading avec AI coaching,<br/>stats avancées et discipline tracker.</p>
+        {/* Bottom — title + 3 steps */}
+        <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:3,padding:"0 28px 32px"}}>
+          <div style={{marginBottom:20}}>
+            <h2 style={{fontSize:24,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#DAF1DE",margin:"0 0 6px",letterSpacing:"-0.02em",lineHeight:1.1}}>
+              Commence à trader<br/>avec discipline.
+            </h2>
+            <p style={{fontSize:11,color:"#4a7a68",fontFamily:"'DM Mono',monospace",lineHeight:1.6,margin:0}}>
+              3 étapes pour démarrer.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div style={{display:"flex",gap:8}}>
+            {[
+              {n:"1", title:"Crée ton compte", active:true},
+              {n:"2", title:"Ajoute tes trades", active:false},
+              {n:"3", title:"Analyse ton edge", active:false},
+            ].map((s) => (
+              <div key={s.n} style={{
+                flex:1, padding:"12px 12px 14px",
+                background: s.active ? "rgba(218,241,222,0.95)" : "rgba(22,56,50,0.7)",
+                border: s.active ? "none" : "1px solid rgba(35,83,71,0.6)",
+                borderRadius:12,
+                backdropFilter:"blur(8px)",
+                transition:"all 0.2s",
+              }}>
+                <div style={{
+                  width:20,height:20,borderRadius:"50%",
+                  background: s.active ? "#051F20" : "rgba(142,182,155,0.2)",
+                  border: s.active ? "none" : "1px solid rgba(142,182,155,0.3)",
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  fontSize:10,fontWeight:700,
+                  color: s.active ? "#DAF1DE" : "#4a7a68",
+                  fontFamily:"'DM Mono',monospace",
+                  marginBottom:10,
+                }}>{s.n}</div>
+                <div style={{
+                  fontSize:11,fontWeight:600,
+                  color: s.active ? "#051F20" : "#8EB69B",
+                  fontFamily:"'DM Sans',sans-serif",
+                  lineHeight:1.3,
+                }}>{s.title}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

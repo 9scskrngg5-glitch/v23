@@ -1,6 +1,16 @@
 import { C, applyThemeToC } from "./design";
 
 export const THEMES = {
+  forest: {
+    name: "Forest", desc: "Vert profond — élégance naturelle et premium",
+    bg: "#051F20", bgCard: "#0B2B26", bgInner: "#163832",
+    border: "#235347", borderHov: "#2e6b5e",
+    text: "#DAF1DE", textMid: "#8EB69B", textDim: "#4a7a68", textGhost: "#235347",
+    green: "#8EB69B", greenDim: "rgba(142,182,155,0.12)", greenBord: "rgba(142,182,155,0.25)",
+    red: "#f04770", redDim: "rgba(240,71,112,0.10)", redBord: "rgba(240,71,112,0.22)",
+    orange: "#f0c070", orangeDim: "rgba(240,192,112,0.10)", orangeBord: "rgba(240,192,112,0.22)",
+    purple: "#9bb8d4",
+  },
   dark: {
     name: "Dark", desc: "Le thème original — élégant et professionnel",
     bg: "#0b0e18", bgCard: "#0f1222", bgInner: "#131729",
@@ -51,16 +61,6 @@ export const THEMES = {
     orange: "#ffdd00", orangeDim: "rgba(255,221,0,0.10)", orangeBord: "rgba(255,221,0,0.20)",
     purple: "#66ff99",
   },
-  forest: {
-    name: "Forest", desc: "Vert profond — élégance naturelle et premium",
-    bg: "#051F20", bgCard: "#0B2B26", bgInner: "#163832",
-    border: "#235347", borderHov: "#2e6b5e",
-    text: "#DAF1DE", textMid: "#8EB69B", textDim: "#4a7a68", textGhost: "#235347",
-    green: "#8EB69B", greenDim: "rgba(142,182,155,0.12)", greenBord: "rgba(142,182,155,0.25)",
-    red: "#f04770", redDim: "rgba(240,71,112,0.10)", redBord: "rgba(240,71,112,0.22)",
-    orange: "#f0c070", orangeDim: "rgba(240,192,112,0.10)", orangeBord: "rgba(240,192,112,0.22)",
-    purple: "#9bb8d4",
-  },
 };
 
 export const getTheme = () => {
@@ -91,5 +91,5 @@ export const setTheme = (id) => {
 };
 
 if (typeof window !== "undefined") {
-  applyTheme(getTheme());
+  applyTheme(localStorage.getItem("tj_theme") || "forest");
 }

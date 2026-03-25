@@ -59,7 +59,7 @@ export default function App() {
   const [showCommand, setShowCommand] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
   const [showSplit, setShowSplit] = useState(false);
-  const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "dark");
+  const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "forest");
   const [themeVersion, setThemeVersion] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -81,7 +81,7 @@ export default function App() {
   useEffect(() => {
     const fn = () => {
       // Force full component tree re-render by updating key
-      setThemeId(localStorage.getItem("tj_theme") || "dark");
+      setThemeId(localStorage.getItem("tj_theme") || "forest");
       setThemeVersion(v => v + 1);
     };
     window.addEventListener("tj-theme-change", fn);

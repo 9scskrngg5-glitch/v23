@@ -42,6 +42,7 @@ export const ThemePicker = ({ currentThemeId, onThemeChange }) => {
               <div style={{ fontSize: 12, fontWeight: 700, color: theme.text, fontFamily: F.mono, marginBottom: 3 }}>{theme.name}</div>
               <div style={{ fontSize: 10, color: theme.textDim, fontFamily: F.mono, lineHeight: 1.4 }}>{theme.desc}</div>
               {isActive && <div style={{ marginTop: 8, fontSize: 9, color: theme.green, fontFamily: F.mono, letterSpacing: "0.1em" }}>ACTIF ✓</div>}
+              {!isActive && id === "forest" && <div style={{ marginTop: 8, fontSize: 9, color: theme.textDim, fontFamily: F.mono, letterSpacing: "0.1em" }}>DÉFAUT</div>}
             </button>
           );
         })}
