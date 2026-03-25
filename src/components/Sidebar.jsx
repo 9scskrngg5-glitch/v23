@@ -266,7 +266,7 @@ export const Sidebar = ({ tab, setTab, user, plan, stats, isPro, onUpgrade, onSi
       </div>
 
       {/* ── Bottom ── */}
-      <div style={{ padding: collapsed ? "8px 6px" : "8px 10px", borderTop: `1px solid ${C.border}` }}>
+      <div style={{ padding: collapsed ? "8px 6px" : "8px 10px", borderTop: `1px solid ${C.border}`, marginTop: "auto" }}>
         {/* Settings */}
         <button onClick={() => setTab("settings")} title={collapsed ? "Settings" : ""}
           style={{ width: "100%", display: "flex", alignItems: "center", gap: collapsed ? 0 : 10, justifyContent: collapsed ? "center" : "flex-start", padding: collapsed ? "9px 0" : "8px 12px", borderRadius: 8, border: "none", cursor: "pointer", background: tab === "settings" ? C.greenDim : "transparent", color: tab === "settings" ? C.green : C.textDim, fontFamily: F.sans, fontSize: 13, transition: "all 0.15s", marginBottom: 2, outline: "none" }}

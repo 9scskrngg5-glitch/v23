@@ -11,12 +11,12 @@ export const BadgesPanel = ({ trades, stats }) => {
   const earnedIds = new Set(earned.map(b => b.id));
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #0a0d18, #080a14)", border: "1px solid #13162a", borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
+    <div style={{ background: `linear-gradient(135deg, ${C.bgInner}, ${C.bg})`, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono }}>
+        <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono }}>
           Badges & Achievements
         </div>
-        <span style={{ fontSize: 11, color: "#00e5a0", fontFamily: mono }}>
+        <span style={{ fontSize: 11, color: C.green, fontFamily: mono }}>
           {earned.length} / {BADGES.length}
         </span>
       </div>
@@ -28,8 +28,8 @@ export const BadgesPanel = ({ trades, stats }) => {
             <div key={badge.id} title={`${badge.label} — ${badge.desc}`} style={{
               display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
               padding: "12px 8px", borderRadius: 10,
-              background: isEarned ? "rgba(255,255,255,0.03)" : "#080a14",
-              border: `1px solid ${isEarned ? badge.color + "30" : "#0e1120"}`,
+              background: isEarned ? "rgba(255,255,255,0.03)" : C.bgInner,
+              border: `1px solid ${isEarned ? badge.color + "30" : C.border}`,
               opacity: isEarned ? 1 : 0.35,
               transition: "all 0.2s", cursor: "default",
             }}
@@ -37,13 +37,13 @@ export const BadgesPanel = ({ trades, stats }) => {
               onMouseLeave={e => isEarned && (e.currentTarget.style.opacity = "1")}
             >
               <div style={{
-                fontSize: 20, color: isEarned ? badge.color : "#2d3352",
+                fontSize: 20, color: isEarned ? badge.color : C.textDim,
                 fontFamily: mono, lineHeight: 1,
               }}>
                 {badge.icon}
               </div>
               <div style={{
-                fontSize: 9, color: isEarned ? "#9099c0" : "#2d3352",
+                fontSize: 9, color: isEarned ? C.textMid : C.textDim,
                 fontFamily: mono, textAlign: "center", lineHeight: 1.3,
                 letterSpacing: "0.04em",
               }}>
@@ -55,7 +55,7 @@ export const BadgesPanel = ({ trades, stats }) => {
       </div>
 
       {earned.length === 0 && (
-        <div style={{ marginTop: 12, fontSize: 11, color: "#1e2235", fontFamily: mono }}>
+        <div style={{ marginTop: 12, fontSize: 11, color: C.textGhost, fontFamily: mono }}>
           Ajoute des trades pour débloquer tes premiers badges.
         </div>
       )}

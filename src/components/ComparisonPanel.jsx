@@ -5,13 +5,13 @@ const mono = "'DM Mono', monospace";
 const Delta = ({ label, current, prev, unit = "", invert = false }) => {
   const diff = Number(current) - Number(prev);
   const better = invert ? diff < 0 : diff > 0;
-  const color = diff === 0 ? "#3a4060" : better ? "#00e5a0" : "#ff4d6d";
+  const color = diff === 0 ? C.textDim : better ? C.green : C.red;
   const arrow = diff > 0 ? "↑" : diff < 0 ? "↓" : "=";
 
   return (
-    <div style={{ background: "#080a14", border: "1px solid #0e1120", borderRadius: 10, padding: "14px 16px" }}>
-      <div style={{ fontSize: 9, color: "#3a4060", fontFamily: mono, letterSpacing: "0.12em", marginBottom: 6 }}>{label.toUpperCase()}</div>
-      <div style={{ fontSize: 18, fontWeight: 700, color: "#dde1f5", fontFamily: mono, marginBottom: 4 }}>
+    <div style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 16px" }}>
+      <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.12em", marginBottom: 6 }}>{label.toUpperCase()}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: C.text, fontFamily: mono, marginBottom: 4 }}>
         {current}{unit}
       </div>
       <div style={{ fontSize: 11, color, fontFamily: mono }}>
@@ -49,21 +49,21 @@ export const ComparisonPanel = ({ trades }) => {
   const monthName = (d) => d.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
 
   if (!current && !prev) return (
-    <div style={{ background: "linear-gradient(135deg, #0a0d18, #080a14)", border: "1px solid #13162a", borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
-      <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.12em", fontFamily: mono, marginBottom: 12 }}>COMPARAISON MENSUELLE</div>
-      <div style={{ color: "#1e2235", fontSize: 12, fontFamily: mono }}>Pas assez de données sur deux mois.</div>
+    <div style={{ background: `linear-gradient(135deg, ${C.bgInner}, ${C.bg})`, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
+      <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", fontFamily: mono, marginBottom: 12 }}>COMPARAISON MENSUELLE</div>
+      <div style={{ color: C.textGhost, fontSize: 12, fontFamily: mono }}>Pas assez de données sur deux mois.</div>
     </div>
   );
 
   return (
-    <div style={{ background: "linear-gradient(135deg, #0a0d18, #080a14)", border: "1px solid #13162a", borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
+    <div style={{ background: `linear-gradient(135deg, ${C.bgInner}, ${C.bg})`, border: `1px solid ${C.border}`, borderRadius: 16, padding: "20px 18px", marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
-        <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono }}>
+        <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono }}>
           Comparaison mensuelle
         </div>
         <div style={{ display: "flex", gap: 16 }}>
-          <span style={{ fontSize: 11, color: "#00e5a0", fontFamily: mono }}>{monthName(now)}</span>
-          <span style={{ fontSize: 11, color: "#2d3352", fontFamily: mono }}>vs {monthName(prevMonth)}</span>
+          <span style={{ fontSize: 11, color: C.green, fontFamily: mono }}>{monthName(now)}</span>
+          <span style={{ fontSize: 11, color: C.textDim, fontFamily: mono }}>vs {monthName(prevMonth)}</span>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export const ComparisonPanel = ({ trades }) => {
           <Delta label="Profit Factor" current={current.pf} prev={prev.pf} />
         </div>
       ) : (
-        <div style={{ color: "#2d3352", fontSize: 12, fontFamily: mono }}>
+        <div style={{ color: C.textDim, fontSize: 12, fontFamily: mono }}>
           {!current ? `Pas de trades en ${monthName(now)}.` : `Pas de trades en ${monthName(prevMonth)}.`}
         </div>
       )}

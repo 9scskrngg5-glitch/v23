@@ -10,15 +10,15 @@ const SessionTooltip = ({ active, payload }) => {
   const d = payload[0].payload;
   return (
     <div style={{
-      background: "#0d1020", border: "1px solid #181b2e",
+      background: "#0d1020", border: `1px solid ${C.border}`,
       borderRadius: 10, padding: "10px 14px",
       fontFamily: "'DM Mono', monospace", fontSize: 12,
     }}>
       <div style={{ color: "#a0a8c8", marginBottom: 6 }}>{d.session}</div>
-      <div style={{ color: d.pnl >= 0 ? "#00e5a0" : "#ff4d6d", fontWeight: 700 }}>
+      <div style={{ color: d.pnl >= 0 ? C.green : C.red, fontWeight: 700 }}>
         PnL : {d.pnl >= 0 ? "+" : ""}{d.pnl.toFixed(2)}$
       </div>
-      <div style={{ color: "#4a5070", marginTop: 4 }}>
+      <div style={{ color: C.textDim, marginTop: 4 }}>
         {d.trades} trade{d.trades > 1 ? "s" : ""} · {d.winRate}% win
       </div>
     </div>
@@ -35,7 +35,7 @@ export const SessionChart = ({ trades }) => {
     return (
       <div style={{
         height: 180, display: "flex", alignItems: "center",
-        justifyContent: "center", color: "#1e2235",
+        justifyContent: "center", color: C.textGhost,
         fontSize: 12, fontFamily: "'DM Mono', monospace",
       }}>
         Pas assez de données
@@ -70,7 +70,7 @@ export const SessionChart = ({ trades }) => {
     return (
       <div style={{
         height: 180, display: "flex", alignItems: "center",
-        justifyContent: "center", color: "#1e2235",
+        justifyContent: "center", color: C.textGhost,
         fontSize: 12, fontFamily: "'DM Mono', monospace",
       }}>
         Pas assez de données
@@ -84,23 +84,23 @@ export const SessionChart = ({ trades }) => {
       <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
         {data.map((d) => (
           <div key={d.session} style={{
-            background: "#080a14", border: "1px solid #13162a",
+            background: C.bgInner, border: `1px solid ${C.border}`,
             borderRadius: 10, padding: "8px 14px", flex: 1, minWidth: 90,
           }}>
             <div style={{
-              fontSize: 10, color: "#3a4060", letterSpacing: "0.1em",
+              fontSize: 10, color: C.textDim, letterSpacing: "0.1em",
               textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 4,
             }}>
               {d.session}
             </div>
             <div style={{
               fontSize: 16, fontWeight: 700,
-              color: d.pnl >= 0 ? "#00e5a0" : "#ff4d6d",
+              color: d.pnl >= 0 ? C.green : C.red,
               fontFamily: "'DM Mono', monospace",
             }}>
               {d.pnl >= 0 ? "+" : ""}{d.pnl.toFixed(0)}$
             </div>
-            <div style={{ fontSize: 10, color: "#2d3352", fontFamily: "'DM Mono', monospace", marginTop: 2 }}>
+            <div style={{ fontSize: 10, color: C.textDim, fontFamily: "'DM Mono', monospace", marginTop: 2 }}>
               {d.winRate}% · {d.trades}T
             </div>
           </div>
@@ -110,21 +110,21 @@ export const SessionChart = ({ trades }) => {
       {/* Bar chart */}
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={data} barSize={32}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#0e1120" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke=C.border vertical={false} />
           <XAxis
             dataKey="session"
-            tick={{ fontSize: 10, fill: "#3a4060", fontFamily: "'DM Mono', monospace" }}
+            tick={{ fontSize: 10, fill: C.textDim, fontFamily: "'DM Mono', monospace" }}
             axisLine={false} tickLine={false}
           />
           <YAxis
             tick={{ fontSize: 10, fill: "#252840" }}
             axisLine={false} tickLine={false} width={44}
           />
-          <ReferenceLine y={0} stroke="#181b2e" strokeWidth={1} />
+          <ReferenceLine y={0} stroke=C.border strokeWidth={1} />
           <Tooltip content={<SessionTooltip />} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
           <Bar dataKey="pnl" radius={[6, 6, 0, 0]}>
             {data.map((entry, i) => (
-              <Cell key={i} fill={entry.pnl >= 0 ? "#00e5a0" : "#ff4d6d"} fillOpacity={0.8} />
+              <Cell key={i} fill={entry.pnl >= 0 ? C.green : C.red} fillOpacity={0.8} />
             ))}
           </Bar>
         </BarChart>
