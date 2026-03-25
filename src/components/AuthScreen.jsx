@@ -69,7 +69,7 @@ const AnimatedBg = () => {
 
         ctx.fillStyle = `rgba(142,182,155,${finalAlpha})`;
 
-        if (p.size === 1) {\n          ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
+        if (p.size === 1) {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
         } else if (p.size === 2) {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);
