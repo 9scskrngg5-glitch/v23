@@ -38,17 +38,17 @@ export const Heatmap = ({ trades }) => {
   }
 
   const getColor = (data) => {
-    if (!data) return ${C.bgInner};
-    if (data.pnl > 200) return ${C.green};
+    if (!data) return C.bgInner;
+    if (data.pnl > 200) return C.green;
     if (data.pnl > 50) return "rgba(0,229,160,0.5)";
     if (data.pnl > 0) return "rgba(0,229,160,0.25)";
-    if (data.pnl < -200) return ${C.red};
+    if (data.pnl < -200) return C.red;
     if (data.pnl < -50) return "rgba(255,77,109,0.5)";
     return "rgba(255,77,109,0.25)";
   };
 
   if (closed.length === 0) return (
-    <div style={{ color: ${C.textGhost}, fontSize: 12, fontFamily: "'DM Mono', monospace", padding: "20px 0" }}>
+    <div style={{ color: C.textGhost, fontSize: 12, fontFamily: "'DM Mono', monospace", padding: "20px 0" }}>
       Pas assez de données
     </div>
   );
@@ -60,7 +60,7 @@ export const Heatmap = ({ trades }) => {
         <div style={{ display: "flex", flexDirection: "column", gap: 3, marginRight: 4 }}>
           <div style={{ height: 14 }} />
           {DAYS.map((d, i) => (
-            <div key={i} style={{ height: 12, fontSize: 8, color: ${C.textDim}, fontFamily: "'DM Mono', monospace", display: "flex", alignItems: "center" }}>
+            <div key={i} style={{ height: 12, fontSize: 8, color: C.textDim, fontFamily: "'DM Mono', monospace", display: "flex", alignItems: "center" }}>
               {d}
             </div>
           ))}
@@ -70,7 +70,7 @@ export const Heatmap = ({ trades }) => {
         {weeks.map((week, wi) => (
           <div key={wi} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
             {/* Month label */}
-            <div style={{ height: 14, fontSize: 8, color: ${C.textDim}, fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
+            <div style={{ height: 14, fontSize: 8, color: C.textDim, fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
               {week[0].date.getDate() <= 7 ? MONTHS[week[0].date.getMonth()] : ""}
             </div>
             {week.map((day, di) => (

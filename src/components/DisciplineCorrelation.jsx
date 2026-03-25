@@ -37,19 +37,19 @@ export const DisciplineCorrelation = ({ trades }) => {
     if (diff > 0) {
       return {
         text: `Quand tu es discipliné (score ≥ 70), tu gagnes en moyenne ${avgHigh.toFixed(0)}$ de plus par trade.`,
-        color: ${C.green},
+        color: C.green,
       };
     }
     return {
       text: `Ton score de discipline n'impacte pas encore clairement tes résultats. Continue à journaliser.`,
-      color: ${C.textMid},
+      color: C.textMid,
     };
   }, [data]);
 
   if (data.length < 5) return (
     <div style={{ ...card(), marginBottom: 16 }}>
       <div style={{ ...label(), marginBottom: 12 }}>Discipline vs Résultats</div>
-      <div style={{ fontSize: 12, color: ${C.textGhost}, fontFamily: F.mono, textAlign: "center", padding: "20px 0" }}>
+      <div style={{ fontSize: 12, color: C.textGhost, fontFamily: F.mono, textAlign: "center", padding: "20px 0" }}>
         5 trades minimum pour afficher la corrélation
       </div>
     </div>
@@ -60,39 +60,39 @@ export const DisciplineCorrelation = ({ trades }) => {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
         <div>
           <div style={{ ...label(), marginBottom: 4 }}>Discipline vs Résultats</div>
-          <div style={{ fontSize: 12, color: ${C.textDim}, fontFamily: F.mono }}>
+          <div style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono }}>
             Chaque point = 1 trade
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, fontSize: 10, fontFamily: F.mono }}>
           <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: ${C.green}, display: "inline-block" }} />
-            <span style={{ color: ${C.textDim} }}>Gain</span>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.green, display: "inline-block" }} />
+            <span style={{ color: C.textDim }}>Gain</span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: ${C.red}, display: "inline-block" }} />
-            <span style={{ color: ${C.textDim} }}>Perte</span>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.red, display: "inline-block" }} />
+            <span style={{ color: C.textDim }}>Perte</span>
           </span>
         </div>
       </div>
 
       <ResponsiveContainer width="100%" height={200}>
         <ScatterChart margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke={${C.bgInne}r} />
+          <CartesianGrid strokeDasharray="3 3" stroke={C.bgInner} />
           <XAxis
             dataKey="discipline" type="number" domain={[0, 100]} name="Discipline"
-            tick={{ fontSize: 10, fill: ${C.textDim}, fontFamily: F.mono }}
+            tick={{ fontSize: 10, fill: C.textDim, fontFamily: F.mono }}
             axisLine={false} tickLine={false}
-            label={{ value: "Score discipline", position: "insideBottom", offset: -2, fontSize: 9, fill: ${C.textDim}, fontFamily: F.mono }}
+            label={{ value: "Score discipline", position: "insideBottom", offset: -2, fontSize: 9, fill: C.textDim, fontFamily: F.mono }}
           />
           <YAxis
             dataKey="result" type="number" name="Résultat"
-            tick={{ fontSize: 10, fill: ${C.textDim}, fontFamily: F.mono }}
+            tick={{ fontSize: 10, fill: C.textDim, fontFamily: F.mono }}
             axisLine={false} tickLine={false} width={48}
           />
-          <ReferenceLine y={0} stroke={${C.borde}r} strokeDasharray="4 4" />
-          <ReferenceLine x={70} stroke={${C.borderHo}v} strokeDasharray="4 4" />
-          <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: "3 3", stroke: ${C.border} }} />
+          <ReferenceLine y={0} stroke={C.border} strokeDasharray="4 4" />
+          <ReferenceLine x={70} stroke={C.borderHov} strokeDasharray="4 4" />
+          <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: "3 3", stroke: C.border }} />
           <Scatter data={data} shape={<CustomDot />} />
         </ScatterChart>
       </ResponsiveContainer>
@@ -100,7 +100,7 @@ export const DisciplineCorrelation = ({ trades }) => {
       {insight && (
         <div style={{
           marginTop: 12, padding: "10px 14px", borderRadius: 9,
-          background: insight.color === ${C.green} ? ${C.greenDim} : ${C.bgInner},
+          background: insight.color === C.green ? C.greenDim : C.bgInner,
           border: `1px solid ${insight.color === ${C.green} ? ${C.greenBord} : ${C.borde}r}`,
           fontSize: 12, color: insight.color, fontFamily: F.mono, lineHeight: 1.5,
         }}>

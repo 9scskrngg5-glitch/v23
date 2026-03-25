@@ -57,7 +57,7 @@ export const DrawdownAlert = ({ trades, limitPct = 3, accountSize = 10000 }) => 
         <div style={{ fontSize: 11, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.08em", color: textColor, marginBottom: 4 }}>
           {title}
         </div>
-        <div style={{ fontSize: 12, color: ${C.textDim}, fontFamily: F.mono, lineHeight: 1.5 }}>{msg}</div>
+        <div style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono, lineHeight: 1.5 }}>{msg}</div>
       </div>
       <div style={{ fontSize: 20, fontWeight: 800, fontFamily: F.mono, color: textColor, whiteSpace: "nowrap" }}>
         {level === "tilt" ? `${consecLosses}×` : `${((todayPnL / accountSize) * 100).toFixed(1)}%`}

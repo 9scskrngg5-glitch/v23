@@ -21,7 +21,7 @@ const CircleGauge = ({ score, color, grade }) => {
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <div style={{ fontSize: 26, fontWeight: 800, color, fontFamily: syne, lineHeight: 1 }}>{score}</div>
-        <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.08em" }}>/ 100</div>
+        <div style={{ fontSize: 11, color: C.textDim, fontFamily: mono, letterSpacing: "0.08em" }}>/ 100</div>
       </div>
     </div>
   );
@@ -31,7 +31,7 @@ export const DisciplineScore = ({ trades }) => {
   const result = useMemo(() => computeDisciplineScore(trades), [trades]);
 
   const section = (label) => (
-    <div style={{ fontSize: 10, color: ${C.textDim}, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono, marginBottom: 14 }}>{label}</div>
+    <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono, marginBottom: 14 }}>{label}</div>
   );
 
   if (!result) return (

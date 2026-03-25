@@ -48,7 +48,7 @@ const GaugeBar = ({ label, current, max, color = C.green, invert = false, unit =
           {invert ? `-${Math.abs(current).toFixed(2)}` : `+${current.toFixed(2)}`}{unit} / {invert ? `-${max}` : `+${max}`}{unit}
         </span>
       </div>
-      <div style={{ height: 6, background: ${C.bgInner}, borderRadius: 3, overflow: "hidden" }}>
+      <div style={{ height: 6, background: C.bgInner, borderRadius: 3, overflow: "hidden" }}>
         <div style={{ height: "100%", width: `${pct}%`, background: barColor, borderRadius: 3, transition: "width 0.5s ease" }} />
       </div>
     </div>
@@ -84,66 +84,66 @@ const FirmCard = ({ firm, trades, onEdit, onDelete }) => {
   const violated = dailyViolated || totalViolated;
 
   const status = violated ? "FAILED" : targetReached ? "PASSED" : "ACTIVE";
-  const statusColor = { FAILED: ${C.red}, PASSED: ${C.green}, ACTIVE: ${C.orange} }[status];
+  const statusColor = { FAILED: C.red, PASSED: C.green, ACTIVE: C.orange }[status];
 
   return (
     <div style={{
-      background: ${C.bgCard},
+      background: C.bgCard,
       border: `1px solid ${violated ? "rgba(255,77,109,0.25)" : targetReached ? "rgba(0,229,160,0.2)" : ${C.borde}r}`,
       borderRadius: 14, padding: "20px 18px", marginBottom: 12,
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: syne, marginBottom: 3 }}>{firm.name}</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: syne, marginBottom: 3 }}>{firm.name}</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <span style={{ fontSize: 10, color: ${C.textDim}, fontFamily: mono }}>{firm.firm} · {firm.phase} · ${accountSize.toLocaleString()}</span>
+            <span style={{ fontSize: 10, color: C.textDim, fontFamily: mono }}>{firm.firm} · {firm.phase} · ${accountSize.toLocaleString()}</span>
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <span style={{ fontSize: 10, fontFamily: mono, letterSpacing: "0.08em", padding: "3px 10px", borderRadius: 20, border: `1px solid ${statusColor}30`, color: statusColor, background: `${statusColor}08` }}>
             {status}
           </span>
-          <button onClick={() => onEdit(firm)} style={{ background: "none", border: "1px solid #13162a", borderRadius: 5, color: ${C.textDim}, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>EDIT</button>
-          <button onClick={() => onDelete(firm.id)} style={{ background: "none", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 5, color: ${C.red}, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>DEL</button>
+          <button onClick={() => onEdit(firm)} style={{ background: "none", border: "1px solid #13162a", borderRadius: 5, color: C.textDim, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>EDIT</button>
+          <button onClick={() => onDelete(firm.id)} style={{ background: "none", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 5, color: C.red, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>DEL</button>
         </div>
       </div>
 
-      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color=${C.orange} />
-      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color=${C.orange} />
-      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color=${C.green} unit="%" />
+      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color=C.orange />
+      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color=C.orange />
+      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color=C.green unit="%" />
 
       <div style={{ display: "flex", gap: 16, marginTop: 12, paddingTop: 12, borderTop: "1px solid #0a0d18" }}>
         <div>
-          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>PNL</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: totalPnL >= 0 ? ${C.green} : ${C.red}, fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.1em" }}>PNL</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: totalPnL >= 0 ? C.green : C.red, fontFamily: mono }}>
             {totalPnL >= 0 ? "+" : ""}{totalPnL.toFixed(2)}$
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>JOURS</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.1em" }}>JOURS</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: mono }}>
             {tradingDays}{rules.minTradingDays > 0 ? ` / ${rules.minTradingDays} min` : ""}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>TRADES</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: mono }}>{firmTrades.length}</div>
+          <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.1em" }}>TRADES</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: mono }}>{firmTrades.length}</div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>MARGE</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.orange}, fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.1em" }}>MARGE</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.orange, fontFamily: mono }}>
             {((rules.maxTotalLoss - totalLossPct)).toFixed(1)}%
           </div>
         </div>
       </div>
 
       {violated && (
-        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 8, fontSize: 11, color: ${C.red}, fontFamily: mono }}>
+        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 8, fontSize: 11, color: C.red, fontFamily: mono }}>
           {dailyViolated ? "Limite de perte journalière atteinte. STOP TRADING." : "Limite de perte totale atteinte. Challenge échoué."}
         </div>
       )}
       {targetReached && !violated && (
-        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.2)", borderRadius: 8, fontSize: 11, color: ${C.green}, fontFamily: mono }}>
+        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.2)", borderRadius: 8, fontSize: 11, color: C.green, fontFamily: mono }}>
           Objectif de profit atteint ! Vérifie les autres conditions avant de soumettre.
         </div>
       )}

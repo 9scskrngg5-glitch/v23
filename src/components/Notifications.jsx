@@ -77,7 +77,7 @@ export const NotificationBell = ({ stats, trades, goals }) => {
     <div ref={ref} style={{ position: "relative" }}>
       <button onClick={() => setOpen(o => !o)} style={{
         background: "none", border: "1px solid #13162a", borderRadius: 6,
-        padding: "4px 10px", cursor: "pointer", color: notifs.length > 0 ? ${C.orange} : ${C.textDim},
+        padding: "4px 10px", cursor: "pointer", color: notifs.length > 0 ? C.orange : C.textDim,
         fontSize: 11, fontFamily: mono, letterSpacing: "0.06em", position: "relative",
         transition: "color 0.15s",
       }}>

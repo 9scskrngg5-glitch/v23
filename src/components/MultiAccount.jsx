@@ -44,7 +44,7 @@ export const useMultiAccount = () => {
   return { accounts, activeId, activeAccount, addAccount, removeAccount, renameAccount, switchAccount };
 };
 
-const COLORS = [${C.green}, ${C.orange}, "#a78bfa", "#60a5fa", "#f87171", "#34d399"];
+const COLORS = [C.green, C.orange, "#a78bfa", "#60a5fa", "#f87171", "#34d399"];
 
 export const AccountSwitcher = ({ accounts, activeId, onSwitch, onAdd, onRemove }) => {
   const [showAdd, setShowAdd] = useState(false);

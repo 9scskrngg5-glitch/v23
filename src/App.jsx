@@ -155,7 +155,7 @@ export default function App() {
   if (showAdmin) return <AdminPanel user={user} onClose={() => setShowAdmin(false)} />;
 
   return (
-    <div key={themeVersion} style={{ background: ${C.bg}, minHeight: "100dvh", color: ${C.text}, fontFamily: F.sans, display: "flex" }}>
+    <div key={themeVersion} style={{ background: C.bg, minHeight: "100dvh", color: C.text, fontFamily: F.sans, display: "flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
@@ -163,8 +163,8 @@ export default function App() {
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: ${C.borderHov}; }
+        ::-webkit-scrollbar-thumb { background: C.border; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: C.borderHov; }
         button { font-family: inherit; }
 
         @keyframes fadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -187,8 +187,8 @@ export default function App() {
 
         /* Input focus glow */
         input:focus, textarea:focus, select:focus {
-          border-color: ${C.green} !important;
-          box-shadow: 0 0 0 3px ${C.greenDim};
+          border-color: C.green !important;
+          box-shadow: 0 0 0 3px C.greenDim;
         }
 
         /* Better modal backdrop */

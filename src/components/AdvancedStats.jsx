@@ -86,11 +86,11 @@ export const AdvancedStats = ({ trades }) => {
   const worstSetup = [...bySetup].sort((a, b) => a.pnl - b.pnl)[0];
 
   const SectionTitle = ({ children }) => (
-    <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>{children}</div>
+    <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>{children}</div>
   );
 
   if (closed.length < 5) return (
-    <div style={{ ...card(), textAlign: "center", color: ${C.textGhost}, fontSize: 12, fontFamily: F.mono }}>
+    <div style={{ ...card(), textAlign: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>
       Ajoute au moins 5 trades pour voir les analyses avancées.
     </div>
   );
@@ -101,16 +101,16 @@ export const AdvancedStats = ({ trades }) => {
       {bestSetup && worstSetup && bestSetup.id !== worstSetup.id && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
           <div style={{ ...card(), borderColor: "rgba(0,229,160,0.2)" }}>
-            <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 6 }}>MEILLEUR SETUP</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: F.mono, marginBottom: 4 }}>{bestSetup.fullLabel || bestSetup.label}</div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: ${C.green}, fontFamily: "'Syne', sans-serif" }}>+{Number(bestSetup.pnl).toFixed(0)}$</div>
-            <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, marginTop: 3 }}>{bestSetup.winRate}% WR · {bestSetup.count} trades</div>
+            <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 6 }}>MEILLEUR SETUP</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: F.mono, marginBottom: 4 }}>{bestSetup.fullLabel || bestSetup.label}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: C.green, fontFamily: "'Syne', sans-serif" }}>+{Number(bestSetup.pnl).toFixed(0)}$</div>
+            <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, marginTop: 3 }}>{bestSetup.winRate}% WR · {bestSetup.count} trades</div>
           </div>
           <div style={{ ...card(), borderColor: "rgba(255,77,109,0.2)" }}>
-            <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 6 }}>SETUP À ÉVITER</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: F.mono, marginBottom: 4 }}>{worstSetup.fullLabel || worstSetup.label}</div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: ${C.red}, fontFamily: "'Syne', sans-serif" }}>{Number(worstSetup.pnl).toFixed(0)}$</div>
-            <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, marginTop: 3 }}>{worstSetup.winRate}% WR · {worstSetup.count} trades</div>
+            <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 6 }}>SETUP À ÉVITER</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: F.mono, marginBottom: 4 }}>{worstSetup.fullLabel || worstSetup.label}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: C.red, fontFamily: "'Syne', sans-serif" }}>{Number(worstSetup.pnl).toFixed(0)}$</div>
+            <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, marginTop: 3 }}>{worstSetup.winRate}% WR · {worstSetup.count} trades</div>
           </div>
         </div>
       )}
@@ -121,7 +121,7 @@ export const AdvancedStats = ({ trades }) => {
         {byHour.length > 0 ? (
           <>
             <MiniBar data={byHour} />
-            <div style={{ marginTop: 10, fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>
+            <div style={{ marginTop: 10, fontSize: 11, color: C.textDim, fontFamily: F.mono }}>
               {(() => {
                 const best = [...byHour].sort((a, b) => b.pnl - a.pnl)[0];
                 const worst = [...byHour].sort((a, b) => a.pnl - b.pnl)[0];
@@ -129,7 +129,7 @@ export const AdvancedStats = ({ trades }) => {
               })()}
             </div>
           </>
-        ) : <div style={{ color: ${C.textGhost}, fontSize: 12, fontFamily: F.mono }}>Pas assez de données.</div>}
+        ) : <div style={{ color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>Pas assez de données.</div>}
       </div>
 
       {/* PnL by setup */}
@@ -145,7 +145,7 @@ export const AdvancedStats = ({ trades }) => {
         <div style={{ ...card(), marginBottom: 14 }}>
           <SectionTitle>PnL par niveau de confiance</SectionTitle>
           <MiniBar data={byConfidence} />
-          <div style={{ marginTop: 10, fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>
+          <div style={{ marginTop: 10, fontSize: 11, color: C.textDim, fontFamily: F.mono }}>
             {(() => {
               const best = [...byConfidence].sort((a, b) => b.winRate - a.winRate)[0];
               return best ? `Meilleur win rate à confiance ${best.label}/10 (${best.winRate}%)` : "";

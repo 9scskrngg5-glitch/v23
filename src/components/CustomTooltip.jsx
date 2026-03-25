@@ -15,7 +15,7 @@ export const CustomTooltip = ({ active, payload }) => {
         borderRadius: 10,
         padding: "7px 13px",
         fontSize: 13,
-        color: positive ? ${C.green} : ${C.red},
+        color: positive ? C.green : C.red,
         fontFamily: "'DM Mono', monospace",
         boxShadow: `0 4px 20px ${positive ? "rgba(0,229,160,0.1)" : "rgba(255,77,109,0.1)"}`,
       }}
