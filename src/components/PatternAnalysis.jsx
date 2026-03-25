@@ -72,7 +72,7 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
           Analyse de Pattern AI
         </div>
         {!isPro && (
-          <span style={{ fontSize: 9, color: C.orange, fontFamily: F.mono, background: C.orangeDim, border: `1px solid C.orangeBord`, borderRadius: 20, padding: "3px 9px" }}>
+          <span style={{ fontSize: 9, color: C.orange, fontFamily: F.mono, background: C.orangeDim, border: `1px solid ${C.orangeBord}`, borderRadius: 20, padding: "3px 9px" }}>
             ULTRA-PREMIUM
           </span>
         )}
@@ -83,7 +83,7 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
         <label style={{ display: "block", cursor: isPro ? "pointer" : "not-allowed" }}>
           <input type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} disabled={!isPro} />
           <div style={{
-            border: `2px dashed ${preview ? ${C.greenBord} : ${C.borde}r}`,
+            border: `2px dashed ${preview ? C.greenBord : C.border}`,
             borderRadius: 12, padding: preview ? 0 : "28px 20px",
             textAlign: "center", transition: "all 0.2s",
             overflow: "hidden", position: "relative",
@@ -101,11 +101,11 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
               </>
             ) : (
               <>
-                <div style={{ fontSize: 28, color: C.textDim, marginBottom: 10, fontFamily: F.mono }}>⊕</div>
-                <div style={{ fontSize: 13, color: C.textMid }}>
+                <div style={{ fontSize: 28, color: ${C.textDim}, marginBottom: 10, fontFamily: F.mono }}>⊕</div>
+                <div style={{ fontSize: 13, color: ${C.textMid} }}>
                   {isPro ? "Glisse ton screenshot de chart ici" : "Fonctionnalité Ultra-Premium"}
                 </div>
-                <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, marginTop: 5 }}>PNG, JPG, WEBP</div>
+                <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, marginTop: 5 }}>PNG, JPG, WEBP</div>
               </>
             )}
           </div>
@@ -114,8 +114,8 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
         {preview && isPro && (
           <button onClick={analyze} disabled={analyzing} style={{
             width: "100%", marginTop: 12, padding: "11px", borderRadius: 9,
-            border: "none", background: analyzing ? C.bgInner : C.green,
-            color: analyzing ? C.textDim : "#000",
+            border: "none", background: analyzing ? ${C.bgInner} : ${C.green},
+            color: analyzing ? ${C.textDim} : "#000",
             cursor: analyzing ? "not-allowed" : "pointer",
             fontSize: 12, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.08em",
             transition: "all 0.2s",
@@ -125,22 +125,22 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
         )}
       </div>
 
-      {error && <div style={{ marginTop: 12, background: C.redDim, border: `1px solid C.redBord`, padding: "10px 14px", borderRadius: 9, color: C.red, fontSize: 12, fontFamily: F.mono }}>{error}</div>}
+      {error && <div style={{ marginTop: 12, background: ${C.redDim}, border: `1px solid ${C.redBord}`, padding: "10px 14px", borderRadius: 9, color: ${C.red}, fontSize: 12, fontFamily: F.mono }}>{error}</div>}
 
       {/* Results */}
       {result && (
         <div style={{ marginTop: 16, borderTop: `1px solid ${C.border}`, paddingTop: 16 }}>
           {result.raw ? (
-            <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.75, whiteSpace: "pre-wrap" }}>{result.raw}</div>
+            <div style={{ fontSize: 13, color: ${C.textMid}, lineHeight: 1.75, whiteSpace: "pre-wrap" }}>{result.raw}</div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {/* Patterns */}
               {result.patterns?.length > 0 && (
                 <div>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>PATTERNS DÉTECTÉS</div>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>PATTERNS DÉTECTÉS</div>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                     {result.patterns.map((p, i) => (
-                      <span key={i} style={{ fontSize: 11, color: C.green, fontFamily: F.mono, background: C.greenDim, border: `1px solid C.greenBord`, borderRadius: 20, padding: "4px 12px" }}>{p}</span>
+                      <span key={i} style={{ fontSize: 11, color: ${C.green}, fontFamily: F.mono, background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, borderRadius: 20, padding: "4px 12px" }}>{p}</span>
                     ))}
                   </div>
                 </div>
@@ -149,8 +149,8 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
               {/* Bias */}
               {result.bias && (
                 <div>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 4 }}>BIAIS</div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: result.bias.toLowerCase().includes("haussier") ? C.green : result.bias.toLowerCase().includes("baissier") ? C.red : C.orange, fontFamily: F.mono }}>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 4 }}>BIAIS</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: result.bias.toLowerCase().includes("haussier") ? ${C.green} : result.bias.toLowerCase().includes("baissier") ? ${C.red} : ${C.orange}, fontFamily: F.mono }}>
                     {result.bias}
                   </div>
                 </div>
@@ -158,28 +158,28 @@ export const PatternAnalysis = ({ onPatternDetected, isPro, onUpgrade }) => {
 
               {/* Setup */}
               {result.setup && (
-                <div style={{ background: C.bgInner, borderRadius: 10, padding: "12px 14px" }}>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>SETUP POTENTIEL</div>
+                <div style={{ background: ${C.bgInner}, borderRadius: 10, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>SETUP POTENTIEL</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 8 }}>
-                    {[["ENTRÉE", result.setup.entry, C.text], ["SL", result.setup.sl, C.red], ["TP", result.setup.tp, C.green]].map(([l, v, c]) => (
+                    {[["ENTRÉE", result.setup.entry, ${C.text}], ["SL", result.setup.sl, ${C.red}], ["TP", result.setup.tp, ${C.green}]].map(([l, v, c]) => (
                       <div key={l}>
-                        <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>{l}</div>
+                        <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>{l}</div>
                         <div style={{ fontSize: 14, fontWeight: 700, color: c, fontFamily: F.mono }}>{v}</div>
                       </div>
                     ))}
                   </div>
-                  {result.setup.rationale && <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6 }}>{result.setup.rationale}</div>}
+                  {result.setup.rationale && <div style={{ fontSize: 12, color: ${C.textMid}, lineHeight: 1.6 }}>{result.setup.rationale}</div>}
                 </div>
               )}
 
               {/* Levels */}
               {result.levels?.length > 0 && (
                 <div>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>NIVEAUX CLÉS</div>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 8 }}>NIVEAUX CLÉS</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     {result.levels.map((l, i) => (
-                      <div key={i} style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono }}>
-                        <span style={{ color: C.orange }}>{l.type}</span> — {l.description}
+                      <div key={i} style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono }}>
+                        <span style={{ color: ${C.orange} }}>{l.type}</span> — {l.description}
                       </div>
                     ))}
                   </div>

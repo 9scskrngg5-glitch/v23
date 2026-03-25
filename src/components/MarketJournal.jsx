@@ -39,7 +39,7 @@ const JournalEntry = ({ date, entry, onSave }) => {
           {SENTIMENTS.map(s => (
             <button key={s.id} onClick={() => set("sentiment", s.id)} style={{
               padding: "7px 16px", borderRadius: 8, cursor: "pointer", fontSize: 12,
-              fontFamily: F.mono, border: `1px solid ${form.sentiment === s.id ? s.color + "50" : ${C.borde}r}`,
+              fontFamily: F.mono, border: `1px solid ${form.sentiment === s.id ? s.color + "50" : C.border}`,
               background: form.sentiment === s.id ? s.color + "12" : "transparent",
               color: form.sentiment === s.id ? s.color : C.textDim, transition: "all 0.15s",
             }}>{s.icon} {s.label}</button>
@@ -48,14 +48,14 @@ const JournalEntry = ({ date, entry, onSave }) => {
       </div>
 
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", marginBottom: 10, textTransform: "uppercase" }}>Volatilité</div>
+        <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", marginBottom: 10, textTransform: "uppercase" }}>Volatilité</div>
         <div style={{ display: "flex", gap: 6 }}>
           {VOLATILITY.map(v => (
             <button key={v} onClick={() => set("volatility", v)} style={{
               padding: "7px 14px", borderRadius: 7, cursor: "pointer", fontSize: 11, fontFamily: F.mono,
-              border: `1px solid ${form.volatility === v ? ${C.greenBord} : ${C.borde}r}`,
-              background: form.volatility === v ? C.greenDim : "transparent",
-              color: form.volatility === v ? C.green : C.textDim, transition: "all 0.15s",
+              border: `1px solid ${form.volatility === v ? C.greenBord : C.border}`,
+              background: form.volatility === v ? ${C.greenDim} : "transparent",
+              color: form.volatility === v ? ${C.green} : ${C.textDim}, transition: "all 0.15s",
             }}>{v}</button>
           ))}
         </div>
@@ -64,9 +64,9 @@ const JournalEntry = ({ date, entry, onSave }) => {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
         {[["bias", "Biais du jour", "Long BTC, short DXY..."], ["news", "News / Événements", "FOMC, CPI, NFP..."]].map(([k, label, ph]) => (
           <div key={k}>
-            <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</label>
+            <label style={{ fontSize: 9, color: ${C.textDim}, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</label>
             <input value={form[k] || ""} onChange={e => set(k, e.target.value)} placeholder={ph} style={inp()}
-              onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+              onFocus={e => e.target.style.borderColor = ${C.green}} onBlur={e => e.target.style.borderColor = ${C.border}}
             />
           </div>
         ))}
@@ -74,17 +74,17 @@ const JournalEntry = ({ date, entry, onSave }) => {
 
       {[["plan", "Plan du jour", "Niveaux clés à surveiller, setups potentiels..."], ["reflection", "Réflexion de fin de journée", "Ce qui a bien marché, leçons apprises..."]].map(([k, label, ph]) => (
         <div key={k} style={{ marginBottom: 12 }}>
-          <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</label>
+          <label style={{ fontSize: 9, color: ${C.textDim}, display: "block", marginBottom: 6, fontFamily: F.mono, letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</label>
           <textarea value={form[k] || ""} onChange={e => set(k, e.target.value)} placeholder={ph}
             style={{ ...inp(), minHeight: 80, resize: "vertical" }}
-            onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+            onFocus={e => e.target.style.borderColor = ${C.green}} onBlur={e => e.target.style.borderColor = ${C.border}}
           />
         </div>
       ))}
 
       <button onClick={handleSave} style={{
         padding: "10px 22px", borderRadius: 8, border: saved ? `1px solid ${C.greenBord}` : "none",
-        background: saved ? C.greenDim : C.green, color: saved ? C.green : "#000",
+        background: saved ? ${C.greenDim} : ${C.green}, color: saved ? ${C.green} : "#000",
         cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.06em", transition: "all 0.2s",
       }}>{saved ? "SAUVEGARDÉ ✓" : "SAUVEGARDER"}</button>
     </div>
@@ -101,8 +101,8 @@ export const MarketJournal = () => {
   });
 
   const sentimentColor = (date) => {
-    const e = entries[date]; if (!e?.sentiment) return C.border;
-    return SENTIMENTS.find(s => s.id === e.sentiment)?.color || C.border;
+    const e = entries[date]; if (!e?.sentiment) return ${C.border};
+    return SENTIMENTS.find(s => s.id === e.sentiment)?.color || ${C.border};
   };
 
   return (
@@ -110,7 +110,7 @@ export const MarketJournal = () => {
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
         <input type="date" value={selectedDate} onChange={e => setSelectedDate(e.target.value)}
           style={{ ...inp({ width: "auto" }), colorScheme: "dark" }}
-          onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+          onFocus={e => e.target.style.borderColor = ${C.green}} onBlur={e => e.target.style.borderColor = ${C.border}}
         />
       </div>
 
@@ -123,11 +123,11 @@ export const MarketJournal = () => {
           return (
             <button key={date} onClick={() => setSelectedDate(date)} style={{
               flex: 1, padding: "10px 6px", borderRadius: 10, textAlign: "center", cursor: "pointer",
-              border: `1px solid ${active ? ${C.greenBord} : ${C.borde}r}`,
-              background: active ? C.greenDim : "transparent",
+              border: `1px solid ${active ? C.greenBord : C.border}`,
+              background: active ? ${C.greenDim} : "transparent",
             }}>
-              <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, marginBottom: 4 }}>{d.toLocaleDateString("fr-FR", { weekday: "short" }).slice(0,2).toUpperCase()}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: active ? C.green : C.textMid, fontFamily: "'Syne', sans-serif" }}>{d.getDate()}</div>
+              <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, marginBottom: 4 }}>{d.toLocaleDateString("fr-FR", { weekday: "short" }).slice(0,2).toUpperCase()}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: active ? ${C.green} : ${C.textMid}, fontFamily: "'Syne', sans-serif" }}>{d.getDate()}</div>
               <div style={{ width: 5, height: 5, borderRadius: "50%", background: hasEntry ? color : "transparent", margin: "4px auto 0", border: hasEntry ? `1px solid ${color}` : "none" }} />
             </button>
           );

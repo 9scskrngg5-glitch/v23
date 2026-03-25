@@ -81,7 +81,7 @@ export const CooldownModal = ({ until, onClose }) => {
         {/* Icon */}
         <div style={{
           width: 64, height: 64, borderRadius: "50%",
-          background: C.redDim, border: `1px solid C.redBord`,
+          background: C.redDim, border: `1px solid ${C.redBord}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           margin: "0 auto 20px", fontSize: 28,
         }}>⏸</div>

@@ -80,7 +80,7 @@ export const CommandPalette = ({ trades, onClose, onNavigate, onSelectTrade }) =
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "flex-start", justifyContent: "center", zIndex: 500, padding: "80px 16px", backdropFilter: "blur(8px)" }} onClick={onClose}>
-      <div style={{ width: "min(560px, 100%)", background: C.bgCard, border: `1px solid C.border`, borderRadius: 16, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }} onClick={e => e.stopPropagation()}>
+      <div style={{ width: "min(560px, 100%)", background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }} onClick={e => e.stopPropagation()}>
         {/* Input */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderBottom: `1px solid ${C.border}` }}>
           <span style={{ fontSize: 16, color: C.textDim, fontFamily: F.mono }}>⌕</span>

@@ -115,7 +115,7 @@ export const SupportChat = () => {
                 {msg.admin_reply && (
                   <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.border}` }}>
                     <div style={{ fontSize: 9, color: C.green, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Réponse du support</div>
-                    <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6, borderLeft: `2px solid C.greenBord`, paddingLeft: 12 }}>{msg.admin_reply}</div>
+                    <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 12 }}>{msg.admin_reply}</div>
                   </div>
                 )}
                 <div style={{ fontSize: 10, color: C.textGhost, fontFamily: F.mono, marginTop: 8 }}>

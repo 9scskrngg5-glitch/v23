@@ -58,8 +58,8 @@ export const WeeklyReview = ({ trades, isPro, onUpgrade }) => {
       {/* Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 16 }}>
         {[
-          { label: "PnL Semaine", value: `${weekPnL >= 0 ? "+" : ""}${weekPnL.toFixed(2)}$`, color: weekPnL >= 0 ? ${C.green} : ${C.red} },
-          { label: "Win Rate",    value: `${weekWR}%`,            color: Number(weekWR) >= 50 ? ${C.green} : ${C.red} },
+          { label: "PnL Semaine", value: `${weekPnL >= 0 ? "+" : ""}${weekPnL.toFixed(2)}$`, color: weekPnL >= 0 ? C.green : C.red },
+          { label: "Win Rate",    value: `${weekWR}%`,            color: Number(weekWR) >= 50 ? C.green : C.red },
           { label: "Trades",      value: weekTrades.length,        color: C.text },
         ].map(s => (
           <div key={s.label} style={{ ...card() }}>
@@ -76,13 +76,13 @@ export const WeeklyReview = ({ trades, isPro, onUpgrade }) => {
           {[1,2,3,4,5].map(r => (
             <button key={r} onClick={() => setForm(f => ({ ...f, rating: r }))} style={{
               width: 40, height: 40, borderRadius: 8,
-              border: `1px solid ${form.rating >= r ? ${C.greenBord} : ${C.borde}r}`,
+              border: `1px solid ${form.rating >= r ? C.greenBord : C.border}`,
               background: form.rating >= r ? C.greenDim : "transparent",
               color: form.rating >= r ? C.green : C.textDim,
               cursor: "pointer", fontSize: 14, fontFamily: "'Syne', sans-serif", fontWeight: 700,
             }}>{r}</button>
           ))}
-          {form.rating > 0 && <span style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono, marginLeft: 8 }}>
+          {form.rating > 0 && <span style={{ fontSize: 12, color: ${C.textDim}, fontFamily: F.mono, marginLeft: 8 }}>
             {["", "Semaine à oublier", "Semaine difficile", "Semaine correcte", "Bonne semaine", "Semaine excellente"][form.rating]}
           </span>}
         </div>
@@ -90,14 +90,14 @@ export const WeeklyReview = ({ trades, isPro, onUpgrade }) => {
 
       {/* Questions */}
       <div style={{ ...card(), marginBottom: 14 }}>
-        <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 16 }}>Questions de coaching</div>
+        <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 16 }}>Questions de coaching</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {QUESTIONS.map(q => (
             <div key={q.id}>
-              <label style={{ fontSize: 12, color: C.textMid, display: "block", marginBottom: 6, fontFamily: F.mono }}>{q.label}</label>
+              <label style={{ fontSize: 12, color: ${C.textMid}, display: "block", marginBottom: 6, fontFamily: F.mono }}>{q.label}</label>
               <textarea value={form.answers?.[q.id] || ""} onChange={e => setForm(f => ({ ...f, answers: { ...f.answers, [q.id]: e.target.value } }))}
                 placeholder={q.ph} style={{ ...inp(), minHeight: 72, resize: "vertical" }}
-                onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+                onFocus={e => e.target.style.borderColor = ${C.green}} onBlur={e => e.target.style.borderColor = ${C.border}}
               />
             </div>
           ))}
@@ -107,37 +107,37 @@ export const WeeklyReview = ({ trades, isPro, onUpgrade }) => {
       {/* AI */}
       <div style={{ ...card(), marginBottom: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: aiInsight ? 14 : 0 }}>
-          <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase" }}>Coaching AI</div>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase" }}>Coaching AI</div>
           <button onClick={handleAI} disabled={aiLoading} style={{
             padding: "7px 16px", borderRadius: 7,
-            border: `1px solid ${!isPro ? ${C.orangeBord} : ${C.greenBor}d}`,
-            background: !isPro ? C.orangeDim : C.greenDim,
-            color: !isPro ? C.orange : aiLoading ? C.textDim : C.green,
+            border: `1px solid ${!isPro ? C.orangeBord : C.greenBord}`,
+            background: !isPro ? ${C.orangeDim} : ${C.greenDim},
+            color: !isPro ? ${C.orange} : aiLoading ? ${C.textDim} : ${C.green},
             cursor: "pointer", fontSize: 10, fontFamily: F.mono, letterSpacing: "0.06em",
           }}>{!isPro ? "UPGRADE" : aiLoading ? "ANALYSE..." : "ANALYSER MA SEMAINE →"}</button>
         </div>
-        {aiInsight && <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.75, borderLeft: `2px solid C.greenBord`, paddingLeft: 14, whiteSpace: "pre-wrap" }}>{aiInsight}</div>}
+        {aiInsight && <div style={{ fontSize: 13, color: ${C.textMid}, lineHeight: 1.75, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 14, whiteSpace: "pre-wrap" }}>{aiInsight}</div>}
       </div>
 
       <button onClick={() => { save(key, { ...form, savedAt: Date.now() }); setSaved(true); setTimeout(() => setSaved(false), 2000); }} style={{
         padding: "11px 24px", borderRadius: 9, border: saved ? `1px solid ${C.greenBord}` : "none",
-        background: saved ? C.greenDim : C.green, color: saved ? C.green : "#000",
+        background: saved ? ${C.greenDim} : ${C.green}, color: saved ? ${C.green} : "#000",
         cursor: "pointer", fontSize: 12, fontWeight: 700, fontFamily: F.mono, letterSpacing: "0.06em", marginBottom: 24,
       }}>{saved ? "SAUVEGARDÉ ✓" : "SAUVEGARDER LA REVIEW"}</button>
 
       {/* Past reviews */}
       {pastReviews.length > 0 && (
         <div>
-          <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Reviews précédentes</div>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Reviews précédentes</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {pastReviews.map(([k, r]) => (
               <div key={k} style={{ ...card(), display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <div style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono }}>Semaine du {new Date(k.replace("week_", "") + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}</div>
-                  {r.answers?.next && <div style={{ fontSize: 11, color: C.textDim, marginTop: 2 }}>{r.answers.next.slice(0, 60)}...</div>}
+                  <div style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono }}>Semaine du {new Date(k.replace("week_", "") + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}</div>
+                  {r.answers?.next && <div style={{ fontSize: 11, color: ${C.textDim}, marginTop: 2 }}>{r.answers.next.slice(0, 60)}...</div>}
                 </div>
                 <div style={{ display: "flex", gap: 4 }}>
-                  {[1,2,3,4,5].map(n => <div key={n} style={{ width: 8, height: 8, borderRadius: 2, background: r.rating >= n ? C.green : C.bgInner }} />)}
+                  {[1,2,3,4,5].map(n => <div key={n} style={{ width: 8, height: 8, borderRadius: 2, background: r.rating >= n ? ${C.green} : ${C.bgInner} }} />)}
                 </div>
               </div>
             ))}

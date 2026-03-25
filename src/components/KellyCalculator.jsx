@@ -57,9 +57,9 @@ export const KellyCalculator = ({ trades }) => {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 14 }}>
         {[
-          { label: "Kelly complet", value: `${kellyPct.toFixed(1)}%`, color: ${C.orange}, sub: "Risque théorique max" },
-          { label: `Kelly ${fraction}%`, value: `${adjustedPct.toFixed(1)}%`, color: ${C.green}, sub: "Recommandé" },
-          { label: "Montant à risquer", value: `${riskAmount.toFixed(0)}$`, color: ${C.text}, sub: `Sur ${Number(capital).toLocaleString()}$` },
+          { label: "Kelly complet", value: `${kellyPct.toFixed(1)}%`, color: C.orange, sub: "Risque théorique max" },
+          { label: `Kelly ${fraction}%`, value: `${adjustedPct.toFixed(1)}%`, color: C.green, sub: "Recommandé" },
+          { label: "Montant à risquer", value: `${riskAmount.toFixed(0)}$`, color: C.text, sub: `Sur ${Number(capital).toLocaleString()}$` },
         ].map(s => (
           <div key={s.label} style={{ background: "#0b0e1a", border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
             <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 5 }}>{s.label.toUpperCase()}</div>

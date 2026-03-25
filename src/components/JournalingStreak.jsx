@@ -41,7 +41,7 @@ export const JournalingStreak = ({ trades }) => {
   return (
     <div style={{
       display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
-      background: C.bgCard, border: `1px solid ${streak >= 7 ? color + "30" : ${C.borde}r}`,
+      background: C.bgCard, border: `1px solid ${streak >= 7 ? color + "30" : C.border}`,
       borderRadius: 12, flexWrap: "wrap", gap: 10,
       transition: "border-color 0.3s",
     }}>
@@ -50,16 +50,16 @@ export const JournalingStreak = ({ trades }) => {
         <span style={{ fontSize: 18 }}>{flame}</span>
         <div>
           <div style={{ fontSize: 22, fontWeight: 800, fontFamily: "'Syne', sans-serif", color, lineHeight: 1 }}>{streak}</div>
-          <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em" }}>JOURS</div>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em" }}>JOURS</div>
         </div>
         {isRecord && streak > 1 && (
-          <div style={{ fontSize: 9, color: C.orange, fontFamily: F.mono, background: C.orangeDim, border: `1px solid ${C.orangeBord}`, borderRadius: 20, padding: "2px 7px", letterSpacing: "0.08em" }}>
+          <div style={{ fontSize: 9, color: ${C.orange}, fontFamily: F.mono, background: ${C.orangeDim}, border: `1px solid ${C.orangeBord}`, borderRadius: 20, padding: "2px 7px", letterSpacing: "0.08em" }}>
             RECORD
           </div>
         )}
       </div>
 
-      <div style={{ width: 1, height: 28, background: C.border, flexShrink: 0 }} />
+      <div style={{ width: 1, height: 28, background: ${C.border}, flexShrink: 0 }} />
 
       {/* 7 day dots */}
       <div style={{ display: "flex", gap: 5 }}>
@@ -67,14 +67,14 @@ export const JournalingStreak = ({ trades }) => {
           <div key={d.key} title={d.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
             <div style={{
               width: 22, height: 22, borderRadius: 6,
-              background: d.active ? color + "25" : C.bgInner,
-              border: `1px solid ${d.active ? color + "60" : ${C.borde}r}`,
+              background: d.active ? color + "25" : ${C.bgInner},
+              border: `1px solid ${d.active ? color + "60" : C.border}`,
               transition: "all 0.2s",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               {d.active && <div style={{ width: 6, height: 6, borderRadius: "50%", background: color }} />}
             </div>
-            <div style={{ fontSize: 8, color: C.textDim, fontFamily: F.mono }}>{d.label}</div>
+            <div style={{ fontSize: 8, color: ${C.textDim}, fontFamily: F.mono }}>{d.label}</div>
           </div>
         ))}
       </div>
@@ -82,16 +82,16 @@ export const JournalingStreak = ({ trades }) => {
       {/* Record + 30j reward */}
       <div style={{ marginLeft: "auto", textAlign: "right", flexShrink: 0 }}>
         {reward30 ? (
-          <div style={{ fontSize: 10, color: C.purple, fontFamily: F.mono, background: "rgba(139,108,255,0.1)", border: "1px solid rgba(139,108,255,0.25)", borderRadius: 20, padding: "4px 10px" }}>
+          <div style={{ fontSize: 10, color: ${C.purple}, fontFamily: F.mono, background: "rgba(139,108,255,0.1)", border: "1px solid rgba(139,108,255,0.25)", borderRadius: 20, padding: "4px 10px" }}>
             30j streak → 1 mois Pro offert !
           </div>
         ) : record > 0 ? (
-          <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono }}>
-            Record: <span style={{ color: C.textMid }}>{record}j</span>
+          <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono }}>
+            Record: <span style={{ color: ${C.textMid} }}>{record}j</span>
           </div>
         ) : null}
         {streak === 0 && (
-          <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono }}>Ajoute un trade pour démarrer !</div>
+          <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>Ajoute un trade pour démarrer !</div>
         )}
       </div>
     </div>

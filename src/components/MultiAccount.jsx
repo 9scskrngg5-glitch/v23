@@ -64,7 +64,7 @@ export const AccountSwitcher = ({ accounts, activeId, onSwitch, onAdd, onRemove 
           <button key={a.id} onClick={() => onSwitch(a.id)} style={{
             display: "flex", alignItems: "center", gap: 6,
             padding: "7px 14px", borderRadius: 8, border: "1px solid",
-            borderColor: activeId === a.id ? `${a.color}50` : ${C.border},
+            borderColor: activeId === a.id ? `${a.color}50` : C.border,
             background: activeId === a.id ? `${a.color}0d` : "transparent",
             cursor: "pointer", fontSize: 11, fontFamily: mono,
             color: activeId === a.id ? a.color : C.textDim,

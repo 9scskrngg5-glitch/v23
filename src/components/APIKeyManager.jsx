@@ -63,7 +63,7 @@ export const APIKeyManager = ({ isPro, onUpgrade }) => {
           <div style={{ display: "flex", gap: 8 }}>
             <input value={newKeyName} onChange={e => setNewKeyName(e.target.value)}
               placeholder="Nom de la clé (ex: Webhook Notion)"
-              style={{ background: C.bgInner, border: `1px solid C.border`, color: C.text, padding: "9px 14px", borderRadius: 8, fontSize: 13, fontFamily: F.mono, outline: "none", flex: 1 }}
+              style={{ background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, padding: "9px 14px", borderRadius: 8, fontSize: 13, fontFamily: F.mono, outline: "none", flex: 1 }}
               onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
               onKeyDown={e => e.key === "Enter" && generateKey()}
             />
@@ -78,17 +78,17 @@ export const APIKeyManager = ({ isPro, onUpgrade }) => {
           <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 12 }}>MES CLÉS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {keys.map(k => (
-              <div key={k.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: C.bgInner, borderRadius: 9, border: `1px solid C.border` }}>
+              <div key={k.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: C.bgInner, borderRadius: 9, border: `1px solid ${C.border}` }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 12, color: C.text, fontFamily: F.mono, marginBottom: 2 }}>{k.name}</div>
                   <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {k.key.slice(0, 20)}...
                   </div>
                 </div>
-                <button onClick={() => copy(k.key, k.id)} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${C.border}`, background: "transparent", color: copied === k.id ? ${C.green} : ${C.textDim}, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
+                <button onClick={() => copy(k.key, k.id)} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${C.border}`, background: "transparent", color: copied === k.id ? C.green : C.textDim, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
                   {copied === k.id ? "COPIÉ ✓" : "COPIER"}
                 </button>
-                <button onClick={() => revokeKey(k.id)} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${C.redBord}`, background: ${C.redDim}, color: ${C.red}, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
+                <button onClick={() => revokeKey(k.id)} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${C.redBord}`, background: C.redDim, color: C.red, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
                   RÉVOQUER
                 </button>
               </div>

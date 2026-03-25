@@ -144,18 +144,18 @@ const UsersTab = ({ users, onRefresh }) => {
                   <td style={{ padding: "10px 14px", fontSize: 11, color: C.textDim, fontFamily: F.mono, whiteSpace: "nowrap" }}>{new Date(u.createdAt).toLocaleDateString("fr-FR")}</td>
                   <td style={{ padding: "10px 14px", fontSize: 11, color: C.textDim, fontFamily: F.mono, whiteSpace: "nowrap" }}>{u.lastSignIn ? new Date(u.lastSignIn).toLocaleDateString("fr-FR") : "—"}</td>
                   <td style={{ padding: "10px 14px" }}>
-                    <span style={{ fontSize: 9, fontFamily: F.mono, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 4, background: u.plan === "pro" ? "rgba(0,229,160,0.1)" : "rgba(255,255,255,0.04)", color: u.plan === "pro" ? C.green : C.textDim, border: `1px solid ${u.plan === "pro" ? "rgba(0,229,160,0.2)" : ${C.borde}r}` }}>{u.plan.toUpperCase()}</span>
+                    <span style={{ fontSize: 9, fontFamily: F.mono, letterSpacing: "0.08em", padding: "3px 8px", borderRadius: 4, background: u.plan === "pro" ? "rgba(0,229,160,0.1)" : "rgba(255,255,255,0.04)", color: u.plan === "pro" ? C.green : C.textDim, border: `1px solid ${u.plan === "pro" ? "rgba(0,229,160,0.2)" : C.border}` }}>{u.plan.toUpperCase()}</span>
                   </td>
-                  <td style={{ padding: "10px 14px", fontSize: 11, color: C.textDim, fontFamily: F.mono }}>{u.tradeCount}</td>
+                  <td style={{ padding: "10px 14px", fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>{u.tradeCount}</td>
                   <td style={{ padding: "10px 14px" }}>
-                    <span style={{ fontSize: 9, color: u.confirmed ? C.green : C.orange, fontFamily: F.mono }}>{u.confirmed ? "✓" : "PENDING"}</span>
+                    <span style={{ fontSize: 9, color: u.confirmed ? ${C.green} : ${C.orange}, fontFamily: F.mono }}>{u.confirmed ? "✓" : "PENDING"}</span>
                   </td>
                   <td style={{ padding: "10px 14px" }}>
                     <div style={{ display: "flex", gap: 4 }}>
-                      <ActionBtn color={u.plan === "pro" ? C.red : C.green} label={u.plan === "pro" ? "REVOKE" : "PRO"} onClick={() => setActionModal({ user: u, type: u.plan === "pro" ? "revoke_pro" : "grant_pro" })} />
-                      <ActionBtn color={C.textDim} label="MSG" onClick={() => setActionModal({ user: u, type: "send_message" })} />
-                      <ActionBtn color={C.orange} label="PWD" onClick={() => setActionModal({ user: u, type: "reset_password" })} />
-                      <ActionBtn color={C.red} label="DEL" onClick={() => { if (window.confirm(`Supprimer ${u.email} ?`)) setActionModal({ user: u, type: "delete_user" }); }} />
+                      <ActionBtn color={u.plan === "pro" ? ${C.red} : ${C.green}} label={u.plan === "pro" ? "REVOKE" : "PRO"} onClick={() => setActionModal({ user: u, type: u.plan === "pro" ? "revoke_pro" : "grant_pro" })} />
+                      <ActionBtn color={${C.textDim}} label="MSG" onClick={() => setActionModal({ user: u, type: "send_message" })} />
+                      <ActionBtn color={${C.orange}} label="PWD" onClick={() => setActionModal({ user: u, type: "reset_password" })} />
+                      <ActionBtn color={${C.red}} label="DEL" onClick={() => { if (window.confirm(`Supprimer ${u.email} ?`)) setActionModal({ user: u, type: "delete_user" }); }} />
                     </div>
                   </td>
                 </tr>
@@ -163,7 +163,7 @@ const UsersTab = ({ users, onRefresh }) => {
             </tbody>
           </table>
         </div>
-        {filtered.length === 0 && <div style={{ padding: 32, textAlign: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>Aucun utilisateur trouvé</div>}
+        {filtered.length === 0 && <div style={{ padding: 32, textAlign: "center", color: ${C.textGhost}, fontSize: 12, fontFamily: F.mono }}>Aucun utilisateur trouvé</div>}
       </div>
     </div>
   );
@@ -222,7 +222,7 @@ const SupportTab = () => {
     } catch (e) { console.error(e); }
   };
 
-  const STATUS = { open: { color: C.orange, label: "Ouvert" }, in_progress: { color: C.purple, label: "En cours" }, closed: { color: C.green, label: "Résolu" } };
+  const STATUS = { open: { color: ${C.orange}, label: "Ouvert" }, in_progress: { color: ${C.purple}, label: "En cours" }, closed: { color: ${C.green}, label: "Résolu" } };
   const filtered = filterStatus === "all" ? messages : messages.filter(m => m.status === filterStatus);
   const openCount = messages.filter(m => m.status === "open").length;
 
@@ -233,17 +233,17 @@ const SupportTab = () => {
     <div>
       {replyModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 500, backdropFilter: "blur(6px)", padding: 20 }}>
-          <div style={{ width: "min(500px, 95vw)", background: C.bgCard, border: `1px solid C.border`, borderRadius: 16, padding: 28 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: C.text, fontFamily: F.mono, marginBottom: 4 }}>{replyModal.subject}</div>
-            <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, marginBottom: 12 }}>{replyModal.user_email}</div>
-            <div style={{ background: C.bgInner, borderRadius: 9, padding: "12px 14px", marginBottom: 14, fontSize: 12, color: C.textMid, lineHeight: 1.6 }}>{replyModal.message}</div>
+          <div style={{ width: "min(500px, 95vw)", background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 16, padding: 28 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: F.mono, marginBottom: 4 }}>{replyModal.subject}</div>
+            <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, marginBottom: 12 }}>{replyModal.user_email}</div>
+            <div style={{ background: ${C.bgInner}, borderRadius: 9, padding: "12px 14px", marginBottom: 14, fontSize: 12, color: ${C.textMid}, lineHeight: 1.6 }}>{replyModal.message}</div>
             <textarea value={replyText} onChange={e => setReplyText(e.target.value)} placeholder="Ta réponse..."
-              style={{ width: "100%", minHeight: 100, background: C.bgInner, border: `1px solid C.border`, color: C.text, borderRadius: 9, padding: "10px 13px", fontSize: 12, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 14 }}
-              onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+              style={{ width: "100%", minHeight: 100, background: ${C.bgInner}, border: `1px solid ${C.border}`, color: ${C.text}, borderRadius: 9, padding: "10px 13px", fontSize: 12, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 14 }}
+              onFocus={e => e.target.style.borderColor = ${C.green}} onBlur={e => e.target.style.borderColor = ${C.border}}
             />
             <div style={{ display: "flex", gap: 10 }}>
               <button onClick={() => { setReplyModal(null); setReplyText(""); }} style={{ flex: 1, padding: "10px", borderRadius: 8, border: `1px solid ${C.border}`, background: "transparent", color: ${C.textDim}, cursor: "pointer", fontSize: 11, fontFamily: F.mono }}>ANNULER</button>
-              <button onClick={handleReply} disabled={sending || !replyText.trim()} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", background: C.green, color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: F.mono, opacity: sending ? 0.6 : 1 }}>
+              <button onClick={handleReply} disabled={sending || !replyText.trim()} style={{ flex: 1, padding: "10px", borderRadius: 8, border: "none", background: ${C.green}, color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: F.mono, opacity: sending ? 0.6 : 1 }}>
                 {sending ? "ENVOI..." : "RÉPONDRE & FERMER →"}
               </button>
             </div>
@@ -255,9 +255,9 @@ const SupportTab = () => {
         {["all", "open", "in_progress", "closed"].map(s => (
           <button key={s} onClick={() => setFilterStatus(s)} style={{
             padding: "7px 14px", borderRadius: 7, border: "1px solid",
-            borderColor: filterStatus === s ? C.greenBord : C.border,
-            background: filterStatus === s ? C.greenDim : "transparent",
-            color: filterStatus === s ? C.green : C.textDim,
+            borderColor: filterStatus === s ? ${C.greenBord} : ${C.border},
+            background: filterStatus === s ? ${C.greenDim} : "transparent",
+            color: filterStatus === s ? ${C.green} : ${C.textDim},
             cursor: "pointer", fontSize: 10, fontFamily: F.mono, letterSpacing: "0.06em",
           }}>
             {s === "all" ? "TOUS" : s === "open" ? `OUVERTS${openCount > 0 ? ` (${openCount})` : ""}` : s === "in_progress" ? "EN COURS" : "RÉSOLUS"}
@@ -266,7 +266,7 @@ const SupportTab = () => {
       </div>
 
       {filtered.length === 0 ? (
-        <div style={{ ...card(), textAlign: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono, padding: 32 }}>
+        <div style={{ ...card(), textAlign: "center", color: ${C.textGhost}, fontSize: 12, fontFamily: F.mono, padding: 32 }}>
           Aucun message {filterStatus !== "all" ? `"${filterStatus}"` : ""}
         </div>
       ) : (
@@ -277,16 +277,16 @@ const SupportTab = () => {
               <div key={msg.id} style={{ ...card(), borderColor: `${s.color}25` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: F.mono, marginBottom: 2 }}>{msg.subject}</div>
-                    <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono }}>{msg.user_email} · {new Date(msg.created_at).toLocaleDateString("fr-FR")}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: ${C.text}, fontFamily: F.mono, marginBottom: 2 }}>{msg.subject}</div>
+                    <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>{msg.user_email} · {new Date(msg.created_at).toLocaleDateString("fr-FR")}</div>
                   </div>
                   <span style={{ fontSize: 9, color: s.color, fontFamily: F.mono, background: `${s.color}15`, border: `1px solid ${s.color}30`, borderRadius: 20, padding: "3px 9px", flexShrink: 0, marginLeft: 10 }}>{s.label}</span>
                 </div>
-                <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6, marginBottom: 10 }}>{msg.message}</div>
+                <div style={{ fontSize: 12, color: ${C.textMid}, lineHeight: 1.6, marginBottom: 10 }}>{msg.message}</div>
                 {msg.admin_reply && (
-                  <div style={{ background: C.greenDim, border: `1px solid C.greenBord`, borderRadius: 9, padding: "10px 14px", marginBottom: 10 }}>
-                    <div style={{ fontSize: 9, color: C.green, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 4 }}>TA RÉPONSE</div>
-                    <div style={{ fontSize: 12, color: C.textMid }}>{msg.admin_reply}</div>
+                  <div style={{ background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, borderRadius: 9, padding: "10px 14px", marginBottom: 10 }}>
+                    <div style={{ fontSize: 9, color: ${C.green}, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 4 }}>TA RÉPONSE</div>
+                    <div style={{ fontSize: 12, color: ${C.textMid} }}>{msg.admin_reply}</div>
                   </div>
                 )}
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -306,13 +306,13 @@ const SupportTab = () => {
 // ── Shared state components ───────────────────────────────────────────────
 const LoadingState = () => (
   <div style={{ textAlign: "center", padding: "60px 24px" }}>
-    <div className="pulse" style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em" }}>CHARGEMENT...</div>
+    <div className="pulse" style={{ fontSize: 12, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em" }}>CHARGEMENT...</div>
   </div>
 );
 
 const ErrorState = ({ message, onRetry }) => (
   <div style={{ ...card(), textAlign: "center", padding: "40px 24px" }}>
-    <div style={{ fontSize: 13, color: C.red, fontFamily: F.mono, marginBottom: 12 }}>{message}</div>
+    <div style={{ fontSize: 13, color: ${C.red}, fontFamily: F.mono, marginBottom: 12 }}>{message}</div>
     {onRetry && <button onClick={onRetry} style={{ padding: "7px 16px", borderRadius: 8, border: `1px solid ${C.border}`, background: "transparent", color: ${C.textMid}, cursor: "pointer", fontSize: 11, fontFamily: F.mono }}>RÉESSAYER</button>}
   </div>
 );
@@ -341,23 +341,23 @@ export const AdminPanel = ({ user, onClose }) => {
   const TABS = [{ id: "overview", label: "Vue d'ensemble" }, { id: "users", label: "Utilisateurs" }, { id: "support", label: "Support" }];
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: C.bg, zIndex: 300, overflowY: "auto" }}>
+    <div style={{ position: "fixed", inset: 0, background: ${C.bg}, zIndex: 300, overflowY: "auto" }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');`}</style>
 
       {/* Topbar */}
-      <div style={{ borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, background: C.bg, zIndex: 10 }}>
+      <div style={{ borderBottom: `1px solid ${C.border}`, position: "sticky", top: 0, background: ${C.bg}, zIndex: 10 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 52 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ fontSize: 12, color: C.green, fontFamily: F.mono, letterSpacing: "0.15em", fontWeight: 700 }}>TJ</div>
-            <div style={{ width: 1, height: 16, background: C.border }} />
-            <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em" }}>ADMIN</div>
+            <div style={{ fontSize: 12, color: ${C.green}, fontFamily: F.mono, letterSpacing: "0.15em", fontWeight: 700 }}>TJ</div>
+            <div style={{ width: 1, height: 16, background: ${C.border} }} />
+            <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em" }}>ADMIN</div>
             <div style={{ display: "flex", gap: 2, marginLeft: 8 }}>
               {TABS.map(t => (
-                <button key={t.id} onClick={() => setActiveTab(t.id)} style={{ padding: "4px 14px", height: 52, border: "none", background: "none", cursor: "pointer", fontSize: 11, fontFamily: F.mono, letterSpacing: "0.06em", color: activeTab === t.id ? C.text : C.textDim, borderBottom: activeTab === t.id ? `2px solid ${C.green}` : "2px solid transparent", transition: "all 0.15s" }}>{t.label}</button>
+                <button key={t.id} onClick={() => setActiveTab(t.id)} style={{ padding: "4px 14px", height: 52, border: "none", background: "none", cursor: "pointer", fontSize: 11, fontFamily: F.mono, letterSpacing: "0.06em", color: activeTab === t.id ? ${C.text} : ${C.textDim}, borderBottom: activeTab === t.id ? `2px solid ${C.green}` : "2px solid transparent", transition: "all 0.15s" }}>{t.label}</button>
               ))}
             </div>
           </div>
-          <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 7, border: `1px solid ${C.border}`, background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: F.mono }}>FERMER</button>
+          <button onClick={onClose} style={{ padding: "7px 14px", borderRadius: 7, border: `1px solid ${C.border}`, background: "transparent", color: ${C.textDim}, cursor: "pointer", fontSize: 10, fontFamily: F.mono }}>FERMER</button>
         </div>
       </div>
 
@@ -368,21 +368,21 @@ export const AdminPanel = ({ user, onClose }) => {
         {!loading && !error && activeTab === "overview" && data && (
           <>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10, marginBottom: 24 }}>
-              <StatBox label="MRR" value={`${data.stats.mrr}$`} color={${C.gree}n} sub={`${data.stats.proUsers} Pro actifs`} />
-              <StatBox label="ARR" value={`${data.stats.mrr * 12}$`} color={${C.gree}n} sub="Revenus annuels" />
+              <StatBox label="MRR" value={`${data.stats.mrr}$`} color={${C.green} sub={`${data.stats.proUsers} Pro actifs`} />
+              <StatBox label="ARR" value={`${data.stats.mrr * 12}$`} color={${C.green} sub="Revenus annuels" />
               <StatBox label="Utilisateurs" value={data.stats.totalUsers} sub={`${data.stats.freeUsers} Free · ${data.stats.proUsers} Pro`} />
-              <StatBox label="Conversion" value={data.stats.totalUsers ? `${((data.stats.proUsers / data.stats.totalUsers) * 100).toFixed(1)}%` : "0%"} color={${C.orang}e} />
+              <StatBox label="Conversion" value={data.stats.totalUsers ? `${((data.stats.proUsers / data.stats.totalUsers) * 100).toFixed(1)}%` : "0%"} color={${C.orange} />
               <StatBox label="Trades Total" value={data.stats.totalTrades?.toLocaleString()} />
             </div>
             <div style={{ ...card() }}>
-              <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", fontFamily: F.mono, textTransform: "uppercase", marginBottom: 14 }}>Inscriptions — 30 derniers jours</div>
+              <div style={{ fontSize: 10, color: ${C.textDim}, letterSpacing: "0.12em", fontFamily: F.mono, textTransform: "uppercase", marginBottom: 14 }}>Inscriptions — 30 derniers jours</div>
               <ResponsiveContainer width="100%" height={140}>
                 <BarChart data={data.signupsChart} barSize={14}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={C.bgInner} vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 9, fill: C.textDim, fontFamily: F.mono }} axisLine={false} tickLine={false} interval={4} />
-                  <YAxis tick={{ fontSize: 9, fill: C.textDim }} axisLine={false} tickLine={false} width={24} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid C.border`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
-                  <Bar dataKey="count" fill={C.green} fillOpacity={0.7} radius={[3, 3, 0, 0]} />
+                  <CartesianGrid strokeDasharray="3 3" stroke={${C.bgInner}} vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 9, fill: ${C.textDim}, fontFamily: F.mono }} axisLine={false} tickLine={false} interval={4} />
+                  <YAxis tick={{ fontSize: 9, fill: ${C.textDim} }} axisLine={false} tickLine={false} width={24} allowDecimals={false} />
+                  <Tooltip contentStyle={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
+                  <Bar dataKey="count" fill={${C.green}} fillOpacity={0.7} radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -394,3 +394,4 @@ export const AdminPanel = ({ user, onClose }) => {
     </div>
   );
 };
+}

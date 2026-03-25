@@ -101,7 +101,7 @@ export const DisciplineCorrelation = ({ trades }) => {
         <div style={{
           marginTop: 12, padding: "10px 14px", borderRadius: 9,
           background: insight.color === C.green ? C.greenDim : C.bgInner,
-          border: `1px solid ${insight.color === ${C.green} ? ${C.greenBord} : ${C.borde}r}`,
+          border: `1px solid ${insight.color === C.green ? C.greenBord : C.border}`,
           fontSize: 12, color: insight.color, fontFamily: F.mono, lineHeight: 1.5,
         }}>
           {insight.text}

@@ -42,7 +42,7 @@ export const SetupStats = ({ trades }) => {
               padding: "12px 14px",
               background: C.bgInner,
               borderRadius: 10,
-              border: `1px solid ${i === 0 ? ${C.greenBord} : ${C.borde}r}`,
+              border: `1px solid ${i === 0 ? C.greenBord : C.border}`,
               position: "relative", overflow: "hidden",
             }}>
               {/* subtle bar background */}
@@ -54,21 +54,21 @@ export const SetupStats = ({ trades }) => {
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, position: "relative" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: C.text, fontFamily: F.mono, marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {i === 0 && <span style={{ color: C.green, marginRight: 6 }}>★</span>}
+                  <div style={{ fontSize: 13, fontWeight: 600, color: ${C.text}, fontFamily: F.mono, marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {i === 0 && <span style={{ color: ${C.green}, marginRight: 6 }}>★</span>}
                     {s.setup}
                   </div>
                   <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono }}>{s.total} trades</span>
-                    <span style={{ fontSize: 10, color: Number(s.winRate) >= 50 ? C.green : C.red, fontFamily: F.mono }}>{s.winRate}% WR</span>
-                    <span style={{ fontSize: 10, color: pnl >= 0 ? C.green : C.red, fontFamily: F.mono }}>{pnl >= 0 ? "+" : ""}{pnl}$ total</span>
+                    <span style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono }}>{s.total} trades</span>
+                    <span style={{ fontSize: 10, color: Number(s.winRate) >= 50 ? ${C.green} : ${C.red}, fontFamily: F.mono }}>{s.winRate}% WR</span>
+                    <span style={{ fontSize: 10, color: pnl >= 0 ? ${C.green} : ${C.red}, fontFamily: F.mono }}>{pnl >= 0 ? "+" : ""}{pnl}$ total</span>
                   </div>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
                   <div style={{ fontSize: 16, fontWeight: 800, fontFamily: "'Syne', sans-serif", color, letterSpacing: "-0.02em" }}>
                     {exp >= 0 ? "+" : ""}{exp}$
                   </div>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em" }}>EXPECTANCY</div>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em" }}>EXPECTANCY</div>
                 </div>
               </div>
             </div>
@@ -77,14 +77,14 @@ export const SetupStats = ({ trades }) => {
       </div>
 
       {setups.length > 0 && (
-        <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 9, background: C.bgInner, border: `1px solid C.border` }}>
-          <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 4 }}>LECTURE RAPIDE</div>
-          <div style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono, lineHeight: 1.6 }}>
+        <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 9, background: ${C.bgInner}, border: `1px solid ${C.border}` }}>
+          <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 4 }}>LECTURE RAPIDE</div>
+          <div style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono, lineHeight: 1.6 }}>
             {setups.filter(s => Number(s.expectancy) > 0).length > 0
               ? `Ton meilleur edge : "${setups[0].setup}" avec +${setups[0].expectancy}$ par trade en moyenne.`
               : "Aucun setup n'a d'expectancy positive pour l'instant. Analyse tes règles d'entrée."}
             {setups.filter(s => Number(s.expectancy) < 0).length > 0 && (
-              <span style={{ color: C.red }}>
+              <span style={{ color: ${C.red} }}>
                 {" "}Arrête "{setups[setups.length - 1].setup}" ({setups[setups.length - 1].expectancy}$/trade).
               </span>
             )}

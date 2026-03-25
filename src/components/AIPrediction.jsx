@@ -135,7 +135,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
           <span style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono }}>Analyse approfondie</span>
           <button onClick={runDeepAnalysis} disabled={loading} style={{
             padding: "7px 14px", borderRadius: 7,
-            border: `1px solid ${!isPro ? ${C.orangeBord} : ${C.greenBor}d}`,
+            border: `1px solid ${!isPro ? C.orangeBord : C.greenBord}`,
             background: !isPro ? C.orangeDim : C.greenDim,
             color: !isPro ? C.orange : C.green,
             cursor: "pointer", fontSize: 10, fontFamily: F.mono, letterSpacing: "0.06em",
@@ -144,7 +144,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
           </button>
         </div>
         {aiAnalysis && (
-          <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.75, borderLeft: `2px solid C.greenBord`, paddingLeft: 14, whiteSpace: "pre-wrap", marginTop: 12 }}>
+          <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.75, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 14, whiteSpace: "pre-wrap", marginTop: 12 }}>
             {aiAnalysis}
           </div>
         )}

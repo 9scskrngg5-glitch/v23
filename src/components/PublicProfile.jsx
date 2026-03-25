@@ -62,8 +62,8 @@ export const PublicProfile = ({ username }) => {
           {/* Stats grid */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10, marginBottom: 24 }}>
             {[
-              { label: "PnL Total", value: `${Number(stats.pnl) >= 0 ? "+" : ""}${stats.pnl}$`, color: Number(stats.pnl) >= 0 ? ${C.green} : ${C.red} },
-              { label: "Win Rate", value: `${stats.winRate}%`, color: Number(stats.winRate) >= 50 ? ${C.green} : ${C.red} },
+              { label: "PnL Total", value: `${Number(stats.pnl) >= 0 ? "+" : ""}${stats.pnl}$`, color: Number(stats.pnl) >= 0 ? C.green : C.red },
+              { label: "Win Rate", value: `${stats.winRate}%`, color: Number(stats.winRate) >= 50 ? C.green : C.red },
               { label: "Profit Factor", value: stats.pf, color: C.orange },
               { label: "30 derniers jours", value: `${Number(stats.recentPnL) >= 0 ? "+" : ""}${stats.recentPnL}$`, color: Number(stats.recentPnL) >= 0 ? C.green : C.red },
             ].map(s => (

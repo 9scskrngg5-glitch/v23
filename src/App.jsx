@@ -163,8 +163,8 @@ export default function App() {
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: C.border; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: C.borderHov; }
+        ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: ${C.borderHov}; }
         button { font-family: inherit; }
 
         @keyframes fadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
@@ -187,8 +187,8 @@ export default function App() {
 
         /* Input focus glow */
         input:focus, textarea:focus, select:focus {
-          border-color: C.green !important;
-          box-shadow: 0 0 0 3px C.greenDim;
+          border-color: ${C.green} !important;
+          box-shadow: 0 0 0 3px ${C.greenDim};
         }
 
         /* Better modal backdrop */

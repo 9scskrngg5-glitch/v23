@@ -72,7 +72,7 @@ export const RiskManager = ({ trades }) => {
   const statusOk = Math.abs(dailyRisk) < maxDailyLoss && openTrades < settings.maxOpenTrades;
 
   const inp = {
-    background: C.bgInner, border: `1px solid C.border`, color: C.text,
+    background: C.bgInner, border: `1px solid ${C.border}`, color: C.text,
     padding: "9px 13px", borderRadius: 8, fontSize: 13,
     fontFamily: F.mono, outline: "none", transition: "border-color 0.2s", width: "100%",
   };
@@ -89,7 +89,7 @@ export const RiskManager = ({ trades }) => {
           <div style={{
             padding: "7px 14px", borderRadius: 20,
             background: statusOk ? C.greenDim : C.redDim,
-            border: `1px solid ${statusOk ? ${C.greenBord} : ${C.redBor}d}`,
+            border: `1px solid ${statusOk ? C.greenBord : C.redBord}`,
             fontSize: 10, color: statusOk ? C.green : C.red, fontFamily: F.mono, letterSpacing: "0.08em",
           }}>
             {statusOk ? "RISQUE OK" : "ATTENTION"}
@@ -152,7 +152,7 @@ export const RiskManager = ({ trades }) => {
             </span>
           </div>
           <div style={{ height: 5, background: C.bgInner, borderRadius: 3, overflow: "hidden" }}>
-            <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(100, (openTrades / settings.maxOpenTrades) * 100)}%`, background: openTrades >= settings.maxOpenTrades ? ${C.red} : ${C.green}, transition: "width 0.5s ease" }} />
+            <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(100, (openTrades / settings.maxOpenTrades) * 100)}%`, background: openTrades >= settings.maxOpenTrades ? C.red : C.green, transition: "width 0.5s ease" }} />
           </div>
         </div>
       </div>
@@ -160,11 +160,11 @@ export const RiskManager = ({ trades }) => {
       {/* Quick stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 14 }}>
         {[
-          { label: "Capital", value: `${settings.accountSize.toLocaleString()}$`, color: ${C.text} },
-          { label: "Risque/trade max", value: `${maxRiskPerTrade.toFixed(0)}$`, color: ${C.orange} },
-          { label: "Marge disponible", value: `${Math.max(0, maxDailyLoss - Math.abs(dailyRisk)).toFixed(0)}$`, color: ${C.green} },
+          { label: "Capital", value: `${settings.accountSize.toLocaleString()}$`, color: C.text },
+          { label: "Risque/trade max", value: `${maxRiskPerTrade.toFixed(0)}$`, color: C.orange },
+          { label: "Marge disponible", value: `${Math.max(0, maxDailyLoss - Math.abs(dailyRisk)).toFixed(0)}$`, color: C.green },
         ].map(s => (
-          <div key={s.label} style={{ background: C.bgInner, border: `1px solid C.border`, borderRadius: 10, padding: "14px 16px" }}>
+          <div key={s.label} style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 5 }}>{s.label.toUpperCase()}</div>
             <div style={{ fontSize: 18, fontWeight: 700, color: s.color, fontFamily: F.display }}>{s.value}</div>
           </div>
@@ -192,11 +192,11 @@ export const RiskManager = ({ trades }) => {
         {posCalc ? (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { label: "Risque $", value: `${posCalc.riskAmt.toFixed(2)}$`, color: ${C.orange} },
+              { label: "Risque $", value: `${posCalc.riskAmt.toFixed(2)}$`, color: C.orange },
               { label: "Unités", value: posCalc.units.toLocaleString(), color: C.green },
               { label: "Lot size", value: posCalc.lotSize, color: C.text },
             ].map(s => (
-              <div key={s.label} style={{ background: C.bgInner, border: `1px solid C.border`, borderRadius: 9, padding: "12px 14px" }}>
+              <div key={s.label} style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 9, padding: "12px 14px" }}>
                 <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.08em", marginBottom: 4 }}>{s.label}</div>
                 <div style={{ fontSize: 18, fontWeight: 700, color: s.color, fontFamily: F.display }}>{s.value}</div>
               </div>

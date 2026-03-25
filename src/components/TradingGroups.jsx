@@ -36,7 +36,7 @@ const MiniEquityChart = ({ data }) => {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <Line type="monotone" dataKey="eq" stroke={isPositive ? C.green : C.red} strokeWidth={2} dot={false} />
-          <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid C.border`, borderRadius: 8, fontFamily: F.mono, fontSize: 10 }} formatter={v => [`${v >= 0 ? "+" : ""}${v.toFixed(2)}$`]} />
+          <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 10 }} formatter={v => [`${v >= 0 ? "+" : ""}${v.toFixed(2)}$`]} />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -62,7 +62,7 @@ const PostCard = ({ post, userId, onLike }) => {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 28, height: 28, borderRadius: "50%", background: C.bgInner, border: `1px solid C.border`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: C.textDim, fontFamily: F.mono }}>
+            <div style={{ width: 28, height: 28, borderRadius: "50%", background: C.bgInner, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: C.textDim, fontFamily: F.mono }}>
               {post.userId === userId ? "T" : post.userId.slice(-1).toUpperCase()}
             </div>
             <div>
@@ -71,7 +71,7 @@ const PostCard = ({ post, userId, onLike }) => {
             </div>
           </div>
           {post.asset && (
-            <span style={{ fontSize: 11, color: C.green, fontFamily: F.mono, background: C.greenDim, border: `1px solid C.greenBord`, borderRadius: 20, padding: "3px 10px" }}>
+            <span style={{ fontSize: 11, color: C.green, fontFamily: F.mono, background: C.greenDim, border: `1px solid ${C.greenBord}`, borderRadius: 20, padding: "3px 10px" }}>
               {post.asset}
             </span>
           )}
@@ -101,11 +101,11 @@ const PostCard = ({ post, userId, onLike }) => {
 
         {/* Stats card with mini chart */}
         {post.tradeData && (
-          <div style={{ background: C.bgInner, border: `1px solid C.border`, borderRadius: 10, padding: "12px 14px", marginBottom: 10 }}>
+          <div style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 10 }}>
             <div style={{ display: "flex", gap: 16, marginBottom: post.tradeData.equity?.length ? 10 : 0 }}>
               {[
-                ["Win Rate", `${post.tradeData.winRate}%`, Number(post.tradeData.winRate) >= 50 ? ${C.green} : ${C.red}],
-                ["PnL", `${Number(post.tradeData.totalPnL) >= 0 ? "+" : ""}${post.tradeData.totalPnL}$`, Number(post.tradeData.totalPnL) >= 0 ? ${C.green} : ${C.red}],
+                ["Win Rate", `${post.tradeData.winRate}%`, Number(post.tradeData.winRate) >= 50 ? C.green : C.red],
+                ["PnL", `${Number(post.tradeData.totalPnL) >= 0 ? "+" : ""}${post.tradeData.totalPnL}$`, Number(post.tradeData.totalPnL) >= 0 ? C.green : C.red],
                 ["Trades", post.tradeData.total, C.text],
               ].map(([l, v, c]) => (
                 <div key={l}>
@@ -173,13 +173,13 @@ const PostComposer = ({ groupId, userId, stats, equity, onPost }) => {
       {/* Asset + content */}
       <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
         <input value={asset} onChange={e => setAsset(e.target.value)} placeholder="Actif (BTC, EURUSD...)"
-          style={{ background: C.bgInner, border: `1px solid C.border`, color: C.text, padding: "9px 12px", borderRadius: 8, fontSize: 12, fontFamily: F.mono, outline: "none", width: 150 }}
+          style={{ background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, padding: "9px 12px", borderRadius: 8, fontSize: 12, fontFamily: F.mono, outline: "none", width: 150 }}
           onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
         />
       </div>
       <textarea value={content} onChange={e => setContent(e.target.value)}
         placeholder="Partage un setup, une analyse, un trade..."
-        style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid C.border`, color: C.text, borderRadius: 9, padding: "10px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 10 }}
+        style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, borderRadius: 9, padding: "10px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 10 }}
         onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
       />
 

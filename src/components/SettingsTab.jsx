@@ -128,8 +128,8 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
                   />
                 </div>
               ))}
-              {pwdError && <div style={{ background: C.redDim, border: `1px solid C.redBord`, padding: "8px 12px", borderRadius: 7, color: C.red, fontSize: 11, fontFamily: F.mono }}>{pwdError}</div>}
-              {pwdMsg && <div style={{ background: C.greenDim, border: `1px solid C.greenBord`, padding: "8px 12px", borderRadius: 7, color: C.green, fontSize: 11, fontFamily: F.mono }}>{pwdMsg}</div>}
+              {pwdError && <div style={{ background: C.redDim, border: `1px solid ${C.redBord}`, padding: "8px 12px", borderRadius: 7, color: C.red, fontSize: 11, fontFamily: F.mono }}>{pwdError}</div>}
+              {pwdMsg && <div style={{ background: C.greenDim, border: `1px solid ${C.greenBord}`, padding: "8px 12px", borderRadius: 7, color: C.green, fontSize: 11, fontFamily: F.mono }}>{pwdMsg}</div>}
               <button style={btnStyle("primary")} onClick={handleChangePassword}>METTRE À JOUR</button>
             </div>
           </div>
@@ -152,7 +152,7 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
               { label: "Avec résultat", value: trades.filter(t => t.result !== "").length, color: C.green },
               { label: "Avec setup", value: trades.filter(t => t.setup?.trim()).length, color: C.orange },
             ].map(s => (
-              <div key={s.label} style={{ background: C.bgInner, border: `1px solid C.border`, borderRadius: 10, padding: "12px 14px" }}>
+              <div key={s.label} style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
                 <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 4 }}>{s.label.toUpperCase()}</div>
                 <div style={{ fontSize: 20, fontWeight: 700, color: s.color, fontFamily: F.display }}>{s.value}</div>
               </div>
@@ -236,7 +236,7 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
 
             <textarea value={importText} onChange={e => setImportText(e.target.value)}
               placeholder='{"trades":[...],"tasks":[]}'
-              style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid C.border`, color: C.text, borderRadius: 9, padding: "10px 13px", fontSize: 11, fontFamily: F.mono, outline: "none", resize: "vertical" }}
+              style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, borderRadius: 9, padding: "10px 13px", fontSize: 11, fontFamily: F.mono, outline: "none", resize: "vertical" }}
               onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
             />
 
@@ -247,21 +247,21 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
                 const tc = parsed.trades?.length ?? 0;
                 const tk = parsed.tasks?.length ?? 0;
                 return (
-                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.greenDim, border: `1px solid C.greenBord`, borderRadius: 8, fontSize: 11, color: C.green, fontFamily: F.mono }}>
+                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.greenDim, border: `1px solid ${C.greenBord}`, borderRadius: 8, fontSize: 11, color: C.green, fontFamily: F.mono }}>
                     ✓ JSON valide — {tc} trade{tc > 1 ? "s" : ""}{tk > 0 ? ` · ${tk} tâche${tk > 1 ? "s" : ""}` : ""}
                   </div>
                 );
               } catch {
                 return importText.length > 5 ? (
-                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.redDim, border: `1px solid C.redBord`, borderRadius: 8, fontSize: 11, color: C.red, fontFamily: F.mono }}>
+                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.redDim, border: `1px solid ${C.redBord}`, borderRadius: 8, fontSize: 11, color: C.red, fontFamily: F.mono }}>
                     ✗ JSON invalide
                   </div>
                 ) : null;
               }
             })()}
 
-            {importError && <div style={{ marginTop: 10, background: C.redDim, border: `1px solid C.redBord`, padding: "10px 13px", borderRadius: 8, color: C.red, fontSize: 12, fontFamily: F.mono }}>{importError}</div>}
-            {importSuccess && <div style={{ marginTop: 10, background: C.greenDim, border: `1px solid C.greenBord`, padding: "10px 13px", borderRadius: 8, color: C.green, fontSize: 12, fontFamily: F.mono }}>Import réussi — {trades.length} trades chargés ✓</div>}
+            {importError && <div style={{ marginTop: 10, background: C.redDim, border: `1px solid ${C.redBord}`, padding: "10px 13px", borderRadius: 8, color: C.red, fontSize: 12, fontFamily: F.mono }}>{importError}</div>}
+            {importSuccess && <div style={{ marginTop: 10, background: C.greenDim, border: `1px solid ${C.greenBord}`, padding: "10px 13px", borderRadius: 8, color: C.green, fontSize: 12, fontFamily: F.mono }}>Import réussi — {trades.length} trades chargés ✓</div>}
 
             <div style={{ display: "flex", gap: 8, marginTop: 12, justifyContent: "flex-end" }}>
               <button onClick={() => { setImportText(""); setImportError(""); }} style={btnStyle()}>ANNULER</button>

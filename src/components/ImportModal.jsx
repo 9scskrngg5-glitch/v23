@@ -78,47 +78,47 @@ export const ImportModal = ({ onImport, onClose }) => {
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
           style={{
-            border: `2px dashed ${dragging ? ${C.green} : result ? "rgba(0,229,160,0.3)" : ${C.borde}r}`,
+            border: `2px dashed ${dragging ? C.green : result ? "rgba(0,229,160,0.3)" : C.border}`,
             borderRadius: 12, padding: "28px 20px", textAlign: "center",
             cursor: "pointer", transition: "all 0.2s", marginBottom: 14,
             background: dragging ? "rgba(0,229,160,0.03)" : "transparent",
           }}
         >
           <input ref={fileRef} type="file" accept=".csv,.txt" style={{ display: "none" }} onChange={e => processFile(e.target.files[0])} />
-          <div style={{ fontSize: 24, marginBottom: 8, color: C.textDim, fontFamily: mono }}>⊕</div>
-          <div style={{ fontSize: 13, color: C.textDim, fontFamily: sans }}>
+          <div style={{ fontSize: 24, marginBottom: 8, color: ${C.textDim}, fontFamily: mono }}>⊕</div>
+          <div style={{ fontSize: 13, color: ${C.textDim}, fontFamily: sans }}>
             {result ? "Clique pour changer de fichier" : "Glisse ton fichier CSV ici ou clique pour choisir"}
           </div>
-          <div style={{ fontSize: 11, color: C.textDim, fontFamily: mono, marginTop: 6 }}>
+          <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: mono, marginTop: 6 }}>
             .csv · .txt
           </div>
         </div>
 
         {/* Error */}
         {error && (
-          <div style={{ background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.18)", padding: "10px 14px", borderRadius: 10, color: C.red, fontSize: 12, fontFamily: mono, marginBottom: 14 }}>
+          <div style={{ background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.18)", padding: "10px 14px", borderRadius: 10, color: ${C.red}, fontSize: 12, fontFamily: mono, marginBottom: 14 }}>
             {error}
           </div>
         )}
 
         {/* Result preview */}
         {result && fmt && (
-          <div style={{ background: C.bgCard, border: "1px solid #13162a", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+          <div style={{ background: ${C.bgCard}, border: "1px solid #13162a", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <span style={{ fontSize: 11, fontFamily: mono, color: fmt.color, letterSpacing: "0.08em" }}>{fmt.label}</span>
-              <span style={{ fontSize: 11, fontFamily: mono, color: C.textDim }}>{result.count} trades détectés</span>
+              <span style={{ fontSize: 11, fontFamily: mono, color: ${C.textDim} }}>{result.count} trades détectés</span>
             </div>
             {/* Preview first 3 trades */}
             {result.trades.slice(0, 3).map((t, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderTop: i > 0 ? "1px solid #0e1120" : "none" }}>
-                <span style={{ fontSize: 11, color: C.textMid, fontFamily: mono }}>{t.pair}</span>
-                <span style={{ fontSize: 11, color: Number(t.result) >= 0 ? C.green : C.red, fontFamily: mono }}>
+                <span style={{ fontSize: 11, color: ${C.textMid}, fontFamily: mono }}>{t.pair}</span>
+                <span style={{ fontSize: 11, color: Number(t.result) >= 0 ? ${C.green} : ${C.red}, fontFamily: mono }}>
                   {Number(t.result) >= 0 ? "+" : ""}{Number(t.result).toFixed(2)}$
                 </span>
               </div>
             ))}
             {result.count > 3 && (
-              <div style={{ fontSize: 10, color: C.textDim, fontFamily: mono, marginTop: 8 }}>
+              <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: mono, marginTop: 8 }}>
                 + {result.count - 3} autres trades...
               </div>
             )}
@@ -133,20 +133,20 @@ export const ImportModal = ({ onImport, onClose }) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a"); a.href = url; a.download = "template-trades.csv"; a.click();
             URL.revokeObjectURL(url);
-          }} style={{ background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 11, fontFamily: mono, letterSpacing: "0.06em", padding: 0 }}>
+          }} style={{ background: "none", border: "none", color: ${C.textDim}, cursor: "pointer", fontSize: 11, fontFamily: mono, letterSpacing: "0.06em", padding: 0 }}>
             Télécharger template CSV →
           </button>
         </div>
 
         {/* Actions */}
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-          <button onClick={onClose} style={{ padding: "10px 18px", borderRadius: 8, border: "1px solid #181b2e", background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 12, fontFamily: mono, letterSpacing: "0.06em" }}>
+          <button onClick={onClose} style={{ padding: "10px 18px", borderRadius: 8, border: "1px solid #181b2e", background: "transparent", color: ${C.textDim}, cursor: "pointer", fontSize: 12, fontFamily: mono, letterSpacing: "0.06em" }}>
             ANNULER
           </button>
           <button onClick={handleImport} disabled={!result?.trades?.length || importing} style={{
             padding: "10px 22px", borderRadius: 8, border: "none",
-            background: result?.trades?.length ? C.green : "#0d1020",
-            color: result?.trades?.length ? "#000" : C.textDim,
+            background: result?.trades?.length ? ${C.green} : "#0d1020",
+            color: result?.trades?.length ? "#000" : ${C.textDim},
             cursor: result?.trades?.length ? "pointer" : "not-allowed",
             fontSize: 12, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em",
           }}>
