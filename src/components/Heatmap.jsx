@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { C, F } from "../lib/design";
 
 const MONTHS = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
 const DAYS = ["L","M","M","J","V","S","D"];
@@ -37,17 +38,17 @@ export const Heatmap = ({ trades }) => {
   }
 
   const getColor = (data) => {
-    if (!data) return "#0a0d18";
-    if (data.pnl > 200) return "#00e5a0";
+    if (!data) return ${C.bgInner};
+    if (data.pnl > 200) return ${C.green};
     if (data.pnl > 50) return "rgba(0,229,160,0.5)";
     if (data.pnl > 0) return "rgba(0,229,160,0.25)";
-    if (data.pnl < -200) return "#ff4d6d";
+    if (data.pnl < -200) return ${C.red};
     if (data.pnl < -50) return "rgba(255,77,109,0.5)";
     return "rgba(255,77,109,0.25)";
   };
 
   if (closed.length === 0) return (
-    <div style={{ color: "#1e2235", fontSize: 12, fontFamily: "'DM Mono', monospace", padding: "20px 0" }}>
+    <div style={{ color: ${C.textGhost}, fontSize: 12, fontFamily: "'DM Mono', monospace", padding: "20px 0" }}>
       Pas assez de données
     </div>
   );
@@ -59,7 +60,7 @@ export const Heatmap = ({ trades }) => {
         <div style={{ display: "flex", flexDirection: "column", gap: 3, marginRight: 4 }}>
           <div style={{ height: 14 }} />
           {DAYS.map((d, i) => (
-            <div key={i} style={{ height: 12, fontSize: 8, color: "#2d3352", fontFamily: "'DM Mono', monospace", display: "flex", alignItems: "center" }}>
+            <div key={i} style={{ height: 12, fontSize: 8, color: ${C.textDim}, fontFamily: "'DM Mono', monospace", display: "flex", alignItems: "center" }}>
               {d}
             </div>
           ))}
@@ -69,7 +70,7 @@ export const Heatmap = ({ trades }) => {
         {weeks.map((week, wi) => (
           <div key={wi} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
             {/* Month label */}
-            <div style={{ height: 14, fontSize: 8, color: "#2d3352", fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
+            <div style={{ height: 14, fontSize: 8, color: ${C.textDim}, fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
               {week[0].date.getDate() <= 7 ? MONTHS[week[0].date.getMonth()] : ""}
             </div>
             {week.map((day, di) => (
@@ -91,11 +92,11 @@ export const Heatmap = ({ trades }) => {
 
       {/* Legend */}
       <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 10, justifyContent: "flex-end" }}>
-        <span style={{ fontSize: 9, color: "#2d3352", fontFamily: "'DM Mono', monospace" }}>Moins</span>
-        {["rgba(255,77,109,0.5)", "rgba(255,77,109,0.25)", "#0a0d18", "rgba(0,229,160,0.25)", "rgba(0,229,160,0.5)", "#00e5a0"].map((c, i) => (
+        <span style={{ fontSize: 9, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>Moins</span>
+        {["rgba(255,77,109,0.5)", "rgba(255,77,109,0.25)", C.bgInner, "rgba(0,229,160,0.25)", "rgba(0,229,160,0.5)", C.green].map((c, i) => (
           <div key={i} style={{ width: 10, height: 10, borderRadius: 2, background: c }} />
         ))}
-        <span style={{ fontSize: 9, color: "#2d3352", fontFamily: "'DM Mono', monospace" }}>Plus</span>
+        <span style={{ fontSize: 9, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>Plus</span>
       </div>
     </div>
   );

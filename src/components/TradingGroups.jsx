@@ -35,8 +35,8 @@ const MiniEquityChart = ({ data }) => {
     <div style={{ width: "100%", height: 80 }}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
-          <Line type="monotone" dataKey="eq" stroke={isPositive ? C.green : C.red} strokeWidth={2} dot={false} />
-          <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 10 }} formatter={v => [`${v >= 0 ? "+" : ""}${v.toFixed(2)}$`]} />
+          <Line type="monotone" dataKey="eq" stroke={isPositive ? ${C.green} : ${C.re}d} strokeWidth={2} dot={false} />
+          <Tooltip contentStyle={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 10 }} formatter={v => [`${v >= 0 ? "+" : ""}${v.toFixed(2)}$`]} />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -62,23 +62,23 @@ const PostCard = ({ post, userId, onLike }) => {
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 28, height: 28, borderRadius: "50%", background: C.bgInner, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: C.textDim, fontFamily: F.mono }}>
+            <div style={{ width: 28, height: 28, borderRadius: "50%", background: ${C.bgInner}, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>
               {post.userId === userId ? "T" : post.userId.slice(-1).toUpperCase()}
             </div>
             <div>
-              <div style={{ fontSize: 12, color: C.text, fontFamily: F.mono }}>{post.userId === userId ? "Toi" : `Trader #${post.userId.slice(-4)}`}</div>
-              <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono }}>{new Date(post.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div>
+              <div style={{ fontSize: 12, color: ${C.text}, fontFamily: F.mono }}>{post.userId === userId ? "Toi" : `Trader #${post.userId.slice(-4)}`}</div>
+              <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono }}>{new Date(post.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div>
             </div>
           </div>
           {post.asset && (
-            <span style={{ fontSize: 11, color: C.green, fontFamily: F.mono, background: C.greenDim, border: `1px solid ${C.greenBord}`, borderRadius: 20, padding: "3px 10px" }}>
+            <span style={{ fontSize: 11, color: ${C.green}, fontFamily: F.mono, background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, borderRadius: 20, padding: "3px 10px" }}>
               {post.asset}
             </span>
           )}
         </div>
 
         {/* Content */}
-        {post.content && <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.65, marginBottom: post.imageBase64 || post.tradeData ? 12 : 0 }}>{post.content}</div>}
+        {post.content && <div style={{ fontSize: 13, color: ${C.textMid}, lineHeight: 1.65, marginBottom: post.imageBase64 || post.tradeData ? 12 : 0 }}>{post.content}</div>}
 
         {/* Screenshot with hover preview */}
         {post.imageBase64 && (
@@ -101,15 +101,15 @@ const PostCard = ({ post, userId, onLike }) => {
 
         {/* Stats card with mini chart */}
         {post.tradeData && (
-          <div style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 10 }}>
+          <div style={{ background: ${C.bgInner}, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 10 }}>
             <div style={{ display: "flex", gap: 16, marginBottom: post.tradeData.equity?.length ? 10 : 0 }}>
               {[
-                ["Win Rate", `${post.tradeData.winRate}%`, Number(post.tradeData.winRate) >= 50 ? C.green : C.red],
-                ["PnL", `${Number(post.tradeData.totalPnL) >= 0 ? "+" : ""}${post.tradeData.totalPnL}$`, Number(post.tradeData.totalPnL) >= 0 ? C.green : C.red],
-                ["Trades", post.tradeData.total, C.text],
+                ["Win Rate", `${post.tradeData.winRate}%`, Number(post.tradeData.winRate) >= 50 ? ${C.green} : ${C.red}],
+                ["PnL", `${Number(post.tradeData.totalPnL) >= 0 ? "+" : ""}${post.tradeData.totalPnL}$`, Number(post.tradeData.totalPnL) >= 0 ? ${C.green} : ${C.red}],
+                ["Trades", post.tradeData.total, ${C.text}],
               ].map(([l, v, c]) => (
                 <div key={l}>
-                  <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 2 }}>{l}</div>
+                  <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 2 }}>{l}</div>
                   <div style={{ fontSize: 15, fontWeight: 700, color: c, fontFamily: "'Syne', sans-serif" }}>{v}</div>
                 </div>
               ))}
@@ -120,7 +120,7 @@ const PostCard = ({ post, userId, onLike }) => {
 
         {/* Actions */}
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <button onClick={onLike} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, color: liked ? C.red : C.textDim, fontFamily: F.mono, fontSize: 12, padding: 0 }}>
+          <button onClick={onLike} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, color: liked ? ${C.red} : ${C.textDim}, fontFamily: F.mono, fontSize: 12, padding: 0 }}>
             {liked ? "♥" : "♡"} {post.likes?.length || 0}
           </button>
         </div>
@@ -173,14 +173,14 @@ const PostComposer = ({ groupId, userId, stats, equity, onPost }) => {
       {/* Asset + content */}
       <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
         <input value={asset} onChange={e => setAsset(e.target.value)} placeholder="Actif (BTC, EURUSD...)"
-          style={{ background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, padding: "9px 12px", borderRadius: 8, fontSize: 12, fontFamily: F.mono, outline: "none", width: 150 }}
-          onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+          style={{ background: ${C.bgInner}, border: `1px solid ${C.border}`, color: ${C.text}, padding: "9px 12px", borderRadius: 8, fontSize: 12, fontFamily: F.mono, outline: "none", width: 150 }}
+          onFocus={e => e.target.style.borderColor = ${C.gree}n} onBlur={e => e.target.style.borderColor = ${C.borde}r}
         />
       </div>
       <textarea value={content} onChange={e => setContent(e.target.value)}
         placeholder="Partage un setup, une analyse, un trade..."
-        style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, borderRadius: 9, padding: "10px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 10 }}
-        onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+        style={{ width: "100%", minHeight: 80, background: ${C.bgInner}, border: `1px solid ${C.border}`, color: ${C.text}, borderRadius: 9, padding: "10px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", marginBottom: 10 }}
+        onFocus={e => e.target.style.borderColor = ${C.gree}n} onBlur={e => e.target.style.borderColor = ${C.borde}r}
       />
 
       {/* Image preview */}

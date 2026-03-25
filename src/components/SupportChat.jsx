@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { authFetch } from "../lib/auth";
 import { C, F, card, inp } from "../lib/design";
 
-const STATUS = { open: { color: "#f5a623", label: "En attente" }, in_progress: { color: "#7b61ff", label: "En cours" }, closed: { color: "#00e5a0", label: "Résolu" } };
+const STATUS = { open: { color: C.orange, label: "En attente" }, in_progress: { color: "#7b61ff", label: "En cours" }, closed: { color: C.green, label: "Résolu" } };
 
 export const SupportChat = () => {
   const [messages, setMessages] = useState([]);
@@ -108,14 +108,14 @@ export const SupportChat = () => {
             return (
               <div key={msg.id} style={{ ...card(), borderColor: `${s.color}25` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: C.text, fontFamily: F.mono }}>{msg.subject}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: ${C.text}, fontFamily: F.mono }}>{msg.subject}</div>
                   <span style={{ fontSize: 9, color: s.color, fontFamily: F.mono, background: `${s.color}15`, border: `1px solid ${s.color}30`, borderRadius: 20, padding: "3px 9px", flexShrink: 0, marginLeft: 10 }}>{s.label}</span>
                 </div>
-                <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6, marginBottom: 8 }}>{msg.message}</div>
+                <div style={{ fontSize: 12, color: ${C.textMid}, lineHeight: 1.6, marginBottom: 8 }}>{msg.message}</div>
                 {msg.admin_reply && (
                   <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.border}` }}>
-                    <div style={{ fontSize: 9, color: C.green, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Réponse du support</div>
-                    <div style={{ fontSize: 12, color: C.textMid, lineHeight: 1.6, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 12 }}>{msg.admin_reply}</div>
+                    <div style={{ fontSize: 9, color: ${C.green}, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Réponse du support</div>
+                    <div style={{ fontSize: 12, color: ${C.textMid}, lineHeight: 1.6, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 12 }}>{msg.admin_reply}</div>
                   </div>
                 )}
                 <div style={{ fontSize: 10, color: C.textGhost, fontFamily: F.mono, marginTop: 8 }}>

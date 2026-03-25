@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { C, F } from "../lib/design";
 import { computeEarnedBadges, BADGES } from "../lib/badges";
 import { computeDisciplineScore } from "../lib/discipline";
 
@@ -28,8 +29,8 @@ export const BadgesPanel = ({ trades, stats }) => {
             <div key={badge.id} title={`${badge.label} — ${badge.desc}`} style={{
               display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
               padding: "12px 8px", borderRadius: 10,
-              background: isEarned ? "rgba(255,255,255,0.03)" : C.bgInner,
-              border: `1px solid ${isEarned ? badge.color + "30" : C.border}`,
+              background: isEarned ? "rgba(255,255,255,0.03)" : ${C.bgInner},
+              border: `1px solid ${isEarned ? badge.color + "30" : ${C.borde}r}`,
               opacity: isEarned ? 1 : 0.35,
               transition: "all 0.2s", cursor: "default",
             }}

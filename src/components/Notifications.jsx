@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { C, F } from "../lib/design";
 
 const mono = "'DM Mono', monospace";
 
@@ -76,7 +77,7 @@ export const NotificationBell = ({ stats, trades, goals }) => {
     <div ref={ref} style={{ position: "relative" }}>
       <button onClick={() => setOpen(o => !o)} style={{
         background: "none", border: "1px solid #13162a", borderRadius: 6,
-        padding: "4px 10px", cursor: "pointer", color: notifs.length > 0 ? "#f5a623" : "#2d3352",
+        padding: "4px 10px", cursor: "pointer", color: notifs.length > 0 ? ${C.orange} : ${C.textDim},
         fontSize: 11, fontFamily: mono, letterSpacing: "0.06em", position: "relative",
         transition: "color 0.15s",
       }}>
@@ -86,31 +87,31 @@ export const NotificationBell = ({ stats, trades, goals }) => {
       {open && (
         <div style={{
           position: "absolute", right: 0, top: "calc(100% + 8px)",
-          width: 300, background: "#0a0d18", border: "1px solid #181b2e",
+          width: 300, background: C.bgInner, border: "1px solid #181b2e",
           borderRadius: 12, zIndex: 100, overflow: "hidden",
           boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
         }}>
           <div style={{ padding: "12px 16px", borderBottom: "1px solid #0e1120", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 10, color: "#3a4060", fontFamily: mono, letterSpacing: "0.1em" }}>NOTIFICATIONS</span>
+            <span style={{ fontSize: 10, color: C.textDim, fontFamily: mono, letterSpacing: "0.1em" }}>NOTIFICATIONS</span>
             {notifs.length > 0 && (
-              <button onClick={dismissAll} style={{ background: "none", border: "none", color: "#2d3352", cursor: "pointer", fontSize: 10, fontFamily: mono }}>TOUT LIRE</button>
+              <button onClick={dismissAll} style={{ background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: mono }}>TOUT LIRE</button>
             )}
           </div>
 
           {notifs.length === 0 ? (
-            <div style={{ padding: 20, textAlign: "center", color: "#1e2235", fontSize: 11, fontFamily: mono }}>
+            <div style={{ padding: 20, textAlign: "center", color: C.textGhost, fontSize: 11, fontFamily: mono }}>
               Aucune notification
             </div>
           ) : (
             <div style={{ maxHeight: 320, overflowY: "auto" }}>
               {notifs.map(n => (
                 <div key={n.id} style={{ padding: "12px 16px", borderBottom: "1px solid #080a14", display: "flex", gap: 10 }}>
-                  <div style={{ width: 4, borderRadius: 2, flexShrink: 0, background: n.type === "success" ? "#00e5a0" : n.type === "warning" ? "#f5a623" : "#ff4d6d" }} />
+                  <div style={{ width: 4, borderRadius: 2, flexShrink: 0, background: n.type === "success" ? C.green : n.type === "warning" ? C.orange : C.red }} />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: "#dde1f5", fontFamily: mono, marginBottom: 3 }}>{n.title}</div>
-                    <div style={{ fontSize: 11, color: "#4a5070", lineHeight: 1.5 }}>{n.message}</div>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: C.text, fontFamily: mono, marginBottom: 3 }}>{n.title}</div>
+                    <div style={{ fontSize: 11, color: C.textDim, lineHeight: 1.5 }}>{n.message}</div>
                   </div>
-                  <button onClick={() => dismiss(n.id)} style={{ background: "none", border: "none", color: "#2d3352", cursor: "pointer", fontSize: 14, flexShrink: 0, alignSelf: "flex-start" }}>×</button>
+                  <button onClick={() => dismiss(n.id)} style={{ background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 14, flexShrink: 0, alignSelf: "flex-start" }}>×</button>
                 </div>
               ))}
             </div>

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { C, F } from "../lib/design";
 
 const mono = "'DM Mono', monospace";
 

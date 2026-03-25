@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { C, F } from "../lib/design";
 import { authFetch } from "../lib/auth";
 
 const mono = "'DM Mono', monospace";
@@ -58,7 +59,7 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
 
   return (
     <div>
-      <label style={{ fontSize: 10, color: "#2d3352", display: "block", marginBottom: 6, fontFamily: mono, letterSpacing: "0.1em" }}>
+      <label style={{ fontSize: 10, color: C.textDim, display: "block", marginBottom: 6, fontFamily: mono, letterSpacing: "0.1em" }}>
         NOTE VOCALE
       </label>
 
@@ -68,8 +69,8 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
           disabled={transcribing}
           style={{
             padding: "8px 14px", borderRadius: 8, border: "none",
-            background: recording ? "#ff4d6d" : transcribing ? "#0d1020" : "rgba(0,229,160,0.1)",
-            color: recording ? "#fff" : transcribing ? "#3a4060" : "#00e5a0",
+            background: recording ? C.red : transcribing ? "#0d1020" : "rgba(0,229,160,0.1)",
+            color: recording ? "#fff" : transcribing ? C.textDim : C.green,
             cursor: transcribing ? "not-allowed" : "pointer",
             fontSize: 11, fontFamily: mono, letterSpacing: "0.06em",
             display: "flex", alignItems: "center", gap: 6,
@@ -86,7 +87,7 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
         {note && (
           <button onClick={() => { setNote(""); onTranscribed?.(""); }} style={{
             background: "none", border: "1px solid #181b2e", borderRadius: 8,
-            color: "#3a4060", cursor: "pointer", fontSize: 10, fontFamily: mono, padding: "8px 12px",
+            color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: mono, padding: "8px 12px",
           }}>
             EFFACER
           </button>
@@ -95,8 +96,8 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
 
       {recording && (
         <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff4d6d", animation: "pulse 1s infinite" }} />
-          <span style={{ fontSize: 10, color: "#ff4d6d", fontFamily: mono }}>Enregistrement en cours...</span>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: C.red, animation: "pulse 1s infinite" }} />
+          <span style={{ fontSize: 10, color: C.red, fontFamily: mono }}>Enregistrement en cours...</span>
         </div>
       )}
 
@@ -105,17 +106,17 @@ export const VoiceNote = ({ onTranscribed, existingNote }) => {
           value={note}
           onChange={e => { setNote(e.target.value); onTranscribed?.(e.target.value); }}
           style={{
-            width: "100%", minHeight: 72, background: "#080a14",
-            border: "1px solid #181b2e", color: "#9099c0",
+            width: "100%", minHeight: 72, background: C.bgCard,
+            border: "1px solid #181b2e", color: C.textMid,
             borderRadius: 8, padding: "10px 12px", fontSize: 12,
             fontFamily: mono, outline: "none", resize: "vertical", marginTop: 8,
           }}
-          onFocus={e => e.target.style.borderColor = "#00e5a0"}
-          onBlur={e => e.target.style.borderColor = "#181b2e"}
+          onFocus={e => e.target.style.borderColor = C.green}
+          onBlur={e => e.target.style.borderColor = C.border}
         />
       )}
 
-      {error && <div style={{ fontSize: 11, color: "#ff4d6d", fontFamily: mono, marginTop: 6 }}>{error}</div>}
+      {error && <div style={{ fontSize: 11, color: C.red, fontFamily: mono, marginTop: 6 }}>{error}</div>}
     </div>
   );
 };

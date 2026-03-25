@@ -21,10 +21,10 @@ const Progress = ({ label, current, target, color = C.green, unit = "" }) => {
         </span>
       </div>
       <div style={{ height: 4, background: C.border, borderRadius: 2, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${pct}%`, background: pct >= 100 ? C.green : color, borderRadius: 2, transition: "width 0.5s ease" }} />
+        <div style={{ height: "100%", width: `${pct}%`, background: pct >= 100 ? ${C.green} : color, borderRadius: 2, transition: "width 0.5s ease" }} />
       </div>
       {pct >= 100 && (
-        <div style={{ fontSize: 10, color: C.green, fontFamily: mono, marginTop: 4, letterSpacing: "0.08em" }}>OBJECTIF ATTEINT</div>
+        <div style={{ fontSize: 10, color: ${C.green}, fontFamily: mono, marginTop: 4, letterSpacing: "0.08em" }}>OBJECTIF ATTEINT</div>
       )}
     </div>
   );

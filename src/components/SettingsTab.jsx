@@ -121,15 +121,15 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
             <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 360 }}>
               {[["new", "Nouveau mot de passe"], ["confirm", "Confirmer"]].map(([k, label]) => (
                 <div key={k}>
-                  <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 5, fontFamily: F.mono, letterSpacing: "0.1em" }}>{label.toUpperCase()}</label>
+                  <label style={{ fontSize: 9, color: ${C.textDim}, display: "block", marginBottom: 5, fontFamily: F.mono, letterSpacing: "0.1em" }}>{label.toUpperCase()}</label>
                   <input type="password" value={pwdForm[k]} onChange={e => setPwdForm(f => ({ ...f, [k]: e.target.value }))}
                     placeholder="••••••••" style={inp()}
-                    onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+                    onFocus={e => e.target.style.borderColor = ${C.gree}n} onBlur={e => e.target.style.borderColor = ${C.borde}r}
                   />
                 </div>
               ))}
-              {pwdError && <div style={{ background: C.redDim, border: `1px solid ${C.redBord}`, padding: "8px 12px", borderRadius: 7, color: C.red, fontSize: 11, fontFamily: F.mono }}>{pwdError}</div>}
-              {pwdMsg && <div style={{ background: C.greenDim, border: `1px solid ${C.greenBord}`, padding: "8px 12px", borderRadius: 7, color: C.green, fontSize: 11, fontFamily: F.mono }}>{pwdMsg}</div>}
+              {pwdError && <div style={{ background: ${C.redDim}, border: `1px solid ${C.redBord}`, padding: "8px 12px", borderRadius: 7, color: ${C.red}, fontSize: 11, fontFamily: F.mono }}>{pwdError}</div>}
+              {pwdMsg && <div style={{ background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, padding: "8px 12px", borderRadius: 7, color: ${C.green}, fontSize: 11, fontFamily: F.mono }}>{pwdMsg}</div>}
               <button style={btnStyle("primary")} onClick={handleChangePassword}>METTRE À JOUR</button>
             </div>
           </div>
@@ -147,13 +147,13 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
           {/* Stats overview */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 10, marginBottom: 16 }}>
             {[
-              { label: "Trades", value: trades.length, color: C.green },
-              { label: "Tâches", value: tasks.length, color: C.textMid },
-              { label: "Avec résultat", value: trades.filter(t => t.result !== "").length, color: C.green },
-              { label: "Avec setup", value: trades.filter(t => t.setup?.trim()).length, color: C.orange },
+              { label: "Trades", value: trades.length, color: ${C.green} },
+              { label: "Tâches", value: tasks.length, color: ${C.textMid} },
+              { label: "Avec résultat", value: trades.filter(t => t.result !== "").length, color: ${C.green} },
+              { label: "Avec setup", value: trades.filter(t => t.setup?.trim()).length, color: ${C.orange} },
             ].map(s => (
-              <div key={s.label} style={{ background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
-                <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 4 }}>{s.label.toUpperCase()}</div>
+              <div key={s.label} style={{ background: ${C.bgInner}, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
+                <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 4 }}>{s.label.toUpperCase()}</div>
                 <div style={{ fontSize: 20, fontWeight: 700, color: s.color, fontFamily: F.display }}>{s.value}</div>
               </div>
             ))}
@@ -179,15 +179,15 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
                 ↓ EXPORT CSV
               </button>
             </div>
-            <div style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono, lineHeight: 1.6 }}>
+            <div style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono, lineHeight: 1.6 }}>
               Le backup JSON contient tous tes trades et tâches. Garde-le précieusement.
             </div>
             <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap", marginTop: 16, paddingTop: 14, borderTop: `1px solid ${C.border}` }}>
               <div>
-                <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 5, fontFamily: F.mono, letterSpacing: "0.1em" }}>RAPPORT MENSUEL (PRO)</label>
+                <label style={{ fontSize: 9, color: ${C.textDim}, display: "block", marginBottom: 5, fontFamily: F.mono, letterSpacing: "0.1em" }}>RAPPORT MENSUEL (PRO)</label>
                 <input type="month" value={exportMonth} onChange={e => setExportMonth(e.target.value)}
                   style={{ ...inp({ width: "auto" }), colorScheme: "dark" }}
-                  onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+                  onFocus={e => e.target.style.borderColor = ${C.gree}n} onBlur={e => e.target.style.borderColor = ${C.borde}r}
                 />
               </div>
               <button style={btnStyle(isPro ? "primary" : "default")} onClick={handleExportPDF} disabled={exporting}>
@@ -203,8 +203,8 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
             {/* File drop zone */}
             <div
               style={{ border: `2px dashed ${C.border}`, borderRadius: 10, padding: "20px", textAlign: "center", marginBottom: 14, cursor: "pointer", transition: "border-color 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = C.borderHov}
-              onMouseLeave={e => e.currentTarget.style.borderColor = C.border}
+              onMouseEnter={e => e.currentTarget.style.borderColor = ${C.borderHo}v}
+              onMouseLeave={e => e.currentTarget.style.borderColor = ${C.borde}r}
               onDrop={e => {
                 e.preventDefault();
                 const file = e.dataTransfer.files[0];
@@ -212,10 +212,10 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
                 const reader = new FileReader();
                 reader.onload = ev => setImportText(ev.target.result);
                 reader.readAsText(file);
-                e.currentTarget.style.borderColor = C.border;
+                e.currentTarget.style.borderColor = ${C.border};
               }}
-              onDragOver={e => { e.preventDefault(); e.currentTarget.style.borderColor = C.green; }}
-              onDragLeave={e => { e.currentTarget.style.borderColor = C.border; }}
+              onDragOver={e => { e.preventDefault(); e.currentTarget.style.borderColor = ${C.green}; }}
+              onDragLeave={e => { e.currentTarget.style.borderColor = ${C.border}; }}
               onClick={() => {
                 const input = document.createElement("input");
                 input.type = "file"; input.accept = ".json";
@@ -230,14 +230,14 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
               }}
             >
               <div style={{ fontSize: 22, marginBottom: 8 }}>↑</div>
-              <div style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono }}>Glisse ton fichier JSON ici</div>
-              <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, marginTop: 4 }}>ou clique pour choisir</div>
+              <div style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono }}>Glisse ton fichier JSON ici</div>
+              <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono, marginTop: 4 }}>ou clique pour choisir</div>
             </div>
 
             <textarea value={importText} onChange={e => setImportText(e.target.value)}
               placeholder='{"trades":[...],"tasks":[]}'
-              style={{ width: "100%", minHeight: 80, background: C.bgInner, border: `1px solid ${C.border}`, color: C.text, borderRadius: 9, padding: "10px 13px", fontSize: 11, fontFamily: F.mono, outline: "none", resize: "vertical" }}
-              onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border}
+              style={{ width: "100%", minHeight: 80, background: ${C.bgInner}, border: `1px solid ${C.border}`, color: ${C.text}, borderRadius: 9, padding: "10px 13px", fontSize: 11, fontFamily: F.mono, outline: "none", resize: "vertical" }}
+              onFocus={e => e.target.style.borderColor = ${C.gree}n} onBlur={e => e.target.style.borderColor = ${C.borde}r}
             />
 
             {/* Preview if valid JSON */}
@@ -247,21 +247,21 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
                 const tc = parsed.trades?.length ?? 0;
                 const tk = parsed.tasks?.length ?? 0;
                 return (
-                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.greenDim, border: `1px solid ${C.greenBord}`, borderRadius: 8, fontSize: 11, color: C.green, fontFamily: F.mono }}>
+                  <div style={{ marginTop: 8, padding: "8px 12px", background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, borderRadius: 8, fontSize: 11, color: ${C.green}, fontFamily: F.mono }}>
                     ✓ JSON valide — {tc} trade{tc > 1 ? "s" : ""}{tk > 0 ? ` · ${tk} tâche${tk > 1 ? "s" : ""}` : ""}
                   </div>
                 );
               } catch {
                 return importText.length > 5 ? (
-                  <div style={{ marginTop: 8, padding: "8px 12px", background: C.redDim, border: `1px solid ${C.redBord}`, borderRadius: 8, fontSize: 11, color: C.red, fontFamily: F.mono }}>
+                  <div style={{ marginTop: 8, padding: "8px 12px", background: ${C.redDim}, border: `1px solid ${C.redBord}`, borderRadius: 8, fontSize: 11, color: ${C.red}, fontFamily: F.mono }}>
                     ✗ JSON invalide
                   </div>
                 ) : null;
               }
             })()}
 
-            {importError && <div style={{ marginTop: 10, background: C.redDim, border: `1px solid ${C.redBord}`, padding: "10px 13px", borderRadius: 8, color: C.red, fontSize: 12, fontFamily: F.mono }}>{importError}</div>}
-            {importSuccess && <div style={{ marginTop: 10, background: C.greenDim, border: `1px solid ${C.greenBord}`, padding: "10px 13px", borderRadius: 8, color: C.green, fontSize: 12, fontFamily: F.mono }}>Import réussi — {trades.length} trades chargés ✓</div>}
+            {importError && <div style={{ marginTop: 10, background: ${C.redDim}, border: `1px solid ${C.redBord}`, padding: "10px 13px", borderRadius: 8, color: ${C.red}, fontSize: 12, fontFamily: F.mono }}>{importError}</div>}
+            {importSuccess && <div style={{ marginTop: 10, background: ${C.greenDim}, border: `1px solid ${C.greenBord}`, padding: "10px 13px", borderRadius: 8, color: ${C.green}, fontSize: 12, fontFamily: F.mono }}>Import réussi — {trades.length} trades chargés ✓</div>}
 
             <div style={{ display: "flex", gap: 8, marginTop: 12, justifyContent: "flex-end" }}>
               <button onClick={() => { setImportText(""); setImportError(""); }} style={btnStyle()}>ANNULER</button>
@@ -284,14 +284,14 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
           <SectionTitle>Notifications push</SectionTitle>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, gap: 12 }}>
             <div>
-              <div style={{ fontSize: 13, color: C.text, fontFamily: F.mono, marginBottom: 4 }}>Notifications navigateur</div>
-              <div style={{ fontSize: 12, color: C.textDim }}>Alertes de drawdown, séries de victoires, rappels</div>
+              <div style={{ fontSize: 13, color: ${C.text}, fontFamily: F.mono, marginBottom: 4 }}>Notifications navigateur</div>
+              <div style={{ fontSize: 12, color: ${C.textDim} }}>Alertes de drawdown, séries de victoires, rappels</div>
             </div>
             <button onClick={async () => { const ok = await requestPushPermission(); setPushEnabled(ok); }} style={{
               padding: "8px 16px", borderRadius: 8, border: "1px solid",
-              borderColor: pushEnabled ? C.greenBord : C.border,
-              background: pushEnabled ? C.greenDim : "transparent",
-              color: pushEnabled ? C.green : C.textDim,
+              borderColor: pushEnabled ? ${C.greenBord} : ${C.border},
+              background: pushEnabled ? ${C.greenDim} : "transparent",
+              color: pushEnabled ? ${C.green} : ${C.textDim},
               cursor: "pointer", fontSize: 11, fontFamily: F.mono, letterSpacing: "0.06em",
             }}>{pushEnabled ? "ACTIVÉES ✓" : "ACTIVER"}</button>
           </div>
@@ -302,10 +302,10 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
           ].map(([title, desc]) => (
             <div key={title} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderTop: `1px solid ${C.border}` }}>
               <div>
-                <div style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono }}>{title}</div>
-                <div style={{ fontSize: 11, color: C.textDim }}>{desc}</div>
+                <div style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono }}>{title}</div>
+                <div style={{ fontSize: 11, color: ${C.textDim} }}>{desc}</div>
               </div>
-              <div style={{ width: 8, height: 8, borderRadius: "50%", background: pushEnabled ? C.green : C.textGhost }} />
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: pushEnabled ? ${C.green} : ${C.textGhost} }} />
             </div>
           ))}
         </div>
@@ -336,8 +336,8 @@ export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade
               ["Emails", "Resend"],
             ].map(([k, v]) => (
               <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 12, color: C.textDim, fontFamily: F.mono }}>{k}</span>
-                <span style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono }}>{v}</span>
+                <span style={{ fontSize: 12, color: ${C.textDim}, fontFamily: F.mono }}>{k}</span>
+                <span style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono }}>{v}</span>
               </div>
             ))}
           </div>

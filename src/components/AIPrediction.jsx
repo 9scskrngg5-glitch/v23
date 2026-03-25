@@ -84,7 +84,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
   };
 
   if (!prediction) return (
-    <div style={{ ...card(), textAlign: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>
+    <div style={{ ...card(), textAlign: "center", color: ${C.textGhost}, fontSize: 12, fontFamily: F.mono }}>
       Ajoute au moins 10 trades pour activer la prédiction AI.
     </div>
   );
@@ -94,7 +94,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
 
   return (
     <div style={{ ...card() }}>
-      <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.14em", marginBottom: 16, textTransform: "uppercase" }}>
+      <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.14em", marginBottom: 16, textTransform: "uppercase" }}>
         Prédiction AI — Dois-je trader maintenant ?
       </div>
 
@@ -102,7 +102,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
         {/* Score circle */}
         <div style={{ position: "relative", width: 90, height: 90, flexShrink: 0 }}>
           <svg width="90" height="90" style={{ transform: "rotate(-90deg)" }}>
-            <circle cx="45" cy="45" r="36" fill="none" stroke={C.bgInner} strokeWidth="7" />
+            <circle cx="45" cy="45" r="36" fill="none" stroke={${C.bgInne}r} strokeWidth="7" />
             <circle cx="45" cy="45" r="36" fill="none" stroke={gaugeColor} strokeWidth="7"
               strokeDasharray={`${(prediction.score / 100) * 2 * Math.PI * 36} ${2 * Math.PI * 36}`}
               strokeLinecap="round" style={{ transition: "stroke-dasharray 0.8s ease" }}
@@ -110,7 +110,7 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
           </svg>
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: gaugeColor, lineHeight: 1 }}>{prediction.score}</div>
-            <div style={{ fontSize: 8, color: C.textDim, fontFamily: F.mono }}>/100</div>
+            <div style={{ fontSize: 8, color: ${C.textDim}, fontFamily: F.mono }}>/100</div>
           </div>
         </div>
 
@@ -121,8 +121,8 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
           <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             {prediction.insights.map((ins, i) => (
               <div key={i} style={{ display: "flex", gap: 7, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 11, color: ins.good ? C.green : C.red, flexShrink: 0, marginTop: 1 }}>{ins.good ? "+" : "−"}</span>
-                <span style={{ fontSize: 12, color: C.textMid }}>{ins.text}</span>
+                <span style={{ fontSize: 11, color: ins.good ? ${C.green} : ${C.red}, flexShrink: 0, marginTop: 1 }}>{ins.good ? "+" : "−"}</span>
+                <span style={{ fontSize: 12, color: ${C.textMid} }}>{ins.text}</span>
               </div>
             ))}
           </div>
@@ -132,19 +132,19 @@ export const AIPrediction = ({ trades, isPro, onUpgrade }) => {
       {/* Deep AI analysis */}
       <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: aiAnalysis ? 12 : 0 }}>
-          <span style={{ fontSize: 11, color: C.textDim, fontFamily: F.mono }}>Analyse approfondie</span>
+          <span style={{ fontSize: 11, color: ${C.textDim}, fontFamily: F.mono }}>Analyse approfondie</span>
           <button onClick={runDeepAnalysis} disabled={loading} style={{
             padding: "7px 14px", borderRadius: 7,
-            border: `1px solid ${!isPro ? C.orangeBord : C.greenBord}`,
-            background: !isPro ? C.orangeDim : C.greenDim,
-            color: !isPro ? C.orange : C.green,
+            border: `1px solid ${!isPro ? ${C.orangeBord} : ${C.greenBor}d}`,
+            background: !isPro ? ${C.orangeDim} : ${C.greenDim},
+            color: !isPro ? ${C.orange} : ${C.green},
             cursor: "pointer", fontSize: 10, fontFamily: F.mono, letterSpacing: "0.06em",
           }}>
             {!isPro ? "PRO" : loading ? "ANALYSE..." : "ANALYSER →"}
           </button>
         </div>
         {aiAnalysis && (
-          <div style={{ fontSize: 13, color: C.textMid, lineHeight: 1.75, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 14, whiteSpace: "pre-wrap", marginTop: 12 }}>
+          <div style={{ fontSize: 13, color: ${C.textMid}, lineHeight: 1.75, borderLeft: `2px solid ${C.greenBord}`, paddingLeft: 14, whiteSpace: "pre-wrap", marginTop: 12 }}>
             {aiAnalysis}
           </div>
         )}

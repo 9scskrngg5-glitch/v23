@@ -1,4 +1,5 @@
 import {
+import { C, F } from "../lib/design";
   BarChart, Bar, XAxis, YAxis, Tooltip,
   CartesianGrid, ResponsiveContainer, Cell, ReferenceLine,
 } from "recharts";
@@ -14,7 +15,7 @@ const SessionTooltip = ({ active, payload }) => {
       borderRadius: 10, padding: "10px 14px",
       fontFamily: "'DM Mono', monospace", fontSize: 12,
     }}>
-      <div style={{ color: "#a0a8c8", marginBottom: 6 }}>{d.session}</div>
+      <div style={{ color: C.textMid, marginBottom: 6 }}>{d.session}</div>
       <div style={{ color: d.pnl >= 0 ? C.green : C.red, fontWeight: 700 }}>
         PnL : {d.pnl >= 0 ? "+" : ""}{d.pnl.toFixed(2)}$
       </div>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { C, F } from "../lib/design";
 
 const mono = "'DM Mono', monospace";
 const syne = "'Syne', sans-serif";
@@ -21,7 +22,7 @@ const DEFAULT_RULES = {
 };
 
 const inp = {
-  background: "#080a14", border: "1px solid #181b2e", color: "#dde1f5",
+  background: C.bgCard, border: "1px solid #181b2e", color: C.text,
   padding: "8px 12px", borderRadius: 8, fontSize: 12,
   fontFamily: mono, outline: "none", transition: "border-color 0.2s", width: "100%",
 };
@@ -34,20 +35,20 @@ const usePropFirms = () => {
   return { firms, save };
 };
 
-const GaugeBar = ({ label, current, max, color = "#00e5a0", invert = false, unit = "%" }) => {
+const GaugeBar = ({ label, current, max, color = C.green, invert = false, unit = "%" }) => {
   const pct = Math.min(100, Math.abs(max) > 0 ? (Math.abs(current) / Math.abs(max)) * 100 : 0);
   const danger = invert ? pct >= 80 : pct >= 90;
-  const barColor = danger ? "#ff4d6d" : pct >= 60 ? "#f5a623" : color;
+  const barColor = danger ? C.red : pct >= 60 ? C.orange : color;
 
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-        <span style={{ fontSize: 10, color: "#4a5070", fontFamily: mono, letterSpacing: "0.08em" }}>{label.toUpperCase()}</span>
+        <span style={{ fontSize: 10, color: C.textDim, fontFamily: mono, letterSpacing: "0.08em" }}>{label.toUpperCase()}</span>
         <span style={{ fontSize: 11, color: barColor, fontFamily: mono, fontWeight: 700 }}>
           {invert ? `-${Math.abs(current).toFixed(2)}` : `+${current.toFixed(2)}`}{unit} / {invert ? `-${max}` : `+${max}`}{unit}
         </span>
       </div>
-      <div style={{ height: 6, background: "#0a0d18", borderRadius: 3, overflow: "hidden" }}>
+      <div style={{ height: 6, background: ${C.bgInner}, borderRadius: 3, overflow: "hidden" }}>
         <div style={{ height: "100%", width: `${pct}%`, background: barColor, borderRadius: 3, transition: "width 0.5s ease" }} />
       </div>
     </div>
@@ -83,66 +84,66 @@ const FirmCard = ({ firm, trades, onEdit, onDelete }) => {
   const violated = dailyViolated || totalViolated;
 
   const status = violated ? "FAILED" : targetReached ? "PASSED" : "ACTIVE";
-  const statusColor = { FAILED: "#ff4d6d", PASSED: "#00e5a0", ACTIVE: "#f5a623" }[status];
+  const statusColor = { FAILED: ${C.red}, PASSED: ${C.green}, ACTIVE: ${C.orange} }[status];
 
   return (
     <div style={{
-      background: "#080a14",
-      border: `1px solid ${violated ? "rgba(255,77,109,0.25)" : targetReached ? "rgba(0,229,160,0.2)" : "#0e1120"}`,
+      background: ${C.bgCard},
+      border: `1px solid ${violated ? "rgba(255,77,109,0.25)" : targetReached ? "rgba(0,229,160,0.2)" : ${C.borde}r}`,
       borderRadius: 14, padding: "20px 18px", marginBottom: 12,
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#dde1f5", fontFamily: syne, marginBottom: 3 }}>{firm.name}</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: syne, marginBottom: 3 }}>{firm.name}</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <span style={{ fontSize: 10, color: "#3a4060", fontFamily: mono }}>{firm.firm} · {firm.phase} · ${accountSize.toLocaleString()}</span>
+            <span style={{ fontSize: 10, color: ${C.textDim}, fontFamily: mono }}>{firm.firm} · {firm.phase} · ${accountSize.toLocaleString()}</span>
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <span style={{ fontSize: 10, fontFamily: mono, letterSpacing: "0.08em", padding: "3px 10px", borderRadius: 20, border: `1px solid ${statusColor}30`, color: statusColor, background: `${statusColor}08` }}>
             {status}
           </span>
-          <button onClick={() => onEdit(firm)} style={{ background: "none", border: "1px solid #13162a", borderRadius: 5, color: "#3a4060", cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>EDIT</button>
-          <button onClick={() => onDelete(firm.id)} style={{ background: "none", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 5, color: "#ff4d6d", cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>DEL</button>
+          <button onClick={() => onEdit(firm)} style={{ background: "none", border: "1px solid #13162a", borderRadius: 5, color: ${C.textDim}, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>EDIT</button>
+          <button onClick={() => onDelete(firm.id)} style={{ background: "none", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 5, color: ${C.red}, cursor: "pointer", fontSize: 9, fontFamily: mono, padding: "3px 8px" }}>DEL</button>
         </div>
       </div>
 
-      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color="#f5a623" />
-      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color="#f5a623" />
-      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color="#00e5a0" unit="%" />
+      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color=${C.orange} />
+      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color=${C.orange} />
+      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color=${C.green} unit="%" />
 
       <div style={{ display: "flex", gap: 16, marginTop: 12, paddingTop: 12, borderTop: "1px solid #0a0d18" }}>
         <div>
-          <div style={{ fontSize: 9, color: "#2d3352", fontFamily: mono, letterSpacing: "0.1em" }}>PNL</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: totalPnL >= 0 ? "#00e5a0" : "#ff4d6d", fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>PNL</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: totalPnL >= 0 ? ${C.green} : ${C.red}, fontFamily: mono }}>
             {totalPnL >= 0 ? "+" : ""}{totalPnL.toFixed(2)}$
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: "#2d3352", fontFamily: mono, letterSpacing: "0.1em" }}>JOURS</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#dde1f5", fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>JOURS</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: mono }}>
             {tradingDays}{rules.minTradingDays > 0 ? ` / ${rules.minTradingDays} min` : ""}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: "#2d3352", fontFamily: mono, letterSpacing: "0.1em" }}>TRADES</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#dde1f5", fontFamily: mono }}>{firmTrades.length}</div>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>TRADES</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.text}, fontFamily: mono }}>{firmTrades.length}</div>
         </div>
         <div>
-          <div style={{ fontSize: 9, color: "#2d3352", fontFamily: mono, letterSpacing: "0.1em" }}>MARGE</div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#f5a623", fontFamily: mono }}>
+          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: mono, letterSpacing: "0.1em" }}>MARGE</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: ${C.orange}, fontFamily: mono }}>
             {((rules.maxTotalLoss - totalLossPct)).toFixed(1)}%
           </div>
         </div>
       </div>
 
       {violated && (
-        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 8, fontSize: 11, color: "#ff4d6d", fontFamily: mono }}>
+        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.2)", borderRadius: 8, fontSize: 11, color: ${C.red}, fontFamily: mono }}>
           {dailyViolated ? "Limite de perte journalière atteinte. STOP TRADING." : "Limite de perte totale atteinte. Challenge échoué."}
         </div>
       )}
       {targetReached && !violated && (
-        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.2)", borderRadius: 8, fontSize: 11, color: "#00e5a0", fontFamily: mono }}>
+        <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.2)", borderRadius: 8, fontSize: 11, color: ${C.green}, fontFamily: mono }}>
           Objectif de profit atteint ! Vérifie les autres conditions avant de soumettre.
         </div>
       )}
@@ -171,37 +172,37 @@ const FirmForm = ({ initial, onSave, onCancel }) => {
   const selectedFirm = PROP_FIRMS.find(f => f.id === form.firmId) || PROP_FIRMS[0];
 
   return (
-    <div style={{ background: "#080a14", border: "1px solid #181b2e", borderRadius: 14, padding: 22, marginBottom: 14 }}>
-      <div style={{ fontSize: 10, color: "#3a4060", fontFamily: mono, letterSpacing: "0.12em", marginBottom: 16 }}>
+    <div style={{ background: C.bgCard, border: "1px solid #181b2e", borderRadius: 14, padding: 22, marginBottom: 14 }}>
+      <div style={{ fontSize: 10, color: C.textDim, fontFamily: mono, letterSpacing: "0.12em", marginBottom: 16 }}>
         {initial ? "MODIFIER" : "NOUVEAU COMPTE PROP FIRM"}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
         <div>
-          <label style={{ fontSize: 9, color: "#2d3352", display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>NOM DU COMPTE</label>
+          <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>NOM DU COMPTE</label>
           <input value={form.name} onChange={e => set("name", e.target.value)} placeholder="Mon FTMO #1" style={inp}
-            onFocus={e => e.target.style.borderColor = "#00e5a0"} onBlur={e => e.target.style.borderColor = "#181b2e"} />
+            onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border} />
         </div>
         <div>
-          <label style={{ fontSize: 9, color: "#2d3352", display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>PROP FIRM</label>
+          <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>PROP FIRM</label>
           <select value={form.firmId} onChange={e => handleFirmChange(e.target.value)} style={{ ...inp, colorScheme: "dark" }}>
             {PROP_FIRMS.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
         </div>
         <div>
-          <label style={{ fontSize: 9, color: "#2d3352", display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>PHASE</label>
+          <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>PHASE</label>
           <select value={form.phase} onChange={e => set("phase", e.target.value)} style={{ ...inp, colorScheme: "dark" }}>
             {selectedFirm.phases.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
         </div>
         <div>
-          <label style={{ fontSize: 9, color: "#2d3352", display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>TAILLE DU COMPTE ($)</label>
+          <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.1em" }}>TAILLE DU COMPTE ($)</label>
           <input type="number" value={form.accountSize} onChange={e => set("accountSize", Number(e.target.value))} placeholder="10000" style={inp}
-            onFocus={e => e.target.style.borderColor = "#00e5a0"} onBlur={e => e.target.style.borderColor = "#181b2e"} />
+            onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border} />
         </div>
       </div>
 
-      <div style={{ fontSize: 9, color: "#3a4060", fontFamily: mono, letterSpacing: "0.12em", marginBottom: 10 }}>RÈGLES (%)</div>
+      <div style={{ fontSize: 9, color: C.textDim, fontFamily: mono, letterSpacing: "0.12em", marginBottom: 10 }}>RÈGLES (%)</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 16 }}>
         {[
           { k: "maxDailyLoss", label: "Perte max/jour" },
@@ -211,18 +212,18 @@ const FirmForm = ({ initial, onSave, onCancel }) => {
           { k: "maxTradingDays", label: "Jours max" },
         ].map(({ k, label }) => (
           <div key={k}>
-            <label style={{ fontSize: 9, color: "#2d3352", display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.08em" }}>{label.toUpperCase()}</label>
+            <label style={{ fontSize: 9, color: C.textDim, display: "block", marginBottom: 4, fontFamily: mono, letterSpacing: "0.08em" }}>{label.toUpperCase()}</label>
             <input type="number" value={form.rules[k] || ""} onChange={e => setRule(k, e.target.value)} style={inp}
-              onFocus={e => e.target.style.borderColor = "#00e5a0"} onBlur={e => e.target.style.borderColor = "#181b2e"} />
+              onFocus={e => e.target.style.borderColor = C.green} onBlur={e => e.target.style.borderColor = C.border} />
           </div>
         ))}
       </div>
 
       <div style={{ display: "flex", gap: 10 }}>
-        <button onClick={() => onSave(form)} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: "#00e5a0", color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em" }}>
+        <button onClick={() => onSave(form)} style={{ padding: "9px 20px", borderRadius: 8, border: "none", background: C.green, color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em" }}>
           SAUVEGARDER
         </button>
-        <button onClick={onCancel} style={{ padding: "9px 16px", borderRadius: 8, border: "1px solid #181b2e", background: "transparent", color: "#4a5070", cursor: "pointer", fontSize: 11, fontFamily: mono }}>
+        <button onClick={onCancel} style={{ padding: "9px 16px", borderRadius: 8, border: "1px solid #181b2e", background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 11, fontFamily: mono }}>
           ANNULER
         </button>
       </div>
@@ -252,12 +253,12 @@ export const PropFirmTracker = ({ trades }) => {
   return (
     <div className="fade-in">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-        <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: mono }}>
+        <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: mono }}>
           Prop Firm Tracker
         </div>
         <button onClick={() => setAdding(true)} style={{
           padding: "7px 14px", borderRadius: 8, border: "none",
-          background: "#00e5a0", color: "#000", cursor: "pointer",
+          background: C.green, color: "#000", cursor: "pointer",
           fontSize: 11, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em",
         }}>
           + COMPTE
@@ -268,7 +269,7 @@ export const PropFirmTracker = ({ trades }) => {
       {editing && <FirmForm initial={editing} onSave={handleSave} onCancel={() => setEditing(null)} />}
 
       {firms.length === 0 && !adding ? (
-        <div style={{ background: "#080a14", border: "1px dashed #13162a", borderRadius: 14, padding: 32, textAlign: "center", color: "#1e2235", fontSize: 12, fontFamily: mono }}>
+        <div style={{ background: C.bgCard, border: "1px dashed #13162a", borderRadius: 14, padding: 32, textAlign: "center", color: C.textGhost, fontSize: 12, fontFamily: mono }}>
           Aucun compte prop firm. Clique sur + COMPTE pour commencer.
         </div>
       ) : (

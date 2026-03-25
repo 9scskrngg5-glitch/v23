@@ -81,15 +81,15 @@ export const CooldownModal = ({ until, onClose }) => {
         {/* Icon */}
         <div style={{
           width: 64, height: 64, borderRadius: "50%",
-          background: C.redDim, border: `1px solid ${C.redBord}`,
+          background: ${C.redDim}, border: `1px solid ${C.redBord}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           margin: "0 auto 20px", fontSize: 28,
         }}>⏸</div>
 
-        <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: C.text, marginBottom: 8 }}>
+        <div style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Syne', sans-serif", color: ${C.text}, marginBottom: 8 }}>
           Pause obligatoire
         </div>
-        <div style={{ fontSize: 13, color: C.textDim, fontFamily: F.mono, marginBottom: 28, lineHeight: 1.6 }}>
+        <div style={{ fontSize: 13, color: ${C.textDim}, fontFamily: F.mono, marginBottom: 28, lineHeight: 1.6 }}>
           Tu viens d'enchaîner plusieurs pertes consécutives.<br />
           Prends le temps de te recentrer avant de continuer.
         </div>
@@ -97,33 +97,33 @@ export const CooldownModal = ({ until, onClose }) => {
         {/* Timer */}
         <div style={{
           fontSize: 52, fontWeight: 800, fontFamily: "'Syne', sans-serif",
-          color: C.red, letterSpacing: "-0.04em", marginBottom: 20,
+          color: ${C.red}, letterSpacing: "-0.04em", marginBottom: 20,
         }}>
           {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
         </div>
 
         {/* Progress bar */}
-        <div style={{ height: 4, background: C.bgInner, borderRadius: 2, marginBottom: 28, overflow: "hidden" }}>
+        <div style={{ height: 4, background: ${C.bgInner}, borderRadius: 2, marginBottom: 28, overflow: "hidden" }}>
           <div style={{
-            height: "100%", background: C.red, borderRadius: 2,
+            height: "100%", background: ${C.red}, borderRadius: 2,
             width: `${pct}%`, transition: "width 1s linear",
           }} />
         </div>
 
         {/* Tips */}
         <div style={{
-          background: C.bgInner, borderRadius: 12, padding: "14px 18px",
+          background: ${C.bgInner}, borderRadius: 12, padding: "14px 18px",
           marginBottom: 24, textAlign: "left",
         }}>
-          <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 10 }}>PENDANT CE TEMPS</div>
+          <div style={{ fontSize: 10, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 10 }}>PENDANT CE TEMPS</div>
           {[
             "Éloigne-toi de l'écran",
             "Analyse tes derniers trades ratés",
             "Respire — le marché sera encore là après",
             "Est-ce que tu trades ton plan ou tes émotions ?",
           ].map((tip, i) => (
-            <div key={i} style={{ fontSize: 12, color: C.textMid, fontFamily: F.mono, marginBottom: 6, display: "flex", gap: 8 }}>
-              <span style={{ color: C.textDim }}>→</span>{tip}
+            <div key={i} style={{ fontSize: 12, color: ${C.textMid}, fontFamily: F.mono, marginBottom: 6, display: "flex", gap: 8 }}>
+              <span style={{ color: ${C.textDim} }}>→</span>{tip}
             </div>
           ))}
         </div>

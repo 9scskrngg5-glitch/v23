@@ -24,19 +24,19 @@ export const SplitScreen = ({ onClose }) => {
   const rightWidth = layout === "50/50" ? "50%" : layout === "60/40" ? "40%" : "60%";
 
   return (
-    <div style={{ position: "fixed", inset: 0, background: C.bg, zIndex: 400, display: "flex", flexDirection: "column" }}>
+    <div style={{ position: "fixed", inset: 0, background: ${C.bg}, zIndex: 400, display: "flex", flexDirection: "column" }}>
       {/* Controls bar */}
-      <div style={{ height: 48, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 10, padding: "0 16px", flexShrink: 0, background: C.bg, overflowX: "auto", scrollbarWidth: "none" }}>
-        <span style={{ fontSize: 11, color: C.green, fontFamily: F.mono, fontWeight: 700, letterSpacing: "0.12em", marginRight: 6 }}>SPLIT</span>
+      <div style={{ height: 48, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 10, padding: "0 16px", flexShrink: 0, background: ${C.bg}, overflowX: "auto", scrollbarWidth: "none" }}>
+        <span style={{ fontSize: 11, color: ${C.green}, fontFamily: F.mono, fontWeight: 700, letterSpacing: "0.12em", marginRight: 6 }}>SPLIT</span>
 
         {/* Quick pairs */}
         <div style={{ display: "flex", gap: 4 }}>
           {CHART_PAIRS.slice(0, 6).map(p => (
             <button key={p} onClick={() => { setPair(p); setCustomPair(""); }} style={{
               padding: "4px 8px", borderRadius: 5, border: "1px solid",
-              borderColor: activePair === p ? `${C.green}50` : C.border,
-              background: activePair === p ? C.greenDim : "transparent",
-              color: activePair === p ? C.green : C.textDim,
+              borderColor: activePair === p ? `${C.green}50` : ${C.border},
+              background: activePair === p ? ${C.greenDim} : "transparent",
+              color: activePair === p ? ${C.green} : ${C.textDim},
               cursor: "pointer", fontSize: 9, fontFamily: F.mono,
             }}>{p.replace("USDT", "")}</button>
           ))}
@@ -44,40 +44,40 @@ export const SplitScreen = ({ onClose }) => {
 
         {/* Custom pair */}
         <input value={customPair} onChange={e => setCustomPair(e.target.value)}
-          placeholder="Paire..." style={{ background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, padding: "7px 14px", borderRadius: 6, fontSize: 11, fontFamily: F.mono, outline: "none", width: 90 }}
-          onFocus={e => e.target.style.borderColor = C.green}
-          onBlur={e => e.target.style.borderColor = C.border}
+          placeholder="Paire..." style={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, color: ${C.text}, padding: "7px 14px", borderRadius: 6, fontSize: 11, fontFamily: F.mono, outline: "none", width: 90 }}
+          onFocus={e => e.target.style.borderColor = ${C.gree}n}
+          onBlur={e => e.target.style.borderColor = ${C.borde}r}
         />
 
-        <div style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
+        <div style={{ width: 1, height: 20, background: ${C.border}, flexShrink: 0 }} />
 
         {/* Intervals */}
         <div style={{ display: "flex", gap: 3 }}>
           {INTERVALS.map(i => (
             <button key={i.tv} onClick={() => setInterval(i.tv)} style={{
               padding: "4px 8px", borderRadius: 5, border: "1px solid",
-              borderColor: interval === i.tv ? `${C.green}50` : C.border,
-              background: interval === i.tv ? C.greenDim : "transparent",
-              color: interval === i.tv ? C.green : C.textDim,
+              borderColor: interval === i.tv ? `${C.green}50` : ${C.border},
+              background: interval === i.tv ? ${C.greenDim} : "transparent",
+              color: interval === i.tv ? ${C.green} : ${C.textDim},
               cursor: "pointer", fontSize: 9, fontFamily: F.mono,
             }}>{i.label}</button>
           ))}
         </div>
 
-        <div style={{ width: 1, height: 20, background: C.border, flexShrink: 0 }} />
+        <div style={{ width: 1, height: 20, background: ${C.border}, flexShrink: 0 }} />
 
         {/* Layout */}
         {["50/50", "60/40", "40/60"].map(l => (
           <button key={l} onClick={() => setLayout(l)} style={{
             padding: "4px 8px", borderRadius: 5, border: "1px solid",
-            borderColor: layout === l ? `${C.green}50` : C.border,
-            background: layout === l ? C.greenDim : "transparent",
-            color: layout === l ? C.green : C.textDim,
+            borderColor: layout === l ? `${C.green}50` : ${C.border},
+            background: layout === l ? ${C.greenDim} : "transparent",
+            color: layout === l ? ${C.green} : ${C.textDim},
             cursor: "pointer", fontSize: 9, fontFamily: F.mono,
           }}>{l}</button>
         ))}
 
-        <button onClick={onClose} style={{ marginLeft: "auto", padding: "7px 14px", borderRadius: 7, border: `1px solid ${C.border}`, background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
+        <button onClick={onClose} style={{ marginLeft: "auto", padding: "7px 14px", borderRadius: 7, border: `1px solid ${C.border}`, background: "transparent", color: ${C.textDim}, cursor: "pointer", fontSize: 10, fontFamily: F.mono, flexShrink: 0 }}>
           FERMER ✕
         </button>
       </div>
@@ -97,7 +97,7 @@ export const SplitScreen = ({ onClose }) => {
 
         {/* Right — Journal overlay */}
         <div style={{ width: rightWidth, overflow: "auto", padding: "16px", transition: "width 0.2s ease" }}>
-          <div style={{ fontSize: 11, color: C.green, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 12 }}>
+          <div style={{ fontSize: 11, color: ${C.green}, fontFamily: F.mono, letterSpacing: "0.12em", marginBottom: 12 }}>
             NOTES — {activePair}
           </div>
           <QuickTradeNote pair={activePair} />
@@ -117,7 +117,7 @@ const QuickTradeNote = ({ pair }) => {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <textarea value={note} onChange={e => save(e.target.value)}
         placeholder={`Notes pour ${pair}...\n\nNiveaux clés, biais, plan...`}
-        style={{ width: "100%", minHeight: 200, background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, borderRadius: 10, padding: "12px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", lineHeight: 1.6 }}
+        style={{ width: "100%", minHeight: 200, background: ${C.bgCard}, border: `1px solid ${C.border}`, color: C.text, borderRadius: 10, padding: "12px 14px", fontSize: 13, fontFamily: F.mono, outline: "none", resize: "vertical", lineHeight: 1.6 }}
         onFocus={e => e.target.style.borderColor = C.green}
         onBlur={e => e.target.style.borderColor = C.border}
       />

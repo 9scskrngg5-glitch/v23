@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { C, F } from "../lib/design";
 
 const STORAGE_KEY = "tj_accounts_v1";
 const ACTIVE_KEY = "tj_active_account";
 
-export const DEFAULT_ACCOUNT = { id: "default", name: "Compte principal", type: "live", currency: "USD", color: "#00e5a0" };
+export const DEFAULT_ACCOUNT = { id: "default", name: "Compte principal", type: "live", currency: "USD", color: C.green };
 
 export const ACCOUNT_TYPES = [
   { id: "live", label: "Compte réel" },

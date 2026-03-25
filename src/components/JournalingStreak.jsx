@@ -41,7 +41,7 @@ export const JournalingStreak = ({ trades }) => {
   return (
     <div style={{
       display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
-      background: C.bgCard, border: `1px solid ${streak >= 7 ? color + "30" : C.border}`,
+      background: C.bgCard, border: `1px solid ${streak >= 7 ? color + "30" : ${C.borde}r}`,
       borderRadius: 12, flexWrap: "wrap", gap: 10,
       transition: "border-color 0.3s",
     }}>
@@ -68,7 +68,7 @@ export const JournalingStreak = ({ trades }) => {
             <div style={{
               width: 22, height: 22, borderRadius: 6,
               background: d.active ? color + "25" : C.bgInner,
-              border: `1px solid ${d.active ? color + "60" : C.border}`,
+              border: `1px solid ${d.active ? color + "60" : ${C.borde}r}`,
               transition: "all 0.2s",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>

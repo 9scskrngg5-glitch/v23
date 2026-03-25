@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { C, F } from "../lib/design";
 
 const mono = "'DM Mono', monospace";
 const sans = "'DM Sans', sans-serif";
@@ -45,13 +46,13 @@ const computeStats = (trades) => {
 const StatRow = ({ label, before, after, unit = "", invert = false }) => {
   const diff = Number(after) - Number(before);
   const better = invert ? diff < 0 : diff > 0;
-  const color = diff === 0 ? "#3a4060" : better ? "#00e5a0" : "#ff4d6d";
+  const color = diff === 0 ? C.textDim : better ? C.green : C.red;
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #0a0d18" }}>
-      <span style={{ fontSize: 11, color: "#4a5070", fontFamily: mono }}>{label}</span>
+      <span style={{ fontSize: 11, color: C.textDim, fontFamily: mono }}>{label}</span>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-        <span style={{ fontSize: 12, color: "#4a5070", fontFamily: mono }}>{before}{unit}</span>
-        <span style={{ fontSize: 10, color: "#2d3352", fontFamily: mono }}>→</span>
+        <span style={{ fontSize: 12, color: C.textDim, fontFamily: mono }}>{before}{unit}</span>
+        <span style={{ fontSize: 10, color: C.textDim, fontFamily: mono }}>→</span>
         <span style={{ fontSize: 12, fontWeight: 700, color, fontFamily: mono }}>{after}{unit}</span>
         <span style={{ fontSize: 10, color, fontFamily: mono }}>({diff >= 0 ? "+" : ""}{diff.toFixed(2)}{unit})</span>
       </div>
@@ -84,14 +85,14 @@ export const BacktestPanel = ({ trades }) => {
 
   return (
     <div style={{ background: "linear-gradient(135deg, #0a0d18, #080a14)", border: "1px solid #13162a", borderRadius: 16, padding: "22px 18px", marginBottom: 14 }}>
-      <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono, marginBottom: 16 }}>
+      <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: mono, marginBottom: 16 }}>
         Backtesting de règles
       </div>
 
       {/* Add rule */}
       <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
         <select value={newRule.type} onChange={e => setNewRule(r => ({ ...r, type: e.target.value }))} style={{
-          background: "#080a14", border: "1px solid #181b2e", color: "#9099c0",
+          background: C.bgCard, border: "1px solid #181b2e", color: C.textMid,
           padding: "8px 10px", borderRadius: 8, fontSize: 11, fontFamily: mono,
           outline: "none", flex: 2, minWidth: 160,
         }}>
@@ -101,12 +102,12 @@ export const BacktestPanel = ({ trades }) => {
           value={newRule.value}
           onChange={e => setNewRule(r => ({ ...r, value: e.target.value }))}
           placeholder={RULE_TYPES.find(r => r.id === newRule.type)?.ph || "valeur"}
-          style={{ background: "#080a14", border: "1px solid #181b2e", color: "#dde1f5", padding: "8px 12px", borderRadius: 8, fontSize: 11, fontFamily: mono, outline: "none", flex: 1, minWidth: 80 }}
-          onFocus={e => e.target.style.borderColor = "#00e5a0"}
-          onBlur={e => e.target.style.borderColor = "#181b2e"}
+          style={{ background: C.bgCard, border: "1px solid #181b2e", color: C.text, padding: "8px 12px", borderRadius: 8, fontSize: 11, fontFamily: mono, outline: "none", flex: 1, minWidth: 80 }}
+          onFocus={e => e.target.style.borderColor = C.green}
+          onBlur={e => e.target.style.borderColor = C.border}
           onKeyDown={e => e.key === "Enter" && addRule()}
         />
-        <button onClick={addRule} style={{ padding: "8px 16px", borderRadius: 8, border: "none", background: "#00e5a0", color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em", whiteSpace: "nowrap" }}>
+        <button onClick={addRule} style={{ padding: "8px 16px", borderRadius: 8, border: "none", background: C.green, color: "#000", cursor: "pointer", fontSize: 11, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em", whiteSpace: "nowrap" }}>
           + RÈGLE
         </button>
       </div>
@@ -115,12 +116,12 @@ export const BacktestPanel = ({ trades }) => {
       {rules.length > 0 && (
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
           {rules.map(r => (
-            <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", borderRadius: 20, border: "1px solid rgba(0,229,160,0.2)", background: "rgba(0,229,160,0.05)", fontSize: 10, fontFamily: mono, color: "#00e5a0" }}>
+            <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", borderRadius: 20, border: "1px solid rgba(0,229,160,0.2)", background: "rgba(0,229,160,0.05)", fontSize: 10, fontFamily: mono, color: C.green }}>
               {r.label} {r.op} {r.value}
-              <button onClick={() => removeRule(r.id)} style={{ background: "none", border: "none", color: "#3a4060", cursor: "pointer", fontSize: 12, padding: 0, lineHeight: 1 }}>×</button>
+              <button onClick={() => removeRule(r.id)} style={{ background: "none", border: "none", color: C.textDim, cursor: "pointer", fontSize: 12, padding: 0, lineHeight: 1 }}>×</button>
             </div>
           ))}
-          <button onClick={() => setRules([])} style={{ padding: "4px 10px", borderRadius: 20, border: "1px solid #181b2e", background: "transparent", color: "#3a4060", cursor: "pointer", fontSize: 10, fontFamily: mono }}>
+          <button onClick={() => setRules([])} style={{ padding: "4px 10px", borderRadius: 20, border: "1px solid #181b2e", background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: mono }}>
             RESET
           </button>
         </div>
@@ -130,15 +131,15 @@ export const BacktestPanel = ({ trades }) => {
       {beforeStats && afterStats && rules.length > 0 ? (
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-            <span style={{ fontSize: 11, color: "#4a5070", fontFamily: mono }}>
+            <span style={{ fontSize: 11, color: C.textDim, fontFamily: mono }}>
               {filteredTrades.filter(t => t.result !== "").length} trades conservés · {skipped} ignorés
             </span>
             <div style={{ display: "flex", gap: 16 }}>
-              <span style={{ fontSize: 10, color: "#3a4060", fontFamily: mono }}>AVANT</span>
-              <span style={{ fontSize: 10, color: "#00e5a0", fontFamily: mono }}>APRÈS</span>
+              <span style={{ fontSize: 10, color: C.textDim, fontFamily: mono }}>AVANT</span>
+              <span style={{ fontSize: 10, color: C.green, fontFamily: mono }}>APRÈS</span>
             </div>
           </div>
-          <div style={{ background: "#080a14", borderRadius: 10, padding: "4px 12px" }}>
+          <div style={{ background: C.bgCard, borderRadius: 10, padding: "4px 12px" }}>
             <StatRow label="PnL Total" before={beforeStats.pnl} after={afterStats.pnl} unit="$" />
             <StatRow label="Win Rate" before={beforeStats.winRate} after={afterStats.winRate} unit="%" />
             <StatRow label="Profit Factor" before={beforeStats.pf} after={afterStats.pf} />
@@ -147,21 +148,21 @@ export const BacktestPanel = ({ trades }) => {
           </div>
 
           {Number(afterStats.pnl) > Number(beforeStats.pnl) ? (
-            <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.18)", borderRadius: 10, fontSize: 12, color: "#00e5a0", fontFamily: mono }}>
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,229,160,0.07)", border: "1px solid rgba(0,229,160,0.18)", borderRadius: 10, fontSize: 12, color: C.green, fontFamily: mono }}>
               En appliquant ces règles, tu aurais gagné {(Number(afterStats.pnl) - Number(beforeStats.pnl)).toFixed(2)}$ de plus.
             </div>
           ) : Number(afterStats.pnl) < Number(beforeStats.pnl) ? (
-            <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.18)", borderRadius: 10, fontSize: 12, color: "#ff4d6d", fontFamily: mono }}>
+            <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(255,77,109,0.07)", border: "1px solid rgba(255,77,109,0.18)", borderRadius: 10, fontSize: 12, color: C.red, fontFamily: mono }}>
               Ces règles auraient réduit ton PnL de {Math.abs(Number(afterStats.pnl) - Number(beforeStats.pnl)).toFixed(2)}$.
             </div>
           ) : null}
         </div>
       ) : rules.length === 0 ? (
-        <div style={{ color: "#1e2235", fontSize: 12, fontFamily: mono }}>
+        <div style={{ color: C.textGhost, fontSize: 12, fontFamily: mono }}>
           Ajoute des règles pour simuler l'impact sur tes stats historiques.
         </div>
       ) : !beforeStats ? (
-        <div style={{ color: "#1e2235", fontSize: 12, fontFamily: mono }}>Pas assez de trades.</div>
+        <div style={{ color: C.textGhost, fontSize: 12, fontFamily: mono }}>Pas assez de trades.</div>
       ) : null}
     </div>
   );

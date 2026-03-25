@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { C, F } from "../lib/design";
 
 const STEPS = [
   {
@@ -34,7 +35,7 @@ export const Onboarding = ({ onDone }) => {
       padding: 16, zIndex: 200, backdropFilter: "blur(8px)",
     }}>
       <div style={{
-        width: "min(460px, 95vw)", background: "#0a0d18",
+        width: "min(460px, 95vw)", background: C.bgInner,
         border: "1px solid rgba(0,229,160,0.2)", borderRadius: 20, padding: 36,
         textAlign: "center",
       }}>
@@ -43,7 +44,7 @@ export const Onboarding = ({ onDone }) => {
           {STEPS.map((_, i) => (
             <div key={i} style={{
               width: i === step ? 20 : 6, height: 6, borderRadius: 3,
-              background: i <= step ? "#00e5a0" : "#13162a",
+              background: i <= step ? C.green : C.border,
               transition: "all 0.3s",
             }} />
           ))}
@@ -54,20 +55,20 @@ export const Onboarding = ({ onDone }) => {
           width: 56, height: 56, borderRadius: 14,
           background: "rgba(0,229,160,0.08)", border: "1px solid rgba(0,229,160,0.2)",
           display: "flex", alignItems: "center", justifyContent: "center",
-          margin: "0 auto 20px", fontSize: 22, color: "#00e5a0", fontFamily: mono,
+          margin: "0 auto 20px", fontSize: 22, color: C.green, fontFamily: mono,
         }}>
           {step === 0 ? "▦" : step === 1 ? "≡" : "∿"}
         </div>
 
-        <div style={{ fontSize: 10, color: "#3a4060", fontFamily: mono, letterSpacing: "0.15em", marginBottom: 10 }}>
+        <div style={{ fontSize: 10, color: C.textDim, fontFamily: mono, letterSpacing: "0.15em", marginBottom: 10 }}>
           ÉTAPE {current.id} / {STEPS.length}
         </div>
 
-        <h2 style={{ fontSize: 22, fontWeight: 800, fontFamily: syne, color: "#dde1f5", marginBottom: 14, letterSpacing: "-0.02em" }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, fontFamily: syne, color: C.text, marginBottom: 14, letterSpacing: "-0.02em" }}>
           {current.title}
         </h2>
 
-        <p style={{ fontSize: 14, color: "#4a5070", lineHeight: 1.7, marginBottom: 28, fontFamily: "'DM Sans', sans-serif" }}>
+        <p style={{ fontSize: 14, color: C.textDim, lineHeight: 1.7, marginBottom: 28, fontFamily: "'DM Sans', sans-serif" }}>
           {current.desc}
         </p>
 
@@ -75,7 +76,7 @@ export const Onboarding = ({ onDone }) => {
           onClick={() => step < STEPS.length - 1 ? setStep(step + 1) : onDone()}
           style={{
             width: "100%", padding: "13px", borderRadius: 9,
-            border: "none", background: "#00e5a0", color: "#000",
+            border: "none", background: C.green, color: "#000",
             cursor: "pointer", fontSize: 12, fontWeight: 700,
             fontFamily: mono, letterSpacing: "0.08em",
           }}
@@ -86,7 +87,7 @@ export const Onboarding = ({ onDone }) => {
         {step > 0 && (
           <button onClick={onDone} style={{
             marginTop: 12, background: "none", border: "none",
-            color: "#1e2235", cursor: "pointer", fontSize: 11,
+            color: C.textGhost, cursor: "pointer", fontSize: 11,
             fontFamily: mono, letterSpacing: "0.06em",
           }}>
             Passer

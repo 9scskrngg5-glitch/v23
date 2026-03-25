@@ -39,7 +39,7 @@ const JournalEntry = ({ date, entry, onSave }) => {
           {SENTIMENTS.map(s => (
             <button key={s.id} onClick={() => set("sentiment", s.id)} style={{
               padding: "7px 16px", borderRadius: 8, cursor: "pointer", fontSize: 12,
-              fontFamily: F.mono, border: `1px solid ${form.sentiment === s.id ? s.color + "50" : C.border}`,
+              fontFamily: F.mono, border: `1px solid ${form.sentiment === s.id ? s.color + "50" : ${C.borde}r}`,
               background: form.sentiment === s.id ? s.color + "12" : "transparent",
               color: form.sentiment === s.id ? s.color : C.textDim, transition: "all 0.15s",
             }}>{s.icon} {s.label}</button>
@@ -53,7 +53,7 @@ const JournalEntry = ({ date, entry, onSave }) => {
           {VOLATILITY.map(v => (
             <button key={v} onClick={() => set("volatility", v)} style={{
               padding: "7px 14px", borderRadius: 7, cursor: "pointer", fontSize: 11, fontFamily: F.mono,
-              border: `1px solid ${form.volatility === v ? C.greenBord : C.border}`,
+              border: `1px solid ${form.volatility === v ? ${C.greenBord} : ${C.borde}r}`,
               background: form.volatility === v ? C.greenDim : "transparent",
               color: form.volatility === v ? C.green : C.textDim, transition: "all 0.15s",
             }}>{v}</button>
@@ -123,7 +123,7 @@ export const MarketJournal = () => {
           return (
             <button key={date} onClick={() => setSelectedDate(date)} style={{
               flex: 1, padding: "10px 6px", borderRadius: 10, textAlign: "center", cursor: "pointer",
-              border: `1px solid ${active ? C.greenBord : C.border}`,
+              border: `1px solid ${active ? ${C.greenBord} : ${C.borde}r}`,
               background: active ? C.greenDim : "transparent",
             }}>
               <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, marginBottom: 4 }}>{d.toLocaleDateString("fr-FR", { weekday: "short" }).slice(0,2).toUpperCase()}</div>

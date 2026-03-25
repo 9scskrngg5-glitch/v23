@@ -42,30 +42,30 @@ export const TradingCalendar = ({ trades }) => {
     <div>
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: 16, gap: 8 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "'Syne', sans-serif", color: C.text, marginRight: "auto" }}>{MONTHS[month]} {year}</div>
+        <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "'Syne', sans-serif", color: ${C.text}, marginRight: "auto" }}>{MONTHS[month]} {year}</div>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button onClick={() => setDate(new Date(year, month - 1, 1))} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, color: C.textMid, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 14 }}>‹</button>
-          <button onClick={() => setDate(new Date())} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 7, color: C.textDim, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 10, letterSpacing: "0.08em" }}>AUJOURD'HUI</button>
-          <button onClick={() => setDate(new Date(year, month + 1, 1))} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, color: C.textMid, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 14 }}>›</button>
+          <button onClick={() => setDate(new Date(year, month - 1, 1))} style={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 7, color: ${C.textMid}, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 14 }}>‹</button>
+          <button onClick={() => setDate(new Date())} style={{ background: "transparent", border: `1px solid ${C.border}`, borderRadius: 7, color: ${C.textDim}, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 10, letterSpacing: "0.08em" }}>AUJOURD'HUI</button>
+          <button onClick={() => setDate(new Date(year, month + 1, 1))} style={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 7, color: ${C.textMid}, cursor: "pointer", padding: "7px 14px", fontFamily: F.mono, fontSize: 14 }}>›</button>
         </div>
       </div>
 
       {/* Monthly summary */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 16 }}>
         {[
-          { label: "PnL du mois", value: `${monthPnL >= 0 ? "+" : ""}${monthPnL.toFixed(2)}$`, color: monthPnL >= 0 ? C.green : C.red },
-          { label: "Jours tradés", value: tradingDays, color: C.text },
-          { label: "Jours gagnants", value: tradingDays > 0 ? `${winDays}/${tradingDays}` : "—", color: C.green },
+          { label: "PnL du mois", value: `${monthPnL >= 0 ? "+" : ""}${monthPnL.toFixed(2)}$`, color: monthPnL >= 0 ? ${C.green} : ${C.red} },
+          { label: "Jours tradés", value: tradingDays, color: ${C.text} },
+          { label: "Jours gagnants", value: tradingDays > 0 ? `${winDays}/${tradingDays}` : "—", color: ${C.green} },
         ].map(s => (
-          <div key={s.label} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
-            <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 5 }}>{s.label}</div>
+          <div key={s.label} style={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px" }}>
+            <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 5 }}>{s.label}</div>
             <div style={{ fontSize: 18, fontWeight: 700, color: s.color, fontFamily: "'Syne', sans-serif" }}>{s.value}</div>
           </div>
         ))}
       </div>
 
       {/* Calendar grid */}
-      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+      <div style={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
         {/* Day headers */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", borderBottom: `1px solid ${C.border}` }}>
           {DAYS.map(d => (

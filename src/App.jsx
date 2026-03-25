@@ -155,7 +155,7 @@ export default function App() {
   if (showAdmin) return <AdminPanel user={user} onClose={() => setShowAdmin(false)} />;
 
   return (
-    <div key={themeVersion} style={{ background: C.bg, minHeight: "100dvh", color: C.text, fontFamily: F.sans, display: "flex" }}>
+    <div key={themeVersion} style={{ background: ${C.bg}, minHeight: "100dvh", color: ${C.text}, fontFamily: F.sans, display: "flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
         *, *::before, *::after { box-sizing: border-box; }

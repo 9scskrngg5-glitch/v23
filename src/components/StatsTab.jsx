@@ -1,4 +1,5 @@
 import { BacktestPanel } from "./BacktestPanel";
+import { C, F } from "../lib/design";
 import { AdvancedStats } from "./AdvancedStats";
 import { Leaderboard } from "./Leaderboard";
 import { useMemo, useState } from "react";
@@ -23,11 +24,11 @@ const ChartTooltip = ({ active, payload, labelKey = "label" }) => {
   const d = payload[0].payload;
   return (
     <div style={{ background: "#0d1020", border: "1px solid #181b2e", borderRadius: 10, padding: "10px 14px", fontFamily: "'DM Mono', monospace", fontSize: 12 }}>
-      <div style={{ color: "#a0a8c8", marginBottom: 5 }}>{d[labelKey]}</div>
-      <div style={{ color: (d.pnl ?? d.value ?? 0) >= 0 ? "#00e5a0" : "#ff4d6d", fontWeight: 700 }}>
+      <div style={{ color: C.textMid, marginBottom: 5 }}>{d[labelKey]}</div>
+      <div style={{ color: (d.pnl ?? d.value ?? 0) >= 0 ? C.green : C.red, fontWeight: 700 }}>
         {((d.pnl ?? d.value) >= 0 ? "+" : "")}{(d.pnl ?? d.value)?.toFixed(2)}$
       </div>
-      {d.trades != null && <div style={{ color: "#4a5070", marginTop: 3 }}>{d.trades} trade{d.trades > 1 ? "s" : ""}</div>}
+      {d.trades != null && <div style={{ color: C.textDim, marginTop: 3 }}>{d.trades} trade{d.trades > 1 ? "s" : ""}</div>}
     </div>
   );
 };
@@ -35,13 +36,13 @@ const ChartTooltip = ({ active, payload, labelKey = "label" }) => {
 const MiniBar = ({ data, dataKey = "pnl", labelKey = "label", height = 140 }) => (
   <ResponsiveContainer width="100%" height={height}>
     <BarChart data={data} barSize={28}>
-      <CartesianGrid strokeDasharray="3 3" stroke="#0e1120" vertical={false} />
-      <XAxis dataKey={labelKey} tick={{ fontSize: 10, fill: "#3a4060", fontFamily: "'DM Mono', monospace" }} axisLine={false} tickLine={false} />
+      <CartesianGrid strokeDasharray="3 3" stroke={C.border} vertical={false} />
+      <XAxis dataKey={labelKey} tick={{ fontSize: 10, fill: C.textDim, fontFamily: "'DM Mono', monospace" }} axisLine={false} tickLine={false} />
       <YAxis tick={{ fontSize: 10, fill: "#252840" }} axisLine={false} tickLine={false} width={44} />
-      <ReferenceLine y={0} stroke="#181b2e" />
+      <ReferenceLine y={0} stroke={C.border} />
       <Tooltip content={<ChartTooltip labelKey={labelKey} />} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
       <Bar dataKey={dataKey} radius={[5, 5, 0, 0]}>
-        {data.map((d, i) => <Cell key={i} fill={(d[dataKey] ?? 0) >= 0 ? "#00e5a0" : "#ff4d6d"} fillOpacity={0.8} />)}
+        {data.map((d, i) => <Cell key={i} fill={(d[dataKey] ?? 0) >= 0 ? C.green : C.red} fillOpacity={0.8} />)}
       </Bar>
     </BarChart>
   </ResponsiveContainer>
@@ -54,7 +55,7 @@ const card = (children, mb = 14) => (
 );
 
 const sectionTitle = (label) => (
-  <div style={{ fontSize: 10, color: "#3a4060", letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 14 }}>
+  <div style={{ fontSize: 10, color: C.textDim, letterSpacing: "0.12em", textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 14 }}>
     {label}
   </div>
 );
@@ -146,9 +147,9 @@ export const StatsTab = ({ trades, plan, onUpgrade }) => {
           {PERIODS.map(p => (
             <button key={p.label} onClick={() => setPeriod(p.label)} style={{
               padding: "7px 14px", borderRadius: 7, border: "1px solid",
-              borderColor: period === p.label ? "rgba(0,229,160,0.4)" : "#181b2e",
+              borderColor: period === p.label ? "rgba(0,229,160,0.4)" : C.border,
               background: period === p.label ? "rgba(0,229,160,0.07)" : "transparent",
-              color: period === p.label ? "#00e5a0" : "#3a4060",
+              color: period === p.label ? C.green : C.textDim,
               cursor: "pointer", fontSize: 11, fontFamily: "'DM Mono', monospace",
             }}>{p.label}</button>
           ))}
@@ -157,20 +158,20 @@ export const StatsTab = ({ trades, plan, onUpgrade }) => {
           value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Recherche paire, setup, émotion…"
           style={{
-            background: "#080a14", border: "1px solid #181b2e", color: "#dde1f5",
+            background: C.bgCard, border: "1px solid #181b2e", color: C.text,
             padding: "7px 14px", borderRadius: 7, fontSize: 11,
             fontFamily: "'DM Mono', monospace", outline: "none", flex: 1, minWidth: 180,
           }}
-          onFocus={e => e.target.style.borderColor = "#00e5a0"}
-          onBlur={e => e.target.style.borderColor = "#181b2e"}
+          onFocus={e => e.target.style.borderColor = C.green}
+          onBlur={e => e.target.style.borderColor = C.border}
         />
-        <span style={{ fontSize: 11, color: "#2d3352", fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
+        <span style={{ fontSize: 11, color: C.textDim, fontFamily: "'DM Mono', monospace", whiteSpace: "nowrap" }}>
           {filtered.length} trades
         </span>
       </div>
 
       {filtered.length === 0 ? (
-        <div style={{ color: "#1e2235", textAlign: "center", padding: 60, fontSize: 13, fontFamily: "'DM Mono', monospace" }}>
+        <div style={{ color: C.textGhost, textAlign: "center", padding: 60, fontSize: 13, fontFamily: "'DM Mono', monospace" }}>
           Aucun trade sur cette période
         </div>
       ) : (
@@ -190,7 +191,7 @@ export const StatsTab = ({ trades, plan, onUpgrade }) => {
           {/* PnL par paire */}
           {card(<>
             {sectionTitle("PnL par paire")}
-            {byPair.length > 0 ? <MiniBar data={byPair} /> : <div style={{ color: "#1e2235", fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Pas de données</div>}
+            {byPair.length > 0 ? <MiniBar data={byPair} /> : <div style={{ color: C.textGhost, fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Pas de données</div>}
           </>)}
 
           {/* PnL par jour */}
@@ -204,7 +205,7 @@ export const StatsTab = ({ trades, plan, onUpgrade }) => {
             {sectionTitle("PnL par setup")}
             {bySetup.length > 0
               ? <MiniBar data={bySetup} />
-              : <div style={{ color: "#1e2235", fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Remplis le champ Setup dans tes trades</div>
+              : <div style={{ color: C.textGhost, fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Remplis le champ Setup dans tes trades</div>
             }
           </>)}
 
@@ -218,15 +219,15 @@ export const StatsTab = ({ trades, plan, onUpgrade }) => {
                 alignItems: "center", justifyContent: "center", gap: 8,
                 backdropFilter: "blur(2px)", cursor: "pointer",
               }}>
-                <div style={{ fontSize: 11, color: "#f5a623", fontFamily: "'DM Mono', monospace", letterSpacing: "0.1em" }}>FONCTIONNALITE PRO</div>
-                <div style={{ fontSize: 10, color: "#3a4060", fontFamily: "'DM Mono', monospace" }}>Clique pour upgrader</div>
+                <div style={{ fontSize: 11, color: C.orange, fontFamily: "'DM Mono', monospace", letterSpacing: "0.1em" }}>FONCTIONNALITE PRO</div>
+                <div style={{ fontSize: 10, color: C.textDim, fontFamily: "'DM Mono', monospace" }}>Clique pour upgrader</div>
               </div>
             )}
             {card(<>
               {sectionTitle("Émotion vs résultat")}
               {byEmotion.length > 0
                 ? <MiniBar data={byEmotion} />
-                : <div style={{ color: "#1e2235", fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Remplis le champ émotion dans tes trades</div>
+                : <div style={{ color: C.textGhost, fontSize: 12, fontFamily: "'DM Mono', monospace" }}>Remplis le champ émotion dans tes trades</div>
               }
             </>)}
           </div>

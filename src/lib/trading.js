@@ -1,3 +1,4 @@
+import { C, F } from "../lib/design";
 /** @returns {string} */
 export const uid = () => Math.random().toString(36).slice(2, 9);
 
@@ -126,10 +127,10 @@ export const detectRegime = (trades) => {
 
 /** @type {Record<import('../types').Regime, {label: string, color: string, hint: string}>} */
 export const REGIME_META = {
-  TRENDING_UP:  { label: "Trending ↑",   color: "#00e5a0", hint: "Momentum actif — suis la tendance" },
-  DISTRIBUTION: { label: "Distribution", color: "#f5a623", hint: "Marché en rotation — réduis le risque" },
-  SIDEWAYS:     { label: "Sideways",      color: "#a0a8c8", hint: "Range — attends une cassure claire" },
-  CHAOTIC:      { label: "Chaotic ⚠",    color: "#ff4d6d", hint: "Volatilité extrême — NE TRADE PAS" },
+  TRENDING_UP:  { label: "Trending ↑",   color: C.green, hint: "Momentum actif — suis la tendance" },
+  DISTRIBUTION: { label: "Distribution", color: C.orange, hint: "Marché en rotation — réduis le risque" },
+  SIDEWAYS:     { label: "Sideways",      color: C.textMid, hint: "Range — attends une cassure claire" },
+  CHAOTIC:      { label: "Chaotic ⚠",    color: C.red, hint: "Volatilité extrême — NE TRADE PAS" },
 };
 
 /**
@@ -250,4 +251,4 @@ export const formatTs = (ts) => {
  * @returns {string}
  */
 export const pnlColor = (v) =>
-  Number(v) > 0 ? "#00e5a0" : Number(v) < 0 ? "#ff4d6d" : "#4a5070";
+  Number(v) > 0 ? C.green : Number(v) < 0 ? C.red : C.textDim;

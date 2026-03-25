@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { C, F } from "../lib/design";
 
 /**
  * @param {{
@@ -27,9 +28,9 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
           placeholder="Plan ta session (règles, focus, mindset…)"
           style={{
             flex: 1,
-            background: "#0a0d18",
+            background: C.bgInner,
             border: "1px solid #181b2e",
-            color: "#dde1f5",
+            color: C.text,
             padding: "10px 14px",
             borderRadius: 11,
             fontSize: 13,
@@ -37,8 +38,8 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
             outline: "none",
             transition: "border-color 0.2s",
           }}
-          onFocus={(e) => (e.target.style.borderColor = "#00e5a0")}
-          onBlur={(e) => (e.target.style.borderColor = "#181b2e")}
+          onFocus={(e) => (e.target.style.borderColor = C.green)}
+          onBlur={(e) => (e.target.style.borderColor = C.border)}
         />
         <button
           onClick={submit}
@@ -46,7 +47,7 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
             padding: "10px 20px",
             borderRadius: 11,
             border: "none",
-            background: "#00e5a0",
+            background: C.green,
             color: "#000",
             cursor: "pointer",
             fontSize: 16,
@@ -64,7 +65,7 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
         {tasks.length === 0 && (
           <div
             style={{
-              color: "#1e2235",
+              color: C.textGhost,
               textAlign: "center",
               padding: 50,
               fontSize: 13,
@@ -78,7 +79,7 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
           <div
             key={t.id}
             style={{
-              background: "#0a0d18",
+              background: C.bgInner,
               border: "1px solid #13162a",
               borderRadius: 11,
               padding: "11px 14px",
@@ -96,8 +97,8 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
                 width: 18,
                 height: 18,
                 borderRadius: 5,
-                border: `1.5px solid ${t.done ? "#00e5a0" : "#2a3050"}`,
-                background: t.done ? "#00e5a0" : "transparent",
+                border: `1.5px solid ${t.done ? ${C.green} : "#2a3050"}`,
+                background: t.done ? C.green : "transparent",
                 cursor: "pointer",
                 flexShrink: 0,
                 display: "flex",
@@ -130,13 +131,13 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
               style={{
                 background: "none",
                 border: "none",
-                color: "#1e2235",
+                color: C.textGhost,
                 cursor: "pointer",
                 fontSize: 13,
                 transition: "color 0.2s",
               }}
-              onMouseOver={(e) => (e.target.style.color = "#ff4d6d")}
-              onMouseOut={(e) => (e.target.style.color = "#1e2235")}
+              onMouseOver={(e) => (e.target.style.color = C.red)}
+              onMouseOut={(e) => (e.target.style.color = C.textGhost)}
             >
               ✕
             </button>
@@ -153,14 +154,14 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
             borderRadius: 8,
             border: "1px solid #181b2e",
             background: "transparent",
-            color: "#2d3352",
+            color: C.textDim,
             cursor: "pointer",
             fontSize: 11,
             fontFamily: "'DM Mono', monospace",
             transition: "color 0.2s",
           }}
-          onMouseOver={(e) => (e.target.style.color = "#ff4d6d")}
-          onMouseOut={(e) => (e.target.style.color = "#2d3352")}
+          onMouseOver={(e) => (e.target.style.color = C.red)}
+          onMouseOut={(e) => (e.target.style.color = C.textDim)}
         >
           Supprimer les tâches complètes
         </button>
