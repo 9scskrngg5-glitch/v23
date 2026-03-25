@@ -14,37 +14,42 @@ export const useAuth = () => {
 
     let mounted = true;
 
-    // Handle OAuth redirect — Supabase puts tokens in URL hash after redirect
-    const handleRedirect = async () => {
-      const hash = window.location.hash;
-      if (hash && (hash.includes("access_token") || hash.includes("error"))) {
-        // Let Supabase parse the hash automatically via detectSessionInUrl
-        // Clean the URL after a short delay
-        setTimeout(() => {
-          window.history.replaceState(null, "", window.location.pathname);
-        }, 500);
-      }
+    const loadPlan = async (u) => {
+      if (!u) return;
+      try { setPlan(await getUserPlan(u.id)); }
+      catch { setPlan("free"); }
     };
-    handleRedirect();
 
-    // Get current user — validates token server-side
-    supabase.auth.getUser().then(async ({ data: { user: u }, error }) => {
+    // Step 1: getSession() is INSTANT — reads from localStorage cache
+    // This resolves the session immediately without a network call
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (!mounted) return;
-      const safeUser = (!error && u) ? u : null;
-      setUser(safeUser);
-      if (safeUser) { try { setPlan(await getUserPlan(safeUser.id)); } catch { setPlan("free"); } }
-    }).catch(() => { if (mounted) setUser(null); });
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) loadPlan(u);
+      
+      // Step 2: Validate token in background (doesn't block UI)
+      if (u) {
+        supabase.auth.getUser().then(({ data: { user: validated }, error }) => {
+          if (!mounted) return;
+          if (error || !validated) {
+            // Token invalid — sign out silently
+            setUser(null);
+            setPlan("free");
+          }
+        }).catch(() => {});
+      }
+    }).catch(() => {
+      if (mounted) setUser(null);
+    });
 
-    // Listen for auth state changes — fires when OAuth redirect completes
+    // Listen for auth state changes (login, logout, token refresh)
     const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       const u = session?.user ?? null;
       setUser(u);
-      if (u) {
-        try { setPlan(await getUserPlan(u.id)); } catch { setPlan("free"); }
-      } else {
-        setPlan("free");
-      }
+      if (u) loadPlan(u);
+      else setPlan("free");
     });
 
     return () => { mounted = false; listener.subscription.unsubscribe(); };
@@ -78,9 +83,8 @@ export const useAuth = () => {
           queryParams: { access_type: "offline", prompt: "consent" },
         },
       });
-      // signInWithOAuth redirects the browser — if we get here it failed
       if (error) return { error: error.message };
-      return { error: null }; // redirect will happen
+      return { error: null };
     } catch (e) {
       return { error: e?.message || "Erreur OAuth" };
     }
@@ -96,7 +100,6 @@ export const useAuth = () => {
     user, plan,
     authLoading: user === undefined,
     signUp, signIn, signOut, signInWithGoogle,
-    // Keep signInWithApple for API compat even if not used
     signInWithApple: async () => ({ error: "Apple OAuth non configuré" }),
   };
 };
