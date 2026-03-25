@@ -12,7 +12,7 @@ const CircleGauge = ({ score, color, grade }) => {
   return (
     <div style={{ position: "relative", width: 110, height: 110, flexShrink: 0 }}>
       <svg width="110" height="110" style={{ transform: "rotate(-90deg)" }}>
-        <circle cx="55" cy="55" r={r} fill="none" stroke=C.border strokeWidth="8" />
+        <circle cx="55" cy="55" r={r} fill="none" stroke={C.border} strokeWidth="8" />
         <circle cx="55" cy="55" r={r} fill="none" stroke={color} strokeWidth="8"
           strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
           style={{ transition: "stroke-dasharray 0.8s ease" }}

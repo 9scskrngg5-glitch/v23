@@ -102,8 +102,8 @@ export const GoalsPanel = ({ stats, trades }) => {
       ) : (
         <div>
           {goals.pnlTarget && <Progress label="PnL mensuel" current={monthPnL.toFixed(0)} target={Number(goals.pnlTarget)} unit="$" />}
-          {goals.winRateTarget && <Progress label="Win Rate" current={monthWR} target={Number(goals.winRateTarget)} unit="%" color=C.orange />}
-          {goals.tradesTarget && <Progress label="Trades ce mois" current={monthTrades.length} target={Number(goals.tradesTarget)} color="#a0a8c8" />}
+          {goals.winRateTarget && <Progress label="Win Rate" current={monthWR} target={Number(goals.winRateTarget)} unit="%" color={C.orange} />}
+          {goals.tradesTarget && <Progress label="Trades ce mois" current={monthTrades.length} target={Number(goals.tradesTarget)} color={C.textMid} />}
           {goals.maxLossTarget && (
             <div style={{ marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>

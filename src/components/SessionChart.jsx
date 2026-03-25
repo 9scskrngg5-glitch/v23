@@ -110,7 +110,7 @@ export const SessionChart = ({ trades }) => {
       {/* Bar chart */}
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={data} barSize={32}>
-          <CartesianGrid strokeDasharray="3 3" stroke=C.border vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={C.border} vertical={false} />
           <XAxis
             dataKey="session"
             tick={{ fontSize: 10, fill: C.textDim, fontFamily: "'DM Mono', monospace" }}
@@ -120,7 +120,7 @@ export const SessionChart = ({ trades }) => {
             tick={{ fontSize: 10, fill: "#252840" }}
             axisLine={false} tickLine={false} width={44}
           />
-          <ReferenceLine y={0} stroke=C.border strokeWidth={1} />
+          <ReferenceLine y={0} stroke={C.border} strokeWidth={1} />
           <Tooltip content={<SessionTooltip />} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
           <Bar dataKey="pnl" radius={[6, 6, 0, 0]}>
             {data.map((entry, i) => (

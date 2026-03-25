@@ -68,10 +68,10 @@ export const QuickTrade = ({ onAdd, pairs }) => {
               ))}
             </div>
             <button onClick={handleSave} disabled={!form.pair || form.result === "" || saving} style={{
-              padding: "10px", borderRadius: 8, border: "none",
+              padding: "10px", borderRadius: 8,
+              border: saved ? `1px solid ${C.greenBord}` : "none",
               background: saved ? C.greenDim : (form.pair && form.result !== "") ? C.green : C.bgInner,
               color: saved ? C.green : (form.pair && form.result !== "") ? "#000" : C.textDim,
-              border: saved ? `1px solid ${C.greenBord}` : "none",
               cursor: (form.pair && form.result !== "") ? "pointer" : "not-allowed",
               fontSize: 11, fontWeight: 700, fontFamily: F.mono, transition: "all 0.2s",
             }}>
