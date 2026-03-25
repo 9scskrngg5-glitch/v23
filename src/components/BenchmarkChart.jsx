@@ -80,9 +80,9 @@ export const BenchmarkChart = ({ trades }) => {
 
       {/* Performance summary */}
       <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
-        <div style={{ background: ${C.bgInner}, borderRadius: 9, padding: "10px 14px", border: `1px solid ${C.border}` }}>
-          <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>TOI</div>
-          <div style={{ fontSize: 18, fontWeight: 700, fontFamily: "'Syne', sans-serif", color: Number(myPerf) >= 0 ? ${C.green} : ${C.red} }}>
+        <div style={{ background: C.bgInner, borderRadius: 9, padding: "10px 14px", border: `1px solid ${C.border}` }}>
+          <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>TOI</div>
+          <div style={{ fontSize: 18, fontWeight: 700, fontFamily: "'Syne', sans-serif", color: Number(myPerf) >= 0 ? C.green : C.red }}>
             {Number(myPerf) >= 0 ? "+" : ""}{myPerf}%
           </div>
         </div>
@@ -90,12 +90,12 @@ export const BenchmarkChart = ({ trades }) => {
           const perf = lastPoint ? (lastPoint[b.label] - 100).toFixed(1) : 0;
           const beats = Number(myPerf) > Number(perf);
           return (
-            <div key={b.id} style={{ background: ${C.bgInner}, borderRadius: 9, padding: "10px 14px", border: `1px solid ${b.color}25` }}>
-              <div style={{ fontSize: 9, color: ${C.textDim}, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>{b.label}</div>
+            <div key={b.id} style={{ background: C.bgInner, borderRadius: 9, padding: "10px 14px", border: `1px solid ${b.color}25` }}>
+              <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.1em", marginBottom: 3 }}>{b.label}</div>
               <div style={{ fontSize: 18, fontWeight: 700, fontFamily: "'Syne', sans-serif", color: b.color }}>
                 {Number(perf) >= 0 ? "+" : ""}{perf}%
               </div>
-              {beats && <div style={{ fontSize: 9, color: ${C.green}, fontFamily: F.mono, marginTop: 2 }}>Tu surperformes ↑</div>}
+              {beats && <div style={{ fontSize: 9, color: C.green, fontFamily: F.mono, marginTop: 2 }}>Tu surperformes ↑</div>}
             </div>
           );
         })}
@@ -103,17 +103,17 @@ export const BenchmarkChart = ({ trades }) => {
 
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke={${C.bgInner}} />
-          <XAxis dataKey="i" tick={{ fontSize: 9, fill: ${C.textDim} }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 9, fill: ${C.textDim} }} axisLine={false} tickLine={false} width={42} domain={["auto", "auto"]} />
-          <Tooltip contentStyle={{ background: ${C.bgCard}, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} formatter={(v) => [`${v.toFixed(1)}`, ""]} />
-          <Line type="monotone" dataKey="Toi" stroke={${C.green}} strokeWidth={2.5} dot={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={C.bgInner} />
+          <XAxis dataKey="i" tick={{ fontSize: 9, fill: C.textDim }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 9, fill: C.textDim }} axisLine={false} tickLine={false} width={42} domain={["auto", "auto"]} />
+          <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} formatter={(v) => [`${v.toFixed(1)}`, ""]} />
+          <Line type="monotone" dataKey="Toi" stroke={C.green} strokeWidth={2.5} dot={false} />
           {selected.includes("btc") && <Line type="monotone" dataKey="BTC/USD" stroke="#f7931a" strokeWidth={1.5} dot={false} strokeDasharray="4 2" />}
           {selected.includes("sp500") && <Line type="monotone" dataKey="S&P 500" stroke="#7b61ff" strokeWidth={1.5} dot={false} strokeDasharray="4 2" />}
           {selected.includes("eth") && <Line type="monotone" dataKey="ETH/USD" stroke="#627eea" strokeWidth={1.5} dot={false} strokeDasharray="4 2" />}
         </LineChart>
       </ResponsiveContainer>
-      <div style={{ fontSize: 10, color: ${C.textGhost}, fontFamily: F.mono, marginTop: 8, textAlign: "right" }}>
+      <div style={{ fontSize: 10, color: C.textGhost, fontFamily: F.mono, marginTop: 8, textAlign: "right" }}>
         * Benchmarks simulés — intégration API en développement
       </div>
     </div>

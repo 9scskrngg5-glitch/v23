@@ -38,13 +38,13 @@ export const BadgesPanel = ({ trades, stats }) => {
               onMouseLeave={e => isEarned && (e.currentTarget.style.opacity = "1")}
             >
               <div style={{
-                fontSize: 20, color: isEarned ? badge.color : ${C.textDim},
+                fontSize: 20, color: isEarned ? badge.color : C.textDim,
                 fontFamily: mono, lineHeight: 1,
               }}>
                 {badge.icon}
               </div>
               <div style={{
-                fontSize: 9, color: isEarned ? ${C.textMid} : ${C.textDim},
+                fontSize: 9, color: isEarned ? C.textMid : C.textDim,
                 fontFamily: mono, textAlign: "center", lineHeight: 1.3,
                 letterSpacing: "0.04em",
               }}>
@@ -56,7 +56,7 @@ export const BadgesPanel = ({ trades, stats }) => {
       </div>
 
       {earned.length === 0 && (
-        <div style={{ marginTop: 12, fontSize: 11, color: ${C.textGhost}, fontFamily: mono }}>
+        <div style={{ marginTop: 12, fontSize: 11, color: C.textGhost, fontFamily: mono }}>
           Ajoute des trades pour débloquer tes premiers badges.
         </div>
       )}
