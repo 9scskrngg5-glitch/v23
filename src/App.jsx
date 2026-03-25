@@ -297,8 +297,8 @@ const Loader = () => (
       @keyframes fadeLoader { from { opacity: 0; } to { opacity: 1; } }
     `}</style>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, animation: "fadeLoader 0.3s ease forwards" }}>
-      <div style={{ width: 36, height: 36, border: "2px solid #1c2040", borderTop: "2px solid #22d49f", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
-      <div style={{ fontSize: 10, color: "#2a3058", fontFamily: "'DM Mono', monospace", letterSpacing: "0.18em" }}>CHARGEMENT</div>
+      <div style={{ width: 36, height: 36, border: `2px solid ${C.border}`, borderTop: `2px solid ${C.green}`, borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+      <div style={{ fontSize: 10, color: C.textDim, fontFamily: "'DM Mono', monospace", letterSpacing: "0.18em" }}>CHARGEMENT</div>
     </div>
   </div>
 );

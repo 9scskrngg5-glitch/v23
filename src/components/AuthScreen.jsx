@@ -73,13 +73,12 @@ const AnimatedBg = () => {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
         } else if (p.size === 2) {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);
-          // subtle cross for larger pixels
-          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha * 0.4})`;
+          ctx.fillStyle = `rgba(142,182,155,${finalAlpha * 0.4})`;
           ctx.fillRect(Math.round(p.x) - 1, Math.round(p.y), 4, 1);
           ctx.fillRect(Math.round(p.x), Math.round(p.y) - 1, 1, 4);
         } else {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 3, 3);
-          ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha * 0.3})`;
+          ctx.fillStyle = `rgba(142,182,155,${finalAlpha * 0.3})`;
           ctx.fillRect(Math.round(p.x) - 1, Math.round(p.y) + 1, 5, 1);
           ctx.fillRect(Math.round(p.x) + 1, Math.round(p.y) - 1, 1, 5);
         }
