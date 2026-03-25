@@ -182,7 +182,7 @@ export const AuthScreen = ({ onSignIn, onSignUp, onSignInWithGoogle }) => {
         <StatFloat label="Win Rate" value="68.4%" top="18%" left="8%" delay="0s" />
         <StatFloat label="PnL Total" value="+$2,840" color="#DAF1DE" top="18%" right="8%" delay="1.2s" />
         <StatFloat label="Expectancy" value="+$47.2" top="42%" left="12%" delay="0.6s" />
-        <StatFloat label="Drawdown" value="-$340" color=C.red top="42%" right="10%" delay="1.8s" />
+        <StatFloat label="Drawdown" value="-$340" color={C.red} top="42%" right="10%" delay="1.8s" />
 
         {/* Bottom — title + 3 steps */}
         <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:3,padding:"0 28px 32px"}}>

@@ -108,9 +108,9 @@ const FirmCard = ({ firm, trades, onEdit, onDelete }) => {
         </div>
       </div>
 
-      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color=C.orange />
-      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color=C.orange />
-      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color=C.green unit="%" />
+      <GaugeBar label="Perte journalière" current={dailyLossPct} max={rules.maxDailyLoss} invert color={C.orange} />
+      <GaugeBar label="Perte totale" current={totalLossPct} max={rules.maxTotalLoss} invert color={C.orange} />
+      <GaugeBar label="Objectif profit" current={Math.max(0, totalPnLPct)} max={rules.profitTarget} color={C.green} unit="%" />
 
       <div style={{ display: "flex", gap: 16, marginTop: 12, paddingTop: 12, borderTop: "1px solid #0a0d18" }}>
         <div>
