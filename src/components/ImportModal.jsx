@@ -9,7 +9,7 @@ const sans = "'DM Sans', sans-serif";
 const FORMAT_INFO = {
   binance: { label: "Binance Futures", color: C.orange, hint: "Historique des trades futures" },
   metatrader: { label: "MetaTrader 4/5", color: C.green, hint: "Export statement MT4/MT5" },
-  generic: { label: "Format générique", color: C.textMid, hint: "CSV avec colonnes pair, result, etc." },
+  generic: { label: "Format générique", color: "#a0a8c8", hint: "CSV avec colonnes pair, result, etc." },
   unknown: { label: "Format inconnu", color: C.red, hint: "" },
 };
 
@@ -64,7 +64,7 @@ export const ImportModal = ({ onImport, onClose }) => {
 
         {/* Supported formats */}
         <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
-          {[["Binance Futures", C.orange], ["MetaTrader 4/5", C.green], ["CSV générique", C.textMid]].map(([label, color]) => (
+          {[["Binance Futures", C.orange], ["MetaTrader 4/5", C.green], ["CSV générique", "#a0a8c8"]].map(([label, color]) => (
             <span key={label} style={{ fontSize: 10, fontFamily: mono, letterSpacing: "0.06em", padding: "3px 10px", borderRadius: 20, border: `1px solid ${color}30`, color, background: `${color}08` }}>
               {label}
             </span>

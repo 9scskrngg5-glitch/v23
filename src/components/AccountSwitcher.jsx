@@ -11,7 +11,7 @@ const inp = {
   fontFamily: mono, outline: "none", transition: "border-color 0.2s", width: "100%",
 };
 
-const COLORS = [C.green, C.orange, C.red, C.textMid, "#7b61ff", "#00d4ff"];
+const COLORS = [C.green, C.orange, C.red, "#a0a8c8", "#7b61ff", "#00d4ff"];
 
 export const AccountSwitcher = ({ accounts, activeAccount, onSwitch, onAdd, onDelete }) => {
   const [open, setOpen] = useState(false);

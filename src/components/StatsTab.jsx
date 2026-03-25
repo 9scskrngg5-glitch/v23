@@ -24,7 +24,7 @@ const ChartTooltip = ({ active, payload, labelKey = "label" }) => {
   const d = payload[0].payload;
   return (
     <div style={{ background: "#0d1020", border: "1px solid #181b2e", borderRadius: 10, padding: "10px 14px", fontFamily: "'DM Mono', monospace", fontSize: 12 }}>
-      <div style={{ color: C.textMid, marginBottom: 5 }}>{d[labelKey]}</div>
+      <div style={{ color: "#a0a8c8", marginBottom: 5 }}>{d[labelKey]}</div>
       <div style={{ color: (d.pnl ?? d.value ?? 0) >= 0 ? C.green : C.red, fontWeight: 700 }}>
         {((d.pnl ?? d.value) >= 0 ? "+" : "")}{(d.pnl ?? d.value)?.toFixed(2)}$
       </div>
@@ -36,10 +36,10 @@ const ChartTooltip = ({ active, payload, labelKey = "label" }) => {
 const MiniBar = ({ data, dataKey = "pnl", labelKey = "label", height = 140 }) => (
   <ResponsiveContainer width="100%" height={height}>
     <BarChart data={data} barSize={28}>
-      <CartesianGrid strokeDasharray="3 3" stroke={C.border} vertical={false} />
+      <CartesianGrid strokeDasharray="3 3" stroke=C.border vertical={false} />
       <XAxis dataKey={labelKey} tick={{ fontSize: 10, fill: C.textDim, fontFamily: "'DM Mono', monospace" }} axisLine={false} tickLine={false} />
       <YAxis tick={{ fontSize: 10, fill: "#252840" }} axisLine={false} tickLine={false} width={44} />
-      <ReferenceLine y={0} stroke={C.border} />
+      <ReferenceLine y={0} stroke=C.border />
       <Tooltip content={<ChartTooltip labelKey={labelKey} />} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
       <Bar dataKey={dataKey} radius={[5, 5, 0, 0]}>
         {data.map((d, i) => <Cell key={i} fill={(d[dataKey] ?? 0) >= 0 ? C.green : C.red} fillOpacity={0.8} />)}

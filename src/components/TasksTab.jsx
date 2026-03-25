@@ -97,7 +97,7 @@ export const TasksTab = ({ tasks, onAdd, onToggle, onDelete, onClearDone }) => {
                 width: 18,
                 height: 18,
                 borderRadius: 5,
-                border: `1.5px solid ${t.done ? C.green : C.border}`,
+                border: `1.5px solid ${t.done ? C.green : "#2a3050"}`,
                 background: t.done ? C.green : "transparent",
                 cursor: "pointer",
                 flexShrink: 0,

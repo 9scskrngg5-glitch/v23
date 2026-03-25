@@ -102,7 +102,7 @@ export const TradeForm = ({ initialValues, onSubmit, onCancel, submitLabel = "Va
               <div
                 onClick={() => fileRef.current?.click()}
                 style={{
-                  border: `1px dashed ${C.textGhost}`, borderRadius: 10,
+                  border: "1px dashed #2d3352", borderRadius: 10,
                   padding: "18px", textAlign: "center", cursor: "pointer",
                   color: C.textDim, fontSize: 12, fontFamily: "'DM Mono', monospace",
                   transition: "border-color 0.2s",

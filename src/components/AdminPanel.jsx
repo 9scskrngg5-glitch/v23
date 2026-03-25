@@ -368,10 +368,10 @@ export const AdminPanel = ({ user, onClose }) => {
         {!loading && !error && activeTab === "overview" && data && (
           <>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10, marginBottom: 24 }}>
-              <StatBox label="MRR" value={`${data.stats.mrr}$`} color={C.green sub={`${data.stats.proUsers} Pro actifs`} />
-              <StatBox label="ARR" value={`${data.stats.mrr * 12}$`} color={C.green sub="Revenus annuels" />
+              <StatBox label="MRR" value={`${data.stats.mrr}$`} color={C.green} sub={`${data.stats.proUsers} Pro actifs`} />
+              <StatBox label="ARR" value={`${data.stats.mrr * 12}$`} color={C.green} sub="Revenus annuels" />
               <StatBox label="Utilisateurs" value={data.stats.totalUsers} sub={`${data.stats.freeUsers} Free · ${data.stats.proUsers} Pro`} />
-              <StatBox label="Conversion" value={data.stats.totalUsers ? `${((data.stats.proUsers / data.stats.totalUsers) * 100).toFixed(1)}%` : "0%"} color={C.orange />
+              <StatBox label="Conversion" value={data.stats.totalUsers ? `${((data.stats.proUsers / data.stats.totalUsers) * 100).toFixed(1)}%` : "0%"} color={C.orange} />
               <StatBox label="Trades Total" value={data.stats.totalTrades?.toLocaleString()} />
             </div>
             <div style={{ ...card() }}>
@@ -394,4 +394,3 @@ export const AdminPanel = ({ user, onClose }) => {
     </div>
   );
 };
-}

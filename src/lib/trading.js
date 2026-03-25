@@ -1,4 +1,4 @@
-import { C, F } from "../lib/design";
+import { C, F } from "./lib/design";
 /** @returns {string} */
 export const uid = () => Math.random().toString(36).slice(2, 9);
 
@@ -129,7 +129,7 @@ export const detectRegime = (trades) => {
 export const REGIME_META = {
   TRENDING_UP:  { label: "Trending ↑",   color: C.green, hint: "Momentum actif — suis la tendance" },
   DISTRIBUTION: { label: "Distribution", color: C.orange, hint: "Marché en rotation — réduis le risque" },
-  SIDEWAYS:     { label: "Sideways",      color: C.textMid, hint: "Range — attends une cassure claire" },
+  SIDEWAYS:     { label: "Sideways",      color: "#a0a8c8", hint: "Range — attends une cassure claire" },
   CHAOTIC:      { label: "Chaotic ⚠",    color: C.red, hint: "Volatilité extrême — NE TRADE PAS" },
 };
 

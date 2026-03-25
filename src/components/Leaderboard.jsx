@@ -50,7 +50,7 @@ export const Leaderboard = ({ currentUserId }) => {
                 <tbody>
                   {data.entries.map((entry, i) => {
                     const isTop3 = i < 3;
-                    const medalColor = i === 0 ? C.orange : i === 1 ? C.textMid : i === 2 ? "#cd7f32" : C.textDim;
+                    const medalColor = i === 0 ? C.orange : i === 1 ? "#a0a8c8" : i === 2 ? "#cd7f32" : C.textDim;
 
                     return (
                       <tr key={entry.id} style={{ borderBottom: "1px solid #080a14" }}

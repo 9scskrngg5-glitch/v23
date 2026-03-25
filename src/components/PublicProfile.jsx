@@ -82,15 +82,15 @@ export const PublicProfile = ({ username }) => {
                 <AreaChart data={equity}>
                   <defs>
                     <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={C.green} stopOpacity={0.12} />
-                      <stop offset="95%" stopColor={C.green} stopOpacity={0} />
+                      <stop offset="5%" stopColor=C.green stopOpacity={0.12} />
+                      <stop offset="95%" stopColor=C.green stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                  <CartesianGrid strokeDasharray="3 3" stroke=C.border />
                   <XAxis dataKey="i" tick={{ fontSize: 10, fill: "#252840" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "#252840" }} axisLine={false} tickLine={false} width={44} />
                   <Tooltip contentStyle={{ background: "#0d1020", border: "1px solid #181b2e", borderRadius: 8, fontFamily: mono, fontSize: 11 }} />
-                  <Area type="monotone" dataKey="eq" stroke={C.green} strokeWidth={1.5} fill="url(#pg)" dot={false} />
+                  <Area type="monotone" dataKey="eq" stroke=C.green strokeWidth={1.5} fill="url(#pg)" dot={false} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

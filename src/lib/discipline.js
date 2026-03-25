@@ -1,4 +1,4 @@
-import { C, F } from "../lib/design";
+import { C, F } from "./lib/design";
 /**
  * Calcule un score de discipline de 0 à 100
  * basé sur le respect des règles de trading
@@ -71,7 +71,7 @@ export const computeDisciplineScore = (trades) => {
 
   const total = Math.round(totalWeighted);
   const grade = total >= 90 ? "A" : total >= 75 ? "B" : total >= 60 ? "C" : total >= 40 ? "D" : "F";
-  const color = total >= 90 ? C.green : total >= 75 ? C.green : total >= 60 ? C.orange : total >= 40 ? "#ff8c42" : C.red;
+  const color = total >= 90 ? C.green : total >= 75 ? "#00c87a" : total >= 60 ? C.orange : total >= 40 ? "#ff8c42" : C.red;
 
   return { total, grade, color, breakdown };
 };

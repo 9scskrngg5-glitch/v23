@@ -1,19 +1,19 @@
-import { C, F } from "../lib/design";
+import { C, F } from "./lib/design";
 /**
  * Système de badges/achievements
  */
 
 export const BADGES = [
   // Premiers pas
-  { id: "first_trade",     icon: "◈", label: "Premier trade",        desc: "Tu as ajouté ton premier trade",             color: C.textMid },
+  { id: "first_trade",     icon: "◈", label: "Premier trade",        desc: "Tu as ajouté ton premier trade",             color: "#a0a8c8" },
   { id: "first_win",       icon: "▲", label: "Première victoire",    desc: "Ton premier trade gagnant",                  color: C.green },
-  { id: "ten_trades",      icon: "≡", label: "10 trades",            desc: "10 trades enregistrés",                      color: C.textMid },
+  { id: "ten_trades",      icon: "≡", label: "10 trades",            desc: "10 trades enregistrés",                      color: "#a0a8c8" },
   { id: "fifty_trades",    icon: "◼", label: "50 trades",            desc: "50 trades enregistrés",                      color: C.orange },
   { id: "hundred_trades",  icon: "●", label: "100 trades",           desc: "100 trades enregistrés",                     color: C.green },
 
   // Performance
   { id: "first_profit",    icon: "↑", label: "Premier profit",       desc: "PnL total positif pour la première fois",    color: C.green },
-  { id: "streak_3",        icon: "∥", label: "Série de 3",           desc: "3 trades gagnants de suite",                 color: C.textMid },
+  { id: "streak_3",        icon: "∥", label: "Série de 3",           desc: "3 trades gagnants de suite",                 color: "#a0a8c8" },
   { id: "streak_5",        icon: "≡", label: "Série de 5",           desc: "5 trades gagnants de suite",                 color: C.orange },
   { id: "streak_10",       icon: "≋", label: "Série de 10",          desc: "10 trades gagnants de suite — légendaire",   color: C.green },
   { id: "pf_above_2",      icon: "◆", label: "Profit Factor > 2",    desc: "Profit Factor supérieur à 2",                color: C.green },
@@ -21,12 +21,12 @@ export const BADGES = [
   { id: "winrate_70",      icon: "▩", label: "Win Rate 70%+",        desc: "Win rate supérieur à 70%",                   color: C.green },
 
   // Discipline
-  { id: "no_revenge_10",   icon: "⊡", label: "Tête froide",          desc: "10 trades sans revenge trading",             color: C.textMid },
+  { id: "no_revenge_10",   icon: "⊡", label: "Tête froide",          desc: "10 trades sans revenge trading",             color: "#a0a8c8" },
   { id: "discipline_a",    icon: "⊙", label: "Score A",              desc: "Score de discipline ≥ 90",                   color: C.green },
   { id: "rr_master",       icon: "◇", label: "RR Master",            desc: "20 trades consécutifs avec RR ≥ 1.5",        color: C.orange },
 
   // Régularité
-  { id: "week_streak",     icon: "⊕", label: "7 jours actif",        desc: "Trades journalisés 7 jours de suite",        color: C.textMid },
+  { id: "week_streak",     icon: "⊕", label: "7 jours actif",        desc: "Trades journalisés 7 jours de suite",        color: "#a0a8c8" },
   { id: "month_streak",    icon: "⊗", label: "30 jours actif",       desc: "Trades journalisés 30 jours de suite",       color: C.orange },
 ];
 

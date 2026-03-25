@@ -86,21 +86,21 @@ export const Dashboard = ({ stats, equity, regime, mc, orderedTrades, isPro, onU
       {stats ? (
         <>
           <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
-            <HeroCard label="PnL aujourd'hui" value={`${todayPnL >= 0 ? "+" : ""}${todayPnL.toFixed(0)}$`} color={hasTodayTrades ? (todayPnL >= 0 ? C.green : C.red) : C.textDim sub={hasTodayTrades ? undefined : "Aucun trade aujourd'hui"} accent={hasTodayTrades && todayPnL > 0} />
-            <HeroCard label="Expectancy" value={`${Number(stats.expectancy) >= 0 ? "+" : ""}${stats.expectancy}$`} color={Number(stats.expectancy) >= 0 ? C.green : C.red sub="par trade en moy." accent={Number(stats.expectancy) > 0} />
-            <HeroCard label="Discipline" value={discipline ? `${discipline.total}/100` : "—"} color={discipline ? discipline.color : C.textDim sub={discipline ? `Grade ${discipline.grade}` : "3 trades min."} accent={discipline && discipline.total >= 75} />
-            <HeroCard label="Drawdown actuel" value={`-${currentDD.toFixed(0)}$`} color={currentDD > 0 ? (currentDD > 500 ? C.red : C.orange) : C.green sub={`Max: -${stats.maxDD}$`} />
+            <HeroCard label="PnL aujourd'hui" value={`${todayPnL >= 0 ? "+" : ""}${todayPnL.toFixed(0)}$`} color={hasTodayTrades ? (todayPnL >= 0 ? C.green : C.red) : C.textDim} sub={hasTodayTrades ? undefined : "Aucun trade aujourd'hui"} accent={hasTodayTrades && todayPnL > 0} />
+            <HeroCard label="Expectancy" value={`${Number(stats.expectancy) >= 0 ? "+" : ""}${stats.expectancy}$`} color={Number(stats.expectancy) >= 0 ? C.green : C.red} sub="par trade en moy." accent={Number(stats.expectancy) > 0} />
+            <HeroCard label="Discipline" value={discipline ? `${discipline.total}/100` : "—"} color={discipline ? discipline.color : C.textDim} sub={discipline ? `Grade ${discipline.grade}` : "3 trades min."} accent={discipline && discipline.total >= 75} />
+            <HeroCard label="Drawdown actuel" value={`-${currentDD.toFixed(0)}$`} color={currentDD > 0 ? (currentDD > 500 ? C.red : C.orange) : C.green} sub={`Max: -${stats.maxDD}$`} />
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(155px, 1fr))", gap: 8, marginBottom: 16 }}>
-            <StatCard label="Win Rate" value={`${stats.winRate}%`} color={Number(stats.winRate) >= 50 ? C.green : C.red sub={`${stats.total} trades`} />
-            <StatCard label="PnL Total" value={`${Number(stats.totalPnL) >= 0 ? "+" : ""}${stats.totalPnL}$`} color={Number(stats.totalPnL) >= 0 ? C.green : C.red />
+            <StatCard label="Win Rate" value={`${stats.winRate}%`} color={Number(stats.winRate) >= 50 ? C.green : C.red} sub={`${stats.total} trades`} />
+            <StatCard label="PnL Total" value={`${Number(stats.totalPnL) >= 0 ? "+" : ""}${stats.totalPnL}$`} color={Number(stats.totalPnL) >= 0 ? C.green : C.red} />
             <StatCard label="Profit Factor" value={stats.profitFactor} color={Number(stats.profitFactor) >= 1.5 ? C.green : Number(stats.profitFactor) >= 1 ? C.orange : C.red} sub="≥ 1.5 = bon" />
-            <StatCard label="Avg Win" value={`+${stats.avgWin}$`} color={C.green sub={`Avg loss -${stats.avgLoss}$`} />
-            <StatCard label="Win Streak" value={`${stats.streak}W`} color={C.green sub="consécutifs" />
+            <StatCard label="Avg Win" value={`+${stats.avgWin}$`} color={C.green} sub={`Avg loss -${stats.avgLoss}$`} />
+            <StatCard label="Win Streak" value={`${stats.streak}W`} color={C.green} sub="consécutifs" />
             <StatCard label="Régime" value={regime ? REGIME_META[regime]?.label : "—"} color={regime ? REGIME_META[regime]?.color : C.textDim} sub={regime ? REGIME_META[regime]?.hint : "10 trades min"} />
-            <StatCard label="Monte Carlo" value={mc ? `Ruin ${mc.ruinPct}%` : "—"} color={mc ? Number(mc.ruinPct) <= 10 ? C.green : Number(mc.ruinPct) <= 25 ? C.orange : C.red : C.textDim sub={mc ? `DD moy. ${mc.avgDD}$` : "400 sims"} />
-            <StatCard label="Best Trade" value={`+${stats.bestTrade}$`} color={C.green sub={`Pire: ${stats.worstTrade}$`} />
+            <StatCard label="Monte Carlo" value={mc ? `Ruin ${mc.ruinPct}%` : "—"} color={mc ? Number(mc.ruinPct) <= 10 ? C.green : Number(mc.ruinPct) <= 25 ? C.orange : C.red : C.textDim} sub={mc ? `DD moy. ${mc.avgDD}$` : "400 sims"} />
+            <StatCard label="Best Trade" value={`+${stats.bestTrade}$`} color={C.green} sub={`Pire: ${stats.worstTrade}$`} />
           </div>
         </>
       ) : (
@@ -184,4 +184,3 @@ export const Dashboard = ({ stats, equity, regime, mc, orderedTrades, isPro, onU
     </div>
   );
 };
-}
