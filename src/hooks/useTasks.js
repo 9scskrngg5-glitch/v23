@@ -5,7 +5,7 @@ import { uid } from "../lib/trading";
 /**
  * Hook managing task state and persistence
  */
-export const useTasks = () => {
+export const useTasks = (user) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export const useTasks = () => {
       const stored = await storageGet(STORAGE_KEYS.tasks);
       setTasks(Array.isArray(stored) ? stored : []);
     })();
-  }, []);
+  }, [user?.id]); // Re-run when user changes
 
   const persist = async (next) => {
     setTasks(next);

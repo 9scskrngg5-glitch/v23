@@ -23,8 +23,12 @@ export const useTrades = (user) => {
   const [trades, setTrades] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Hydrate from storage
+  // Hydrate from storage — re-runs when user changes (login/logout)
   useEffect(() => {
+    // Reset when user changes
+    setLoaded(false);
+    setTrades([]);
+
     (async () => {
       const stored = await storageGet(STORAGE_KEYS.trades);
       const now = Date.now();
@@ -38,7 +42,7 @@ export const useTrades = (user) => {
       setTrades(normalized);
       setLoaded(true);
     })();
-  }, []);
+  }, [user?.id]); // Re-run when user ID changes
 
   const persist = async (next) => {
     setTrades(next);
