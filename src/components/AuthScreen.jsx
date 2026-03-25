@@ -29,24 +29,19 @@ const AnimatedBg = () => {
     const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; init(); };
     window.addEventListener("resize", resize);
 
-    let pixels = [], beamX = 0, beamT = 0;
+    let pixels = [];
 
     const init = () => {
       const W = canvas.width, H = canvas.height;
-      beamX = W * 0.5;
-      // Pixel dust particles — start at bottom, rise slowly
-      pixels = Array.from({ length: 180 }, () => ({
+      pixels = Array.from({ length: 200 }, () => ({
         x: Math.random() * W,
-        y: Math.random() * H,           // start scattered
-        baseY: Math.random() * H,
-        vy: -(Math.random() * 0.4 + 0.1), // rise speed
-        vx: (Math.random() - 0.5) * 0.15,
-        size: Math.random() < 0.7 ? 1 : Math.random() < 0.9 ? 2 : 3, // mostly 1px, some 2-3px
-        alpha: Math.random() * 0.7 + 0.1,
-        maxAlpha: Math.random() * 0.8 + 0.15,
+        y: Math.random() * H,
+        vy: -(Math.random() * 0.35 + 0.08),
+        vx: (Math.random() - 0.5) * 0.12,
+        size: Math.random() < 0.72 ? 1 : Math.random() < 0.92 ? 2 : 3,
+        alpha: Math.random() * 0.6 + 0.08,
         twinkle: Math.random() * Math.PI * 2,
-        twinkleSpeed: Math.random() * 0.04 + 0.01,
-        distBeam: Math.random() * W,    // distance from beam center
+        twinkleSpeed: Math.random() * 0.035 + 0.008,
       }));
     };
 
@@ -56,68 +51,25 @@ const AnimatedBg = () => {
       const W = canvas.width, H = canvas.height;
       ctx.clearRect(0, 0, W, H);
 
-      beamT += 0.008;
-      // Beam slowly drifts left-right
-      beamX = W * (0.35 + 0.15 * Math.sin(beamT * 0.7));
-
-      // ── Light beam (top-down cone) ──
-      const beamGrad = ctx.createRadialGradient(beamX, -H * 0.1, 0, beamX, H * 0.6, W * 0.55);
-      beamGrad.addColorStop(0, "rgba(218,241,222,0.07)");
-      beamGrad.addColorStop(0.3, "rgba(142,182,155,0.04)");
-      beamGrad.addColorStop(1, "rgba(5,31,32,0)");
-      ctx.fillStyle = beamGrad;
-      ctx.fillRect(0, 0, W, H);
-
-      // Tight inner beam
-      const innerGrad = ctx.createLinearGradient(beamX - 30, 0, beamX + 30, 0);
-      innerGrad.addColorStop(0, "rgba(218,241,222,0)");
-      innerGrad.addColorStop(0.5, "rgba(218,241,222,0.06)");
-      innerGrad.addColorStop(1, "rgba(218,241,222,0)");
-      ctx.fillStyle = innerGrad;
-      ctx.beginPath();
-      ctx.moveTo(beamX - 8, 0);
-      ctx.lineTo(beamX + 8, 0);
-      ctx.lineTo(beamX + 120, H);
-      ctx.lineTo(beamX - 120, H);
-      ctx.closePath();
-      ctx.fill();
-
       // ── Grid (very subtle) ──
-      ctx.strokeStyle = "rgba(35,83,71,0.18)";
+      ctx.strokeStyle = "rgba(35,83,71,0.15)";
       ctx.lineWidth = 0.5;
       for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
       for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
       // ── Pixel dust ──
       pixels.forEach(p => {
-        // Rise
         p.y += p.vy;
         p.x += p.vx;
-        // Reset when out of top
-        if (p.y < -10) {
-          p.y = H + 5;
-          p.x = Math.random() * W;
-        }
+        if (p.y < -10) { p.y = H + 5; p.x = Math.random() * W; }
         if (p.x < -5 || p.x > W + 5) p.vx *= -1;
 
-        // Twinkle
         p.twinkle += p.twinkleSpeed;
-        const twinkleFactor = 0.5 + 0.5 * Math.sin(p.twinkle);
+        const finalAlpha = p.alpha * (0.4 + 0.6 * Math.abs(Math.sin(p.twinkle)));
 
-        // Brightness boost near beam
-        const distToBeam = Math.abs(p.x - beamX);
-        const beamBoost = Math.max(0, 1 - distToBeam / 160) * 0.6;
-        const finalAlpha = Math.min(1, p.alpha * twinkleFactor + beamBoost * 0.4);
+        ctx.fillStyle = `rgba(142,182,155,${finalAlpha})`;
 
-        // Color: closer to beam = brighter/whiter
-        const t = Math.max(0, 1 - distToBeam / 200);
-        const r = Math.round(142 + (218 - 142) * t);
-        const g = Math.round(182 + (241 - 182) * t);
-        const b = Math.round(155 + (222 - 155) * t);
-
-        ctx.fillStyle = `rgba(${r},${g},${b},${finalAlpha})`;
-
-        if (p.size === 1) {
+        if (p.size === 1) {\n          ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
         } else if (p.size === 2) {
           ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);

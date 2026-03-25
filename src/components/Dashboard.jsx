@@ -113,28 +113,36 @@ export const Dashboard = ({ stats, equity, regime, mc, orderedTrades, isPro, onU
 
       <SetupStats trades={orderedTrades} />
 
-      <Card>
-        <SectionTitle>Courbe d'équité</SectionTitle>
+      {/* Equity curve — full width, edge to edge */}
+      <div style={{ marginBottom: 16, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+        <div style={{ padding: "16px 22px 0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ ...label() }}>Courbe d'équité</div>
+          {stats && equity.length > 1 && (
+            <div style={{ fontSize: 12, fontFamily: F.mono, color: Number(stats.totalPnL) >= 0 ? C.green : C.red, fontWeight: 600 }}>
+              {Number(stats.totalPnL) >= 0 ? "+" : ""}{stats.totalPnL}$
+            </div>
+          )}
+        </div>
         {equity.length > 1 ? (
-          <ResponsiveContainer width="100%" height={180}>
-            <AreaChart data={equity}>
+          <ResponsiveContainer width="100%" height={240}>
+            <AreaChart data={equity} margin={{ top: 16, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="eqG" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={C.green} stopOpacity={0.15} />
+                  <stop offset="5%" stopColor={C.green} stopOpacity={0.2} />
                   <stop offset="95%" stopColor={C.green} stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke={C.bgInner} />
-              <XAxis dataKey="i" tick={{ fontSize: 10, fill: C.textDim, fontFamily: F.mono }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: C.textDim }} axisLine={false} tickLine={false} width={50} />
-              <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} />
-              <Area type="monotone" dataKey="eq" stroke={C.green} strokeWidth={2} fill="url(#eqG)" dot={false} activeDot={{ r: 4, fill: C.green, strokeWidth: 0 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke={C.border} strokeOpacity={0.4} vertical={false} />
+              <XAxis dataKey="i" tick={{ fontSize: 10, fill: C.textDim, fontFamily: F.mono }} axisLine={false} tickLine={false} tickMargin={8} />
+              <YAxis tick={{ fontSize: 10, fill: C.textDim }} axisLine={false} tickLine={false} width={52} />
+              <Tooltip contentStyle={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, fontFamily: F.mono, fontSize: 11 }} cursor={{ stroke: C.borderHov, strokeWidth: 1 }} />
+              <Area type="monotone" dataKey="eq" stroke={C.green} strokeWidth={2.5} fill="url(#eqG)" dot={false} activeDot={{ r: 5, fill: C.green, strokeWidth: 0 }} />
             </AreaChart>
           </ResponsiveContainer>
         ) : (
-          <div style={{ height: 180, display: "flex", alignItems: "center", justifyContent: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>Pas assez de données</div>
+          <div style={{ height: 240, display: "flex", alignItems: "center", justifyContent: "center", color: C.textGhost, fontSize: 12, fontFamily: F.mono }}>Pas assez de données</div>
         )}
-      </Card>
+      </div>
 
       <DisciplineCorrelation trades={orderedTrades} />
 

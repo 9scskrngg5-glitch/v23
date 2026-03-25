@@ -221,68 +221,94 @@ export const LandingPage = ({ onGetStarted }) => {
       {/* PRICING */}
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px" }}>
         <RevealSection>
-          <div style={{ textAlign: "center", marginBottom: 56 }}>
-            <div style={{ fontSize: 10, color: G.dim, letterSpacing: "0.2em", fontFamily: mono, marginBottom: 12 }}>TARIFS</div>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 800, fontFamily: syne, letterSpacing: "-0.02em", color: G.text }}>Simple et transparent.</h2>
-            <p style={{ fontSize: 14, color: G.dim, marginTop: 12, fontFamily: sans }}>Les concurrents facturent 30–80$/mois. Nous, 9$.</p>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ fontSize: 10, color: G.dim, letterSpacing: "0.2em", fontFamily: mono, marginBottom: 14 }}>TARIFS</div>
+            <h2 style={{ fontSize: "clamp(32px, 5vw, 64px)", fontWeight: 800, fontFamily: syne, letterSpacing: "-0.03em", color: G.text, lineHeight: 1 }}>Pricing</h2>
+            <p style={{ fontSize: 14, color: G.dim, marginTop: 14, fontFamily: sans }}>Les concurrents facturent 30–80$/mois. Nous, 9$.</p>
           </div>
         </RevealSection>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, maxWidth: 860, margin: "0 auto" }}>
+
           {/* Free */}
-          <RevealSection delay="0.1s">
-            <div style={{ background: G.card, border: `1px solid ${G.border}`, borderRadius: 20, padding: "28px 24px", height: "100%" }}>
-              <div style={{ fontSize: 10, color: G.dim, fontFamily: mono, letterSpacing: "0.14em", marginBottom: 16 }}>FREE</div>
-              <div style={{ marginBottom: 24 }}>
-                <span style={{ fontSize: 44, fontWeight: 800, fontFamily: syne, color: G.text, letterSpacing: "-0.03em" }}>0$</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
-                {["20 trades max", "Dashboard de base", "Courbe d'équité", "Import / Export JSON"].map(f => (
+          <RevealSection delay="0s">
+            <div style={{ background: "rgba(11,43,38,0.5)", backdropFilter: "blur(20px)", border: `1px solid ${G.border}`, borderRadius: 22, padding: "32px 26px", height: "100%", position: "relative", overflow: "hidden" }}>
+              <div style={{ fontSize: 10, color: G.dim, fontFamily: mono, letterSpacing: "0.16em", marginBottom: 20 }}>FREE PLAN</div>
+              <div style={{ fontSize: 52, fontWeight: 800, fontFamily: syne, color: G.text, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: 24 }}>Free</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
+                {["20 trades max", "Dashboard de base", "Courbe d'équité", "Import / Export JSON", "Stats de base"].map(f => (
                   <div key={f} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                    <span style={{ color: G.dim, fontSize: 10 }}>+</span>
+                    <div style={{ width: 16, height: 16, borderRadius: "50%", border: `1px solid ${G.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.5 6L6.5 2" stroke={G.dim} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
                     <span style={{ fontSize: 13, color: G.dim, fontFamily: sans }}>{f}</span>
                   </div>
                 ))}
               </div>
-              <button onClick={onGetStarted} style={{ width: "100%", padding: "11px", borderRadius: 10, border: `1px solid ${G.border}`, background: "transparent", color: G.mid, fontSize: 12, fontWeight: 700, fontFamily: mono, letterSpacing: "0.06em", transition: "all 0.15s" }}
-                onMouseEnter={e=>{e.currentTarget.style.background="rgba(142,182,155,0.08)";}} onMouseLeave={e=>{e.currentTarget.style.background="transparent";}}>
-                COMMENCER
+              <button onClick={onGetStarted} style={{ width: "100%", padding: "13px", borderRadius: 12, border: `1px solid ${G.border}`, background: "transparent", color: G.mid, fontSize: 13, fontWeight: 600, fontFamily: sans, transition: "all 0.15s" }}
+                onMouseEnter={e=>{e.currentTarget.style.background="rgba(142,182,155,0.08)";e.currentTarget.style.borderColor=G.borderHov;}} onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=G.border;}}>
+                Get Started
               </button>
             </div>
           </RevealSection>
 
-          {/* Pro */}
-          <RevealSection delay="0.2s">
-            <div style={{ background: "linear-gradient(160deg, #163832, #0B2B26)", border: "1px solid rgba(142,182,155,0.35)", borderRadius: 20, padding: "28px 24px", position: "relative", height: "100%", boxShadow: "0 0 60px rgba(142,182,155,0.06)" }}>
-              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: G.green, color: G.bg, fontSize: 9, fontWeight: 700, fontFamily: mono, letterSpacing: "0.14em", padding: "4px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>POPULAIRE</div>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(142,182,155,0.5), transparent)", borderRadius: "20px 20px 0 0" }} />
-              <div style={{ fontSize: 10, color: G.mid, fontFamily: mono, letterSpacing: "0.14em", marginBottom: 16 }}>PRO</div>
-              <div style={{ marginBottom: 6 }}>
-                <span style={{ fontSize: 44, fontWeight: 800, fontFamily: syne, color: G.text, letterSpacing: "-0.03em" }}>9$</span>
-                <span style={{ fontSize: 13, color: G.dim, fontFamily: mono }}> /mois</span>
+          {/* Pro — hero card */}
+          <RevealSection delay="0.12s">
+            <div style={{ background: "rgba(22,56,50,0.7)", backdropFilter: "blur(20px)", border: "1px solid rgba(142,182,155,0.4)", borderRadius: 22, padding: "32px 26px", position: "relative", height: "100%", overflow: "hidden", boxShadow: "0 0 80px rgba(142,182,155,0.08), inset 0 1px 0 rgba(218,241,222,0.15)" }}>
+              {/* Top glow line */}
+              <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: 1, background: "linear-gradient(90deg, transparent, rgba(218,241,222,0.6), transparent)" }} />
+              {/* Badge */}
+              <div style={{ position: "absolute", top: -1, left: "50%", transform: "translateX(-50%)", background: G.green, color: G.bg, fontSize: 9, fontWeight: 700, fontFamily: mono, letterSpacing: "0.14em", padding: "4px 16px", borderRadius: "0 0 12px 12px", whiteSpace: "nowrap" }}>POPULAIRE</div>
+
+              <div style={{ fontSize: 10, color: G.mid, fontFamily: mono, letterSpacing: "0.16em", marginBottom: 20, marginTop: 8 }}>STANDARD PLAN</div>
+              <div style={{ marginBottom: 6, display: "flex", alignItems: "baseline", gap: 4 }}>
+                <span style={{ fontSize: 52, fontWeight: 800, fontFamily: syne, color: G.text, letterSpacing: "-0.04em", lineHeight: 1 }}>9$</span>
+                <span style={{ fontSize: 14, color: G.dim, fontFamily: mono }}>/m</span>
               </div>
-              <div style={{ fontSize: 11, color: G.dim, fontFamily: mono, marginBottom: 24 }}>Sans engagement · Annulable à tout moment</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28 }}>
+              <div style={{ fontSize: 11, color: G.dim, fontFamily: mono, marginBottom: 24 }}>Sans engagement</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
                 {["Trades illimités", "AI Coach personnalisé", "Stats avancées complètes", "Screenshots de trades", "Export PDF mensuel", "Cooldown anti-revenge", "Support prioritaire"].map(f => (
                   <div key={f} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                    <span style={{ color: G.mid, fontSize: 11 }}>✓</span>
+                    <div style={{ width: 16, height: 16, borderRadius: "50%", background: "rgba(142,182,155,0.15)", border: `1px solid rgba(142,182,155,0.3)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.5 6L6.5 2" stroke={G.mid} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
                     <span style={{ fontSize: 13, color: G.text, fontFamily: sans }}>{f}</span>
                   </div>
                 ))}
               </div>
-              <button onClick={onGetStarted} style={{ width: "100%", padding: "13px", borderRadius: 10, border: "none", background: G.green, color: G.bg, fontSize: 12, fontWeight: 800, fontFamily: mono, letterSpacing: "0.06em", transition: "all 0.15s" }}
-                onMouseEnter={e=>{e.currentTarget.style.opacity="0.88";e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.transform="none";}}>
-                DÉMARRER EN PRO →
+              <button onClick={onGetStarted} style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: G.green, color: G.bg, fontSize: 13, fontWeight: 700, fontFamily: sans, transition: "all 0.15s" }}
+                onMouseEnter={e=>{e.currentTarget.style.opacity="0.88";e.currentTarget.style.transform="translateY(-1px)";}} onMouseLeave={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.transform="none";}}>
+                Get Started
+              </button>
+            </div>
+          </RevealSection>
+
+          {/* Annual — coming soon */}
+          <RevealSection delay="0.22s">
+            <div style={{ background: "rgba(11,43,38,0.35)", backdropFilter: "blur(20px)", border: `1px solid ${G.border}`, borderRadius: 22, padding: "32px 26px", height: "100%", position: "relative", overflow: "hidden", opacity: 0.75 }}>
+              <div style={{ position: "absolute", top: 14, right: 16, fontSize: 9, color: G.dim, fontFamily: mono, background: G.inner, border: `1px solid ${G.border}`, borderRadius: 20, padding: "3px 10px", letterSpacing: "0.1em" }}>BIENTÔT</div>
+              <div style={{ fontSize: 10, color: G.dim, fontFamily: mono, letterSpacing: "0.16em", marginBottom: 20 }}>FREE PLAN</div>
+              <div style={{ marginBottom: 6, display: "flex", alignItems: "baseline", gap: 4 }}>
+                <span style={{ fontSize: 52, fontWeight: 800, fontFamily: syne, color: G.text, letterSpacing: "-0.04em", lineHeight: 1 }}>79$</span>
+                <span style={{ fontSize: 14, color: G.dim, fontFamily: mono }}>/an</span>
+              </div>
+              <div style={{ fontSize: 11, color: G.mid, fontFamily: mono, marginBottom: 24 }}>2 mois offerts</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
+                {["Tout ce qu'inclut Pro", "2 mois gratuits", "Priorité nouvelles features", "Support VIP"].map(f => (
+                  <div key={f} style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <div style={{ width: 16, height: 16, borderRadius: "50%", border: `1px solid ${G.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.5 6L6.5 2" stroke={G.dim} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
+                    <span style={{ fontSize: 13, color: G.dim, fontFamily: sans }}>{f}</span>
+                  </div>
+                ))}
+              </div>
+              <button disabled style={{ width: "100%", padding: "13px", borderRadius: 12, border: `1px solid ${G.border}`, background: "transparent", color: G.dim, fontSize: 13, fontWeight: 600, fontFamily: sans, cursor: "not-allowed" }}>
+                Get Started
               </button>
             </div>
           </RevealSection>
         </div>
-
-        <RevealSection delay="0.3s">
-          <div style={{ textAlign: "center", marginTop: 24 }}>
-            <span style={{ fontSize: 12, color: G.dim, fontFamily: mono }}>Bientôt : plan annuel à <span style={{ color: G.mid }}>79$/an</span> — 2 mois offerts.</span>
-          </div>
-        </RevealSection>
       </div>
 
       {/* FAQ */}
