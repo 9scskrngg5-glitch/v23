@@ -78,6 +78,7 @@ export default function App() {
   const [showFocus, setShowFocus] = useState(false);
   const [showSplit, setShowSplit] = useState(false);
   const [showAccountDD, setShowAccountDD] = useState(false);
+  const [settingsSection, setSettingsSection] = useState(null);
   const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "midnight");
   const [themeVersion, setThemeVersion] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -307,20 +308,20 @@ export default function App() {
 
                     {/* Menu items */}
                     <div style={{ padding: "6px 0" }}>
-                      {/* Profile */}
+                      {/* Profile → settings */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" strokeWidth="1.2"/><path d="M2.5 14c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
-                        label="Profil" onClick={() => { setShowAccountDD(false); }} />
+                        label="Profil" onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection("account"); }} />
 
                       {/* Settings */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.2"/><path d="M8 1.5V3.5M8 12.5V14.5M14.5 8H12.5M3.5 8H1.5M12.5 3.5L11 5M5 11L3.5 12.5M12.5 12.5L11 11M5 5L3.5 3.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/></svg>}
-                        label="Paramètres" onClick={() => { setShowAccountDD(false); setTab("settings"); }} />
+                        label="Paramètres" onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection(null); }} />
 
-                      {/* Theme — with chevron */}
+                      {/* Theme → settings, scroll to theme picker */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M12 8.5A4.5 4.5 0 0 1 6.5 3a5 5 0 1 0 5.5 5.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
-                        label="Thème" chevron onClick={() => { setShowAccountDD(false); setTab("settings"); }} />
+                        label="Thème" chevron onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection("theme"); }} />
                     </div>
 
-                    <div style={{ height: 1, background: C.border, margin: "0" }} />
+                    <div style={{ height: 1, background: C.border }} />
 
                     <div style={{ padding: "6px 0" }}>
                       {/* Upgrade */}
@@ -328,6 +329,18 @@ export default function App() {
                         label={isPro ? "Pro actif" : "Upgrade"} color={isPro ? C.green : C.orange}
                         onClick={() => { setShowAccountDD(false); if (!isPro) setShowUpgrade(true); }} />
 
+                      {/* Notifications toggle */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 4 3.5 4 6v3l-1.5 1.5V12h11v-1.5L12 9V6c0-2.5-1.5-4.5-4-4.5z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round"/><path d="M6.5 12.5a1.5 1.5 0 0 0 3 0" stroke="currentColor" strokeWidth="1.1"/></svg>}
+                        label="Notifications" onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection("notifs"); }} />
+
+                      {/* Parrainage */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" strokeWidth="1.1"/><circle cx="11.5" cy="5.5" r="2" stroke="currentColor" strokeWidth="1" opacity=".5"/><path d="M1.5 13c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><path d="M12 8l1.5 1.5L15 8" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" opacity=".5"/></svg>}
+                        label="Parrainage" color={C.green} onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection("referral"); }} />
+                    </div>
+
+                    <div style={{ height: 1, background: C.border }} />
+
+                    <div style={{ padding: "6px 0" }}>
                       {/* Split Screen */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2"/><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" strokeWidth="1"/></svg>}
                         label="Split Screen" kbd="V"
@@ -337,11 +350,7 @@ export default function App() {
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".6"/></svg>}
                         label="Mode Focus" kbd="F"
                         onClick={() => { setShowAccountDD(false); setShowFocus(true); }} />
-                    </div>
 
-                    <div style={{ height: 1, background: C.border, margin: "0" }} />
-
-                    <div style={{ padding: "6px 0" }}>
                       {/* Search */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.2"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
                         label="Recherche" kbd="⌘K"
@@ -349,13 +358,12 @@ export default function App() {
 
                       {/* Keyboard shortcuts */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.1"/><line x1="4" y1="7" x2="6" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="8" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="5" y1="10" x2="11" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>}
-                        label="Raccourcis clavier" kbd="?"
+                        label="Raccourcis" kbd="?"
                         onClick={() => { setShowAccountDD(false); setShowKeyHelp(true); }} />
 
-                      {/* Help center */}
+                      {/* Help center → settings */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" opacity=".7"/><path d="M6 6.5a2 2 0 0 1 3.5 1.3c0 1.2-1.5 1.4-1.5 2.2" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><circle cx="8" cy="12" r=".6" fill="currentColor"/></svg>}
-                        label="Centre d'aide"
-                        onClick={() => { setShowAccountDD(false); }} />
+                        label="Aide" onClick={() => { setShowAccountDD(false); setTab("settings"); setSettingsSection("support"); }} />
                     </div>
 
                     {/* Admin — only if admin */}
@@ -397,7 +405,7 @@ export default function App() {
           {tab === "calendar" && <TradingCalendar trades={accountTrades} />}
           {tab === "patterns" && <PatternAnalysis isPro={isPro} onUpgrade={() => setShowUpgrade(true)} />}
           {tab === "community" && <TradingGroups userId={user.id} trades={accountTrades} stats={stats} equity={equity} />}
-          {tab === "settings" && <SettingsTab trades={trades} tasks={tasks} onImport={handleImport} onReset={async () => { await importTrades({ trades: [], tasks: [] }); await replaceTasks([]); }} isPro={isPro} onUpgrade={() => setShowUpgrade(true)} onManagePlan={redirectToPortal} />}
+          {tab === "settings" && <SettingsTab trades={trades} tasks={tasks} onImport={handleImport} onReset={async () => { await importTrades({ trades: [], tasks: [] }); await replaceTasks([]); }} isPro={isPro} onUpgrade={() => setShowUpgrade(true)} onManagePlan={redirectToPortal} initialTab={settingsSection} />}
           </div>
         </div>
       </div>

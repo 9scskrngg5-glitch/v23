@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { ReferralPanel } from "./ReferralPanel";
 import { SupportChat } from "./SupportChat";
@@ -26,8 +26,9 @@ const SectionTitle = ({ children }) => (
   </div>
 );
 
-export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade, onManagePlan }) => {
-  const [activeTab, setActiveTab] = useState("account");
+export const SettingsTab = ({ trades, tasks, onImport, onReset, isPro, onUpgrade, onManagePlan, initialTab }) => {
+  const [activeTab, setActiveTab] = useState(initialTab || "account");
+  useEffect(() => { if (initialTab) setActiveTab(initialTab); }, [initialTab]);
   const [importText, setImportText] = useState("");
   const [importError, setImportError] = useState("");
   const [importSuccess, setImportSuccess] = useState(false);

@@ -229,18 +229,17 @@ export const LandingPage = ({ onGetStarted }) => {
         </div>
       </nav>
 
-      <div style={{ position:"relative",height:"100vh",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden" }}>
+      <div style={{ position:"relative",height:"100vh",overflow:"hidden" }}>
         <HeroCanvas />
-        <div style={{ position:"relative",zIndex:2,textAlign:"center",padding:"0 24px",maxWidth:800,pointerEvents:"none",display:"flex",flexDirection:"column",alignItems:"center" }}>
-          {/* Badge */}
-          <div className="fu" style={{ display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:100,background:G.glassBg,border:`1px solid ${G.glassBorder}`,backdropFilter:"blur(12px)",boxShadow:`inset 0 1px 0 ${G.glassTop},0 4px 16px ${G.glassShadow}`,fontSize:10,color:"rgba(255,255,255,0.6)",fontFamily:mono,letterSpacing:"0.14em",marginBottom:200,pointerEvents:"auto",whiteSpace:"nowrap" }}>
-            <span style={{width:6,height:6,borderRadius:"50%",background:G.green,display:"inline-block",animation:"shimmer 2.5s ease infinite"}} />JOURNAL DE TRADING — PROPULSÉ PAR L'IA
-          </div>
-          {/* Spacer — canvas text renders here via morph */}
-          {/* Sub text — positioned clearly below */}
-          <p className="fu2" style={{ fontSize:14,color:"rgba(255,255,255,0.28)",maxWidth:440,margin:"0 auto 32px",lineHeight:1.8,fontWeight:300 }}>Journal intelligent avec AI coaching, stats avancées et discipline tracker.</p>
+        {/* Badge — top center */}
+        <div className="fu" style={{ position:"absolute",top:80,left:"50%",transform:"translateX(-50%)",zIndex:3,display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:100,background:G.glassBg,border:`1px solid ${G.glassBorder}`,backdropFilter:"blur(12px)",boxShadow:`inset 0 1px 0 ${G.glassTop},0 4px 16px ${G.glassShadow}`,fontSize:10,color:"rgba(255,255,255,0.6)",fontFamily:mono,letterSpacing:"0.14em",whiteSpace:"nowrap" }}>
+          <span style={{width:6,height:6,borderRadius:"50%",background:G.green,display:"inline-block",animation:"shimmer 2.5s ease infinite"}} />JOURNAL DE TRADING — PROPULSÉ PAR L'IA
+        </div>
+        {/* Bottom content — below canvas text zone */}
+        <div style={{ position:"absolute",bottom:0,left:0,right:0,zIndex:2,textAlign:"center",padding:"0 24px 60px",pointerEvents:"none" }}>
+          <p className="fu2" style={{ fontSize:14,color:"rgba(255,255,255,0.28)",maxWidth:440,margin:"0 auto 28px",lineHeight:1.8,fontWeight:300 }}>Journal intelligent avec AI coaching, stats avancées et discipline tracker.</p>
           <div className="fu3" style={{ display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",pointerEvents:"auto" }}><GBtn primary onClick={onGetStarted}>COMMENCER GRATUITEMENT →</GBtn><GBtn onClick={()=>document.getElementById("pricing")?.scrollIntoView({behavior:"smooth"})}>VOIR LES TARIFS</GBtn></div>
-          <div className="fu3" style={{ display:"flex",gap:40,justifyContent:"center",marginTop:48,flexWrap:"wrap" }}>
+          <div className="fu3" style={{ display:"flex",gap:40,justifyContent:"center",marginTop:44,flexWrap:"wrap" }}>
             {[["68%","WIN RATE MOYEN"],["+$47","EXPECTANCY/TRADE"],["400×","SIMULATIONS MC"]].map(([v,l])=>(<div key={l} style={{textAlign:"center"}}><div style={{fontSize:22,fontWeight:300,fontFamily:mono,color:G.text,letterSpacing:"-0.03em"}}>{v}</div><div style={{fontSize:8,color:"rgba(255,255,255,0.15)",fontFamily:mono,letterSpacing:"0.16em",marginTop:4}}>{l}</div></div>))}
           </div>
         </div>
