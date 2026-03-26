@@ -257,17 +257,6 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <NotificationBell stats={stats} trades={orderedTrades} goals={{}} />
 
-            {/* Create — glass pill like the image */}
-            <button onClick={() => setTab("trades")} style={{
-              ...glassBtnPrimary(), padding: "8px 20px", fontSize: 11.5, letterSpacing: "0.06em", gap: 8,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.transform = "none"; }}
-            >
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><line x1="8" y1="3" x2="8" y2="13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
-              <span>Créer</span>
-            </button>
-
             {/* ─── Avatar + Account Dropdown ─── */}
             <div style={{ position: "relative" }} onClick={e => e.stopPropagation()}>
               <button onClick={() => setShowAccountDD(o => !o)} style={{
@@ -353,6 +342,11 @@ export default function App() {
                     <div style={{ height: 1, background: C.border, margin: "0" }} />
 
                     <div style={{ padding: "6px 0" }}>
+                      {/* Search */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.2"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
+                        label="Recherche" kbd="⌘K"
+                        onClick={() => { setShowAccountDD(false); setShowCommand(true); }} />
+
                       {/* Keyboard shortcuts */}
                       <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.1"/><line x1="4" y1="7" x2="6" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="8" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="5" y1="10" x2="11" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>}
                         label="Raccourcis clavier" kbd="?"
@@ -363,6 +357,16 @@ export default function App() {
                         label="Centre d'aide"
                         onClick={() => { setShowAccountDD(false); }} />
                     </div>
+
+                    {/* Admin — only if admin */}
+                    {isAdmin && (<>
+                      <div style={{ height: 1, background: C.border, margin: "0" }} />
+                      <div style={{ padding: "6px 0" }}>
+                        <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5V8C14 11.3 11.3 14 8 15C4.7 14 2 11.3 2 8V5L8 2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M5.5 8L7 9.5L10.5 6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                          label="Admin Panel" color={C.orange}
+                          onClick={() => { setShowAccountDD(false); setShowAdmin(true); }} />
+                      </div>
+                    </>)}
 
                     <div style={{ height: 1, background: C.border, margin: "0" }} />
 

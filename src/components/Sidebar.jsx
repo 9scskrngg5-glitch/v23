@@ -190,48 +190,24 @@ export const Sidebar = ({ tab, setTab, user, plan, stats, isPro, onUpgrade, onSi
         ))}
       </div>
 
-      {/* ─── Footer ─── */}
-      <div style={{ padding: collapsed ? "8px 6px" : "10px 6px", borderTop: `1px solid ${C.border}`, flexShrink: 0 }}>
-        {navItem({ id: "settings", icon: "settings", label: "Settings", key: null })}
-
-        {!isPro && !collapsed && (
-          <div style={{ margin: "8px 6px", padding: "14px 12px", background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 10, textAlign: "center", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: "25%", right: "25%", height: 1, background: `linear-gradient(90deg, transparent, ${C.green}40, transparent)` }} />
-            <div style={{ fontSize: 12, fontWeight: 500, color: C.text, marginBottom: 4 }}>Passe en Pro</div>
-            <div style={{ fontSize: 10, color: C.textDim, marginBottom: 10, lineHeight: 1.4 }}>Trades illimités, AI Coach</div>
-            <button onClick={onUpgrade} style={{ width: "100%", padding: 8, borderRadius: 7, border: "none", background: C.green, color: C.bg, cursor: "pointer", fontSize: 11, fontWeight: 600, fontFamily: F.mono, letterSpacing: "0.06em", transition: "opacity 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.opacity = "0.85"} onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-              UPGRADE →
-            </button>
-          </div>
-        )}
-
-        {isPro && !collapsed && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 12px", borderRadius: 7, border: `1px solid ${C.greenBord}`, background: C.greenDim, margin: "6px 6px" }}>
-            <span style={{ fontSize: 10, color: C.green, fontFamily: F.mono, fontWeight: 500, letterSpacing: "0.1em" }}>● PRO</span>
-            <span style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, marginLeft: "auto" }}>Actif</span>
-          </div>
-        )}
-
-        {isAdmin && navItem({ id: "_admin", icon: "admin", label: "Admin", key: null })}
-
+      {/* ─── Footer — minimal ─── */}
+      <div style={{ padding: collapsed ? "8px 6px" : "10px 10px", borderTop: `1px solid ${C.border}`, flexShrink: 0 }}>
         {!collapsed && (
-          <div style={{ padding: "8px 8px 2px", borderTop: `1px solid ${C.border}`, marginTop: 4 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: C.bgInner, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: C.text, fontFamily: F.mono, flexShrink: 0 }}>
-                {(user?.email?.[0] || "?").toUpperCase()}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12, color: C.textMid, fontFamily: F.sans, fontWeight: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.email}</div>
-                <div style={{ fontSize: 9.5, color: C.textDim, fontFamily: F.mono, marginTop: 1 }}>{isPro ? "Pro" : "Compte live"}</div>
-              </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 6px" }}>
+            <div style={{ width: 24, height: 24, borderRadius: "50%", background: C.bgInner, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: C.text, fontFamily: F.mono, flexShrink: 0 }}>
+              {(user?.email?.[0] || "?").toUpperCase()}
             </div>
-            <button onClick={onSignOut} style={{ width: "100%", display: "flex", alignItems: "center", gap: 8, padding: "7px 10px", borderRadius: 7, border: `1px solid ${C.border}`, background: "transparent", color: C.textDim, cursor: "pointer", fontSize: 12, fontFamily: F.sans, fontWeight: 300, transition: "all 0.15s" }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = C.redBord; e.currentTarget.style.color = C.red; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textDim; }}>
-              <span style={{ color: "inherit", display: "flex" }}>{I.signout}</span>
-              <span>Déconnexion</span>
-            </button>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 11, color: C.textMid, fontFamily: F.sans, fontWeight: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.email}</div>
+              <div style={{ fontSize: 9, color: C.textDim, fontFamily: F.mono, marginTop: 1 }}>{isPro ? "Pro" : "Free"}</div>
+            </div>
+          </div>
+        )}
+        {collapsed && (
+          <div style={{ display: "flex", justifyContent: "center", padding: "6px 0" }}>
+            <div style={{ width: 24, height: 24, borderRadius: "50%", background: C.bgInner, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, color: C.text, fontFamily: F.mono }}>
+              {(user?.email?.[0] || "?").toUpperCase()}
+            </div>
           </div>
         )}
       </div>
