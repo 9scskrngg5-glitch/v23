@@ -3,33 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#06080f" />
-    <meta name="description" content="Journal de trading avec AI coaching, stats avancées et Monte Carlo." />
+    <meta name="theme-color" content="#0d0f11" />
+    <meta name="description" content="LOG-PIP — Journal de trading professionnel avec AI coaching, stats avancées et Monte Carlo." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Trading Journal" />
+    <meta name="apple-mobile-web-app-title" content="LOG-PIP" />
     <link rel="manifest" href="/manifest.json" />
-    <title>Trading Journal</title>
-  <meta name="theme-color" content="#06080f">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="TJ">
-  <link rel="manifest" href="/manifest.json">
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));
-    }
-  </script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@200;300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <title>LOG-PIP</title>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(()=>{}));
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/sw.js").catch(console.error);
-        });
-      }
-    </script>
   </body>
 </html>

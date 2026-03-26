@@ -37,7 +37,7 @@ import { Changelog } from "./components/Changelog";
 import { InteractiveOnboarding } from "./components/InteractiveOnboarding";
 import { requestPushPermission, checkAndNotify } from "./lib/notifications";
 import { PLANS, redirectToPortal } from "./lib/stripe";
-import { C, F } from "./lib/design";
+import { C, F, glassBtn, glassBtnPrimary } from "./lib/design";
 
 const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase());
 
@@ -59,7 +59,7 @@ export default function App() {
   const [showCommand, setShowCommand] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
   const [showSplit, setShowSplit] = useState(false);
-  const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "forest");
+  const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "midnight");
   const [themeVersion, setThemeVersion] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -81,7 +81,7 @@ export default function App() {
   useEffect(() => {
     const fn = () => {
       // Force full component tree re-render by updating key
-      setThemeId(localStorage.getItem("tj_theme") || "forest");
+      setThemeId(localStorage.getItem("tj_theme") || "midnight");
       setThemeVersion(v => v + 1);
     };
     window.addEventListener("tj-theme-change", fn);
@@ -157,15 +157,15 @@ export default function App() {
   return (
     <div key={themeVersion} style={{ background: C.bg, minHeight: "100dvh", color: C.text, fontFamily: F.sans, display: "flex" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
-        *, *::before, *::after { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         input, textarea, select { outline: none; }
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: ${C.borderHov}; }
         button { font-family: inherit; }
+        html, body { transition: background 0.35s, color 0.35s; }
 
         @keyframes fadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
         @keyframes fadeUp  { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -173,6 +173,7 @@ export default function App() {
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
         @keyframes pulse   { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
         @keyframes spin    { to { transform: rotate(360deg); } }
+        @keyframes draw    { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
 
         .fade-in  { animation: fadeIn  0.2s ease forwards; }
         .fade-up  { animation: fadeUp  0.25s ease forwards; }
@@ -182,22 +183,15 @@ export default function App() {
 
         .tab-content { animation: fadeIn 0.18s ease forwards; }
 
-        /* Smooth interactive transitions */
-        button, a, input, textarea, select { transition: border-color 0.15s, background 0.15s, color 0.15s, opacity 0.15s, box-shadow 0.15s; }
+        button, a, input, textarea, select { transition: border-color 0.15s, background 0.15s, color 0.15s, opacity 0.15s, box-shadow 0.15s, transform 0.12s; }
 
-        /* Input focus glow */
         input:focus, textarea:focus, select:focus {
           border-color: ${C.green} !important;
           box-shadow: 0 0 0 3px ${C.greenDim};
         }
 
-        /* Better modal backdrop */
-        .modal-backdrop {
-          animation: fadeIn 0.15s ease forwards;
-        }
-        .modal-content {
-          animation: scaleIn 0.18s ease forwards;
-        }
+        .modal-backdrop { animation: fadeIn 0.15s ease forwards; }
+        .modal-content { animation: scaleIn 0.18s ease forwards; }
       `}</style>
 
       {showOnboarding && <InteractiveOnboarding onDone={() => { localStorage.setItem("tj_onboarding_done", "1"); setShowOnboarding(false); }} />}
@@ -225,44 +219,84 @@ export default function App() {
 
       {/* Main */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, overflowX: "hidden" }}>
-        {/* Topbar */}
+        {/* Topbar — glass design */}
         <div style={{
           height: 56, borderBottom: `1px solid ${C.border}`,
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: isMobile ? "0 12px" : "0 28px", flexShrink: 0, background: C.bg,
+          padding: isMobile ? "0 12px" : "0 32px", flexShrink: 0, background: C.bg,
           position: "sticky", top: 0, zIndex: 30,
+          transition: "background 0.35s, border-color 0.35s",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <h1 style={{ fontSize: 16, fontWeight: 700, color: C.text, fontFamily: "'Syne', sans-serif", margin: 0, letterSpacing: "-0.01em" }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 300, letterSpacing: "-0.01em", color: C.text }}>
               {PAGE_TITLES[tab]}
-            </h1>
+            </div>
+            <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, marginTop: 1 }}>
+              {new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" })} — semaine {Math.ceil(new Date().getDate() / 7 + (new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay() === 0 ? 0 : 0))}
+            </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <NotificationBell stats={stats} trades={orderedTrades} goals={{}} />
-            <button onClick={() => setShowCommand(true)} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, color: C.textDim, cursor: "pointer", fontSize: 11, fontFamily: F.mono, padding: "5px 12px", display: "flex", alignItems: "center", gap: 6, transition: "all 0.15s" }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderHov; e.currentTarget.style.color = C.textMid; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textDim; }}
+
+            {/* Search — glass pill */}
+            <button onClick={() => setShowCommand(true)} style={{
+              ...glassBtn(), padding: "5px 14px", fontSize: 11, gap: 6, borderRadius: 100,
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.borderColor = C.glassHoverBd; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.borderColor = C.glassBorder; e.currentTarget.style.transform = "none"; }}
             >
-              <span>⌕</span>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.3"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
               <span>Recherche</span>
-              <kbd style={{ fontSize: 9, background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 4, padding: "2px 5px" }}>⌘K</kbd>
+              <kbd style={{ fontSize: 9, background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 4, padding: "1px 5px", color: C.textDim }}>⌘K</kbd>
             </button>
-            <button onClick={() => setShowSplit(true)} title="Split Screen (V)" style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: F.mono, padding: "4px 9px", letterSpacing: "0.08em", transition: "color 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.color = C.purple}
-              onMouseLeave={e => e.currentTarget.style.color = C.textDim}
-            >SPLIT</button>
-            <button onClick={() => setShowFocus(true)} title="Mode Focus (F)" style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, cursor: "pointer", fontSize: 10, fontFamily: F.mono, padding: "4px 9px", letterSpacing: "0.08em", transition: "color 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.color = C.green}
-              onMouseLeave={e => e.currentTarget.style.color = C.textDim}
-            >FOCUS</button>
-            <button onClick={() => setShowKeyHelp(true)} style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, cursor: "pointer", fontSize: 11, fontFamily: F.mono, padding: "4px 9px", transition: "color 0.15s" }}
-              onMouseEnter={e => e.currentTarget.style.color = C.textMid}
-              onMouseLeave={e => e.currentTarget.style.color = C.textDim}
+
+            {/* Split — glass icon-ish */}
+            <button onClick={() => setShowSplit(true)} title="Split Screen (V)" style={{
+              ...glassBtn(), padding: "5px 10px", fontSize: 10, letterSpacing: "0.08em",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.color = C.purple; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.color = C.glassText; e.currentTarget.style.transform = "none"; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2"/><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" strokeWidth="1"/></svg>
+            </button>
+
+            {/* Focus — glass */}
+            <button onClick={() => setShowFocus(true)} title="Mode Focus (F)" style={{
+              ...glassBtn(), padding: "5px 10px", fontSize: 10, letterSpacing: "0.08em",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.color = C.green; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.color = C.glassText; e.currentTarget.style.transform = "none"; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".7"/></svg>
+            </button>
+
+            {/* Help — glass */}
+            <button onClick={() => setShowKeyHelp(true)} style={{
+              ...glassBtn(), width: 30, height: 30, padding: 0, borderRadius: "50%", fontSize: 12,
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.transform = "none"; }}
             >?</button>
+
+            {/* Nouveau trade — glass primary */}
+            <button onClick={() => setTab("trades")} style={{
+              ...glassBtnPrimary(), padding: "8px 20px", fontSize: 11.5, letterSpacing: "0.06em", gap: 8,
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.transform = "none"; }}
+            >
+              <span style={{ fontSize: 15, lineHeight: 1, marginTop: -1, opacity: 0.7 }}>+</span>
+              <span>Nouveau trade</span>
+            </button>
+
             {!isPro && (
-              <button onClick={() => setShowUpgrade(true)} style={{ padding: "6px 14px", borderRadius: 7, border: `1px solid ${C.orangeBord}`, background: C.orangeDim, color: C.orange, cursor: "pointer", fontSize: 11, fontFamily: F.mono, letterSpacing: "0.08em", fontWeight: 600 }}>
-                UPGRADE
-              </button>
+              <button onClick={() => setShowUpgrade(true)} style={{
+                ...glassBtn(), padding: "6px 14px", fontSize: 11, letterSpacing: "0.08em", fontWeight: 600,
+                borderColor: C.orangeBord, color: C.orange,
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.orangeDim; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.transform = "none"; }}
+              >UPGRADE</button>
             )}
           </div>
         </div>
@@ -292,13 +326,12 @@ export default function App() {
 const Loader = () => (
   <div style={{ background: C.bg, minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center" }}>
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&display=swap');
       @keyframes spin { to { transform: rotate(360deg); } }
       @keyframes fadeLoader { from { opacity: 0; } to { opacity: 1; } }
     `}</style>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, animation: "fadeLoader 0.3s ease forwards" }}>
-      <div style={{ width: 36, height: 36, border: `2px solid ${C.border}`, borderTop: `2px solid ${C.green}`, borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
-      <div style={{ fontSize: 10, color: C.textDim, fontFamily: "'DM Mono', monospace", letterSpacing: "0.18em" }}>CHARGEMENT</div>
+      <div style={{ width: 36, height: 36, border: `2px solid ${C.border}`, borderTop: `2px solid ${C.text}`, borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+      <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, letterSpacing: "0.18em" }}>LOG-PIP</div>
     </div>
   </div>
 );

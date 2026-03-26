@@ -3,6 +3,7 @@ import { THEMES, setTheme } from "../lib/themes";
 import { C, F } from "../lib/design";
 
 const PREVIEWS = {
+  midnight: { bars: ["#eef0f2", "#7a8088", "#3a3d42"], line: "#3ecf8e" },
   forest: { bars: ["#8EB69B", "#4a7a68", "#235347"], line: "#8EB69B" },
   noir:   { bars: ["#e8e8e8", "#a0a0a0", "#555555"], line: "#e8e8e8" },
   blanc:  { bars: ["#1a7a4a", "#555555", "#cccccc"], line: "#1a7a4a" },
@@ -28,7 +29,7 @@ const MiniChart = ({ colors, bg }) => (
 );
 
 export const ThemePicker = ({ currentThemeId, onThemeChange }) => {
-  const [active, setActive] = useState(currentThemeId || "forest");
+  const [active, setActive] = useState(currentThemeId || "midnight");
 
   const handleSelect = (id) => {
     setTheme(id);
@@ -45,7 +46,7 @@ export const ThemePicker = ({ currentThemeId, onThemeChange }) => {
         Les couleurs s'appliquent immédiatement sur toute l'app.
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 12 }}>
         {Object.entries(THEMES).map(([id, theme]) => {
           const isActive = active === id;
           const preview = PREVIEWS[id];
