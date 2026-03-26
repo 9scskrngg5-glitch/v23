@@ -48,6 +48,24 @@ const PAGE_TITLES = {
   tasks: "Tasks", community: "Communauté", patterns: "Patterns AI", calendar: "Calendrier", settings: "Paramètres",
 };
 
+// ─── Dropdown menu item (like image reference) ───
+const DDItem = ({ icon, label, onClick, kbd, chevron, danger, color }) => (
+  <button onClick={onClick} style={{
+    width: "100%", display: "flex", alignItems: "center", gap: 11,
+    padding: "10px 16px", border: "none", cursor: "pointer",
+    background: "transparent", transition: "background 0.1s, color 0.1s",
+    outline: "none",
+  }}
+    onMouseEnter={e => { e.currentTarget.style.background = C.bgCard; if (!danger) e.currentTarget.querySelector(".dd-lbl").style.color = C.text; if (danger) { e.currentTarget.querySelector(".dd-lbl").style.color = C.red; e.currentTarget.querySelector(".dd-ico").style.color = C.red; }}}
+    onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.querySelector(".dd-lbl").style.color = color || (danger ? C.textMid : C.textMid); e.currentTarget.querySelector(".dd-ico").style.color = color || (danger ? C.textDim : C.textDim); }}
+  >
+    <span className="dd-ico" style={{ color: color || C.textDim, display: "flex", alignItems: "center", flexShrink: 0, transition: "color 0.1s" }}>{icon}</span>
+    <span className="dd-lbl" style={{ fontSize: 13, fontWeight: 300, fontFamily: F.sans, color: color || C.textMid, flex: 1, textAlign: "left", transition: "color 0.1s" }}>{label}</span>
+    {kbd && <kbd style={{ fontSize: 9, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 4, padding: "1px 6px", fontFamily: F.mono, color: C.textDim }}>{kbd}</kbd>}
+    {chevron && <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ color: C.textDim }}><path d="M4.5 3L7.5 6L4.5 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+  </button>
+);
+
 export default function App() {
   const [tab, setTab] = useState("dashboard");
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -59,6 +77,7 @@ export default function App() {
   const [showCommand, setShowCommand] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
   const [showSplit, setShowSplit] = useState(false);
+  const [showAccountDD, setShowAccountDD] = useState(false);
   const [themeId, setThemeId] = useState(() => localStorage.getItem("tj_theme") || "midnight");
   const [themeVersion, setThemeVersion] = useState(0);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -238,66 +257,125 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <NotificationBell stats={stats} trades={orderedTrades} goals={{}} />
 
-            {/* Search — glass pill */}
-            <button onClick={() => setShowCommand(true)} style={{
-              ...glassBtn(), padding: "5px 14px", fontSize: 11, gap: 6, borderRadius: 100,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.borderColor = C.glassHoverBd; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.borderColor = C.glassBorder; e.currentTarget.style.transform = "none"; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.3"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-              <span>Recherche</span>
-              <kbd style={{ fontSize: 9, background: C.bgInner, border: `1px solid ${C.border}`, borderRadius: 4, padding: "1px 5px", color: C.textDim }}>⌘K</kbd>
-            </button>
-
-            {/* Split — glass icon-ish */}
-            <button onClick={() => setShowSplit(true)} title="Split Screen (V)" style={{
-              ...glassBtn(), padding: "5px 10px", fontSize: 10, letterSpacing: "0.08em",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.color = C.purple; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.color = C.glassText; e.currentTarget.style.transform = "none"; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2"/><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" strokeWidth="1"/></svg>
-            </button>
-
-            {/* Focus — glass */}
-            <button onClick={() => setShowFocus(true)} title="Mode Focus (F)" style={{
-              ...glassBtn(), padding: "5px 10px", fontSize: 10, letterSpacing: "0.08em",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.color = C.green; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.color = C.glassText; e.currentTarget.style.transform = "none"; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".7"/></svg>
-            </button>
-
-            {/* Help — glass */}
-            <button onClick={() => setShowKeyHelp(true)} style={{
-              ...glassBtn(), width: 30, height: 30, padding: 0, borderRadius: "50%", fontSize: 12,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.transform = "none"; }}
-            >?</button>
-
-            {/* Nouveau trade — glass primary */}
+            {/* Create — glass pill like the image */}
             <button onClick={() => setTab("trades")} style={{
               ...glassBtnPrimary(), padding: "8px 20px", fontSize: 11.5, letterSpacing: "0.06em", gap: 8,
             }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.transform = "none"; }}
             >
-              <span style={{ fontSize: 15, lineHeight: 1, marginTop: -1, opacity: 0.7 }}>+</span>
-              <span>Nouveau trade</span>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><line x1="8" y1="3" x2="8" y2="13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+              <span>Créer</span>
             </button>
 
-            {!isPro && (
-              <button onClick={() => setShowUpgrade(true)} style={{
-                ...glassBtn(), padding: "6px 14px", fontSize: 11, letterSpacing: "0.08em", fontWeight: 600,
-                borderColor: C.orangeBord, color: C.orange,
+            {/* ─── Avatar + Account Dropdown ─── */}
+            <div style={{ position: "relative" }} onClick={e => e.stopPropagation()}>
+              <button onClick={() => setShowAccountDD(o => !o)} style={{
+                ...glassBtn(), width: 36, height: 36, padding: 0, borderRadius: "50%",
+                fontSize: 13, fontWeight: 500, fontFamily: F.mono, color: C.text,
+                background: showAccountDD ? C.glassHoverBg : C.glassBg,
+                borderColor: showAccountDD ? C.glassHoverBd : C.glassBorder,
               }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.orangeDim; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.transform = "none"; }}
-              >UPGRADE</button>
-            )}
+                onMouseEnter={e => { e.currentTarget.style.background = C.glassHoverBg; e.currentTarget.style.borderColor = C.glassHoverBd; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { if (!showAccountDD) { e.currentTarget.style.background = C.glassBg; e.currentTarget.style.borderColor = C.glassBorder; } e.currentTarget.style.transform = "none"; }}
+              >
+                {(user?.email?.[0] || "?").toUpperCase()}
+              </button>
+
+              {/* Dropdown panel */}
+              {showAccountDD && (
+                <>
+                  {/* Backdrop */}
+                  <div onClick={() => setShowAccountDD(false)} style={{ position: "fixed", inset: 0, zIndex: 299 }} />
+
+                  <div style={{
+                    position: "absolute", top: "calc(100% + 10px)", right: 0, width: 252,
+                    background: C.bgInner, border: `1px solid ${C.borderHov}`,
+                    borderRadius: 16, overflow: "hidden", zIndex: 300,
+                    boxShadow: `0 20px 60px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 ${C.glassTop}`,
+                    animation: "scaleIn 0.14s ease forwards",
+                    transformOrigin: "top right",
+                  }}>
+                    {/* User header */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 16px 14px", borderBottom: `1px solid ${C.border}` }}>
+                      <div style={{
+                        width: 40, height: 40, borderRadius: "50%", flexShrink: 0,
+                        background: C.bgCard, border: `1px solid ${C.borderHov}`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontFamily: F.mono, fontSize: 14, fontWeight: 500, color: C.text,
+                      }}>
+                        {(user?.email?.[0] || "?").toUpperCase()}
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 400, color: C.text, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {user?.email?.split("@")[0] || "User"}
+                        </div>
+                        <div style={{ fontSize: 10, color: C.textDim, fontFamily: F.mono, marginTop: 2 }}>
+                          {user?.email}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Menu items */}
+                    <div style={{ padding: "6px 0" }}>
+                      {/* Profile */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" strokeWidth="1.2"/><path d="M2.5 14c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
+                        label="Profil" onClick={() => { setShowAccountDD(false); }} />
+
+                      {/* Settings */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" strokeWidth="1.2"/><path d="M8 1.5V3.5M8 12.5V14.5M14.5 8H12.5M3.5 8H1.5M12.5 3.5L11 5M5 11L3.5 12.5M12.5 12.5L11 11M5 5L3.5 3.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/></svg>}
+                        label="Paramètres" onClick={() => { setShowAccountDD(false); setTab("settings"); }} />
+
+                      {/* Theme — with chevron */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M12 8.5A4.5 4.5 0 0 1 6.5 3a5 5 0 1 0 5.5 5.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
+                        label="Thème" chevron onClick={() => { setShowAccountDD(false); setTab("settings"); }} />
+                    </div>
+
+                    <div style={{ height: 1, background: C.border, margin: "0" }} />
+
+                    <div style={{ padding: "6px 0" }}>
+                      {/* Upgrade */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3-5 3 5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 12h10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
+                        label={isPro ? "Pro actif" : "Upgrade"} color={isPro ? C.green : C.orange}
+                        onClick={() => { setShowAccountDD(false); if (!isPro) setShowUpgrade(true); }} />
+
+                      {/* Split Screen */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2"/><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" strokeWidth="1"/></svg>}
+                        label="Split Screen" kbd="V"
+                        onClick={() => { setShowAccountDD(false); setShowSplit(true); }} />
+
+                      {/* Focus Mode */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.2"/><circle cx="8" cy="8" r="2" fill="currentColor" opacity=".6"/></svg>}
+                        label="Mode Focus" kbd="F"
+                        onClick={() => { setShowAccountDD(false); setShowFocus(true); }} />
+                    </div>
+
+                    <div style={{ height: 1, background: C.border, margin: "0" }} />
+
+                    <div style={{ padding: "6px 0" }}>
+                      {/* Keyboard shortcuts */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.1"/><line x1="4" y1="7" x2="6" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="8" y1="7" x2="10" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><line x1="5" y1="10" x2="11" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/></svg>}
+                        label="Raccourcis clavier" kbd="?"
+                        onClick={() => { setShowAccountDD(false); setShowKeyHelp(true); }} />
+
+                      {/* Help center */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" opacity=".7"/><path d="M6 6.5a2 2 0 0 1 3.5 1.3c0 1.2-1.5 1.4-1.5 2.2" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/><circle cx="8" cy="12" r=".6" fill="currentColor"/></svg>}
+                        label="Centre d'aide"
+                        onClick={() => { setShowAccountDD(false); }} />
+                    </div>
+
+                    <div style={{ height: 1, background: C.border, margin: "0" }} />
+
+                    <div style={{ padding: "6px 0 8px" }}>
+                      {/* Log out */}
+                      <DDItem icon={<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6 3H3.5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><path d="M10 5l3 3-3 3M13 8H6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                        label="Déconnexion" danger
+                        onClick={() => { setShowAccountDD(false); signOut(); }} />
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
