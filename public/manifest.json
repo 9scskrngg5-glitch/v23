@@ -1,11 +1,11 @@
 {
-  "name": "Trading Journal",
-  "short_name": "TJ",
-  "description": "Journal de trading avec AI coaching",
+  "name": "LOG-PIP — Trading Journal",
+  "short_name": "LOG-PIP",
+  "description": "Journal de trading avec AI coaching, stats avancées et discipline tracker",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#06080f",
-  "theme_color": "#06080f",
+  "background_color": "#0d0f11",
+  "theme_color": "#0d0f11",
   "orientation": "portrait-primary",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
